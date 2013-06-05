@@ -1,0 +1,460 @@
+/*
+ * 'Play Virtual' Page CSS
+ *
+ * Copyright Google Inc, 2013
+ * See LICENSE.TXT for licensing information.
+ */
+
+.experiment-content.orchestra-play {	
+	min-height:463px;
+	max-height:550px;
+	height:55%;
+	margin-top:22px;
+}
+
+#orchestra-virtual-subtitle .helpAndSkipHolder {
+	display: inline-block;
+	margin-left: 7px;
+}
+
+#orchestra-playVirtual {
+
+	
+}
+
+
+#orchestra-playVirtual .loading {
+	position: absolute;
+	height:100%;
+	width:100%;
+	top:0px;
+	left:0px;
+
+	-webkit-transition:opacity 0.5s;
+	-moz-transition:opacity 0.5s;
+	-ms-transition:opacity 0.5s;
+	transition:opacity 0.5s;
+
+	opacity:0;
+}
+
+#orchestra-playVirtual .loading.visible {
+	opacity: 1;
+}
+
+
+#orchestra-playVirtual .loading .loadingNotice {
+	position: absolute;
+	top:30%;
+	
+	width:100%;
+
+}
+
+#orchestra-playVirtual .loading .loadingNotice h6{
+	text-align:center;
+	margin-top:10px;
+	text-transform:uppercase;
+}
+
+ 
+#orchestra-playVirtual .virtualPlayer {
+	height:240px;
+
+}
+
+#orchestra-playVirtual .virtualPlayer .intro {
+	position:absolute;
+	top:66px;
+	width:120px;
+	left:50%;
+	margin-left:-50px;
+}
+
+#orchestra-playVirtual .blobsLeftPanel {
+	float: left;
+	margin-left: 4px;
+	margin-top: 19px;
+}
+#orchestra-playVirtual .blobsLeftPanel .blobsLeftPanelTitle {
+	display: inline-block;
+	vertical-align: text-top;
+}
+
+#orchestra-playVirtual .blobsWithClearAllButton {
+}
+
+#orchestra-playVirtual .blobsLeftPanel .blobs {
+	float: left;
+}
+#orchestra-playVirtual .blobsLeftPanel .blobs .blob {
+	display: block;
+	width: 20px;
+	height: 20px;
+	float: left;
+	margin-right: 5px;
+	position: relative;
+	
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+#orchestra-playVirtual .blobsLeftPanel .blobs .blob:nth-child(6) {
+	margin-right:0px;
+}
+
+#orchestra-playVirtual .blobsLeftPanel .blobs .blob .circleBackground {
+	
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	
+	width: 100%;
+	height: 100%;
+	
+	background-image: url(../svg/orchestra/blobs/blob_empty.svg);
+}
+
+#orchestra-playVirtual .blobsLeftPanel .blobs .blob .filledImage {
+	
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	
+	width: 100%;
+	height: 100%;
+	
+	-moz-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-webkit-transform-origin: 50% 50%;
+	-khtml-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+#orchestra-playVirtual .blobsLeftPanel.instrument0 .blobs .blob .filledImage {
+	background-image: url(../svg/orchestra/blobs/blob_5.svg);
+}
+#orchestra-playVirtual .blobsLeftPanel.instrument1 .blobs .blob .filledImage {
+	background-image: url(../svg/orchestra/blobs/blob_2.svg);
+}
+#orchestra-playVirtual .blobsLeftPanel.instrument2 .blobs .blob .filledImage {
+	background-image: url(../svg/orchestra/blobs/blob_0.svg);
+}
+#orchestra-playVirtual .blobsLeftPanel.instrument3 .blobs .blob .filledImage {
+	background-image: url(../svg/orchestra/blobs/blob_6.svg);
+}
+#orchestra-playVirtual .blobsLeftPanel.instrument4 .blobs .blob .filledImage {
+	background-image: url(../svg/orchestra/blobs/blob_1.svg);
+}
+#orchestra-playVirtual .blobsLeftPanel.instrument5 .blobs .blob .filledImage {
+	background-image: url(../svg/orchestra/blobs/blob_4.svg);
+}
+#orchestra-playVirtual .blobsLeftPanel.instrument6 .blobs .blob .filledImage {
+	background-image: url(../svg/orchestra/blobs/blob_3.svg);
+}
+#orchestra-playVirtual .blobsLeftPanel.instrument7 .blobs .blob .filledImage {
+	background-image: url(../svg/orchestra/blobs/blob_7.svg);
+}
+
+#orchestra-playVirtual .blobsLeftPanel .clearAllButton {
+	float: left;
+	
+	position: relative;
+	top: 0px;
+	margin-left: 10px;
+	display: inline-block;
+	overflow: hidden;
+	
+}
+
+#orchestra-playVirtual .blobsLeftPanel .clearAllButton .animationLayer {
+	display: inline-block;
+}
+
+#orchestra-playVirtual .recordControls {
+	position: absolute;
+	right:4px;
+	top: 32px;
+	width: 215px;
+	height: 22px;
+	overflow: hidden;
+	text-align: right;
+}
+
+#orchestra-playVirtual .recordButton, #orchestra-playVirtual .cancelButton {
+
+	-webkit-transition-property:-webkit-transform, opacity;
+	-moz-transition-property:-moz-transform, opacity;
+	-ms-transition-property:-ms-transform, opacity;
+	transition-property:transform, opacity;
+
+	-webkit-transition-duration:0.5s, 0.5s;
+	-moz-transition-duration:0.5s, 0.5s;
+	-ms-transition-duration:0.5s, 0.5s;
+	transition-duration:0.5s, 0.5s;
+
+}
+
+#orchestra-playVirtual .recordButton {	
+	position: absolute;
+	padding-left:13px;
+	right:0px;
+	
+
+	-webkit-transform:translateY(0px);
+	-moz-transform:translateY(0px);
+	-ms-transform:translateY(0px);
+	transform:translateY(0px);
+
+	opacity:1;
+}
+
+#orchestra-playVirtual .recording .recordButton { 
+	pointer-events:none;	
+
+	-webkit-transform:translateY(30px);
+	-moz-transform:translateY(30px);
+	-ms-transform:translateY(30px);
+	transform:translateY(30px);
+
+	opacity:0;
+}
+
+
+#orchestra-playVirtual .recordButton .recordIcon {
+	width:22px;
+	height:15px;		
+	margin-right:6px;
+	float:left;
+}
+
+#orchestra-playVirtual .cancelButton {
+	pointer-events:none;
+	
+
+	-webkit-transform:translateY(-30px);
+	-moz-transform:translateY(-30px);
+	-ms-transform:translateY(-30px);
+	transform:translateY(-30px);
+
+	opacity: 0;
+}
+
+#orchestra-playVirtual .recording .cancelButton {
+	pointer-events:auto;	
+
+	-webkit-transform:translateY(0px);
+	-moz-transform:translateY(0px);
+	-ms-transform:translateY(0px);
+	transform:translateY(0px);
+
+	opacity: 1;
+}
+
+
+
+#orchestra-playVirtual #player .timeRemaining {
+	width:190px;
+	float:right;
+	opacity:0;
+	margin-right:75px;
+	margin-top:27px;
+}
+
+#orchestra-playVirtual #player .timeRemaining p {
+	color:#d87383;
+	white-space:pre-line;
+	line-height:19px;
+}
+
+#orchestra-playVirtual #player .timeRemaining .num-seconds {
+	font-family:'Roboto Condensed', "Helvetica Neue", Arial, sans-serif; letter-spacing:-0.04em;
+	font-size: 25px; 
+}
+
+#orchestra-playVirtual #player.recording .timeRemaining { 
+	opacity:1;
+}
+
+#orchestra-playVirtual #player .timeRemaining .clockGraphicsHolder {
+	width: 24px;
+	height: 24px;
+	
+	float: right;
+}
+
+#orchestra-playVirtual #player .timeRemaining .clockGraphicsHolder .clockGraphics {
+	width: 100%;
+	height: 100%;
+}
+
+#orchestra-playVirtual #player .timeRemaining .textCounter {
+	float: right;
+	margin-top: -17px;
+	margin-left: 5px;
+}
+
+#orchestra-playVirtual .virtualPlayer .blobsLeftPanel, #orchestra-playVirtual #player .timeRemaining { 	
+	-webkit-transition:opacity 0.5s;
+	-moz-transition:opacity 0.5s;
+	-ms-transition:opacity 0.5s;
+	transition:opacity 0.5s;
+
+}
+
+#orchestra-playVirtual #virtualPlayer.recording {
+
+
+}
+
+#orchestra-playVirtual #player .helpLayer {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	pointer-events: none;
+}
+
+#orchestra-playVirtual #player .helpLayer * {
+	pointer-events: none;
+}
+
+#orchestra-playVirtual .helpPointer {
+	font-size: 9px;
+	color: #000000;
+}
+
+#orchestra-playVirtual .helpPointer .right .helpPointerContent {
+	margin-left: 10px;
+}
+
+#orchestra-playVirtual .helpPointer .left .helpPointerContent {
+	margin-right: 10px;
+}
+
+#orchestra-playVirtual .helpPointer .sizeDetect {
+	display: inline-block;
+}
+
+#orchestra-playVirtual .helpPointer .helpContent {
+	font-size: 9px;
+	display: inline-block;
+}
+
+#orchestra-playVirtual .helpPointer .tutorialContent {
+	display: inline-block;
+}
+
+#orchestra-playVirtual .tutorialIntroTitle {
+	font-size: 17px;
+	text-transform: uppercase;
+	margin-left: 20px;
+	font-family:'Roboto Condensed', "Helvetica Neue", Arial, sans-serif;
+	letter-spacing: 0.1em;
+}
+
+#orchestra-playVirtual .tutorialIntroBody {
+	font-size: 10px;
+	color: #73807F;
+	margin-left: 20px;
+}
+
+
+/* Recording Playback */
+#orchestra-playVirtual .recordingPlayback {
+	display:none;
+
+ }
+
+#orchestra-playVirtual .virtualInstrument {
+	position: relative;
+}
+
+#orchestra-playVirtual .mainVirtualInstrument {
+	width: 300px;
+	height: 212px;
+	top: 21px;
+}
+
+#orchestra-playVirtual .info-panel .avatarIcon {
+	margin-left: 6px;
+	margin-right: 11px;
+}
+
+#orchestra-playVirtual .othersVirtualInstrument {
+	width: 124px;
+	height: 70px;
+	
+	background: rgb(119,119,184); /* Old browsers */
+	background: -moz-linear-gradient(top, #f8faf9 0%, #f5f6f6 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8faf9), color-stop(100%,#f5f6f6)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #f8faf9 0%,#f5f6f6 100%); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(top, #f8faf9 0%,#f5f6f6 100%); /* W3C */
+}
+
+#orchestra-playVirtual .virtualInstrument .centeredScale {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	
+	-moz-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-webkit-transform-origin: 50% 50%;
+	-khtml-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+#orchestra-playVirtual .mainVirtualInstrument .image img, #orchestra-playVirtual .mainVirtualInstrument .hitAnimations {
+	
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	
+	-moz-transform: translate(-50%, -50%) translate(150px, 106px);
+	-o-transform: translate(-50%, -50%) translate(150px, 106px);
+	-ms-transform: translate(-50%, -50%) translate(150px, 106px);
+	-webkit-transform: translate(-50%, -50%) translate(150px, 106px);
+	-khtml-transform: translate(-50%, -50%) translate(150px, 106px);
+	transform: translate(-50%, -50%) translate(150px, 106px);
+}
+
+#orchestra-playVirtual .othersVirtualInstrument .image img, #orchestra-playVirtual .othersVirtualInstrument .hitAnimations {
+	
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	
+	-moz-transform: translate(-50%, -50%) translate(62px, 35px);
+	-o-transform: translate(-50%, -50%) translate(62px, 35px);
+	-ms-transform: translate(-50%, -50%) translate(62px, 35px);
+	-webkit-transform: translate(-50%, -50%) translate(62px, 35px);
+	-khtml-transform: translate(-50%, -50%) translate(62px, 35px);
+	transform: translate(-50%, -50%) translate(62px, 35px);
+}
+
+#orchestra-playVirtual .thumbnail .playButton { text-align:center; }
+#orchestra-playVirtual .thumbnail .playButton button { margin:auto; }
+
+
+#orchestra-playVirtual .labelAndTutorialTitle {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+}
+
+#orchestra-playVirtual .labelAndTutorialTitle .tutorialTitle {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	color: #936CAB;
+	-webkit-text-stroke: 0.2px #936CAB;
+	text-transform: uppercase;
+	font-family:'Roboto Condensed', "Helvetica Neue", Arial, sans-serif;
+}

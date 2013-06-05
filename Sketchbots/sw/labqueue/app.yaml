@@ -1,0 +1,56 @@
+application: labqueue
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+# skip_files:
+# - ^(.*/)?app\.yaml
+# - ^(.*/)?app\.yml
+# - ^(.*/)?index\.yaml
+# - ^(.*/)?index\.yml
+# - ^(.*/)?#.*#
+# - ^(.*/)?.*~
+# - ^(.*/)?.*\.py[co]
+# - ^(.*/)?.*/RCS/.*
+# - ^(.*/)?\..*
+# - ^(.*/)?.*\.aif$
+
+libraries:
+- name: webapp2
+  version: 2.5.1
+- name: jinja2
+  version: 2.6
+
+handlers:
+- url: /api/(.*)
+  script: lask.server.http.app
+  secure: always
+
+- url: /media/.*
+  script: lask.server.http.app
+  secure: optional
+
+- url: /ui/
+  script: default_handler.app
+  secure: optional
+  
+- url: /favicon.ico
+  static_files: static/ui/favicon.ico
+  upload: static/ui/favicon.ico
+
+- url: /ui/(.*)
+  static_files: static/ui/\1
+  upload: static/ui/(.*)
+
+- url: /help/(.*)
+  static_files: static/help/\1
+  upload: static/help/(.*)
+
+- url: /
+  script: default_handler.app
+  secure: optional
+
+- url: /ui
+  script: default_handler.app
+  secure: optional

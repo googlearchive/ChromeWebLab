@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sketchbots Queue Manager</title>
+        <!-- -------------- views -------------- -->
+            <link rel="stylesheet" type="text/css" href="view/RobotsView.css"></link>
+            <script type="application/javascript" src="view/RobotsViewStrings.js"></script>
+
+
+        <!-- -------------- controllers and logic -------------- -->
+            <!-- Third-Party Libraries -->
+            <script type="application/javascript" src="controller/libs/contrib/mootools-core-1-1.4.5-full-nocompat-yc.js"></script>
+            <script type="application/javascript" src="controller/libs/contrib/tween.js/build/Tween.js"></script>
+            <!-- script type="application/javascript" src="controller/libs/contrib/mootools-form-upload/Form.MultipleFileInput.js"></script -->
+            <!-- script type="application/javascript" src="controller/libs/contrib/mootools-form-upload/Form.Upload.js"></script -->
+            <script type="application/javascript" src="controller/libs/contrib/mootools-form-upload/Request.File.js"></script>
+            <script type="application/javascript" src="controller/libs/contrib/RequestAnimationFrame.js"></script>
+            <script type="application/javascript" src="controller/libs/contrib/Three.js"></script>
+            <script type="application/javascript" src="controller/libs/contrib/gcode/gcode-parser.js"></script>
+            <script type="application/javascript" src="controller/libs/contrib/gcode/gcode-viewer-mootools.js"></script>
+            <script type="application/javascript" src="controller/libs/contrib/base64-binary.js"></script>
+
+            <!-- general Web Lab libraries -->
+            <script type="application/javascript" src="controller/libs/lask/SignedJSONRequest.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/WebLab.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/utils/data/ArrayFunctions.js"></script>
+
+            <script type="application/javascript" src="controller/libs/weblab/utils/math/SimpleTrig.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/utils/canvas/utils/CanvasFactory.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/utils/canvas/animation/DisplayObject.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/utils/canvas/animation/Sprite.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/utils/canvas/animation/Stage.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/utils/animation/TweenGroup.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/utils/animation/TweenHelper.js"></script>
+
+            <script type="application/javascript" src="controller/libs/weblab/utils/events/EventDispatcher.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/robots/constants/WebCamEventTypes.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/robots/webcam/WebCamManager.js"></script>
+            <script type="application/javascript" src="controller/libs/weblab/robots/webcam/WebCamCountdown.js"></script>
+
+            <!-- UI logic (all depend on mootools) -->
+            <script type="application/javascript" src="controller/RobotsMainControllerEvents.js" ></script>
+            <script type="application/javascript" src="controller/UIWidgets.js"></script>
+            <script type="application/javascript" src="controller/Config.js"></script>
+            <script type="application/javascript" src="controller/DataURL.js"></script>
+            <script type="application/javascript" src="controller/FilePreviewController.js"></script>
+            <script type="application/javascript" src="controller/RobotsWebCamController.js"></script>
+            <script type="application/javascript" src="controller/RobotsFilePickerController.js"></script>
+            <script type="application/javascript" src="controller/RobotsTopicQueuesController.js"></script>
+            <script type="application/javascript" src="controller/RobotsMainController.js"></script>
+
+        <!-- UI bootstrap code -->
+        <script type="application/javascript">
+            window.addEvent('domready', function(){
+                // create a <div> to contain the UI
+                var wrapperId = 'grandWLWrapper';
+                new Element('div', { 'id': wrapperId}).inject(document.body);
+                // create an instance the UI logic class and tell it which wrapper to use
+                var ui = new RobotsQueueManager(
+                    wrapperId,
+                    'files/swf/robots/SimpleWebCam.swf', //URL for a SWF to use for webcam capture as a fallback if WebRTC is unavailable
+                    468, //width (px) of the webcam capture preview
+                    348. //height (px) of the webcam capture preview
+                );
+            });
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

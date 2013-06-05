@@ -1,0 +1,200 @@
+{#
+    Used variables:
+        app_key             - the user's test app key (if any)
+        app_secret          - the user's test app secret (if any)
+        target              - the target object itself
+        target_exception    - if not None, this contains the reason why "target" was not found
+        target_url          - the URL of the object upon which this method will operate
+        method_docs         - docstring for the method
+        method_name         - the name of the method
+        method_args_enum    - list of arguments to the method
+#}
+{% extends "base.html" %}
+{% block content %}
+    {% if not target %}
+        {% if not target_exception %}
+            <h2>Error</h2>
+            We could not find an API object at <b>{{ target_url }}</b>.
+            </ul><h2>Description</h2>
+            If you were to actually make this request you would get a null result or 404 Not Found error. 
+            Check the URL and make sure the names and/or IDs are correct.<br /><br />For example, you would see this page 
+            if you accidentally went to /topics/<b>myopic</b>/tasks/5 when you meant to go to /topics/my<b>t</b>opic/tasks/5
+            </body></html>
+        {% else %}
+            <h2>Error</h2>
+            We could not find an API object at <b>{{ target_url }}</b>.
+            </ul><h2>Description</h2>
+            The likely cause of the object not being found is:
+                <pre>{{ target_exception }}</pre>
+            Check the URL and make sure the names and/or IDs are correct.<br /><br />For example, you would see this page 
+            if you accidentally went to /topics/<b>myopic</b>/tasks/5 when you meant to go to /topics/my<b>t</b>opic/tasks/5
+            </body></html>
+        {% endif %}
+    {% elif not method_name %}
+            <h2>Error</h2>
+            The API object at <b>{{ target_url }}</b> does not have a <b>{{ method_name }}</b>() method.
+            </ul><h2>Description</h2>
+            If you were to actually make this request you would get a null result or 404 Not Found error. 
+            Check the URL and make sure the names and/or IDs are correct.<br /><br />For example, you would see this page 
+            if you accidentally went to /topics/<b>myopic</b>/tasks/5 when you meant to go to /topics/my<b>t</b>opic/tasks/5
+    {% else %}
+        <h2>Method</h2>
+        This is the help page for the <b>{{ method_name }}</b>() method of the API object at <b>{{ target_url }}</b>.
+        <h2>Description</h2><ul>
+        {% if not method_name %}
+            <li>There no help available on {{ method_name }} requests for this object.</li>
+        {% else %}
+            <li><pre>{{ method_docs }}</pre></li>
+            </ul>
+            <h2>Test Console</h2>Use the form below to try this method live.<br />
+            <script type="text/javascript">
+            function updateField(t, field_name) {
+                //remove any existing field and associated helper buttons by removing its container
+                containerName = field_name+'_container';
+                container = document.getElementById(containerName);
+                if (container) container.parentNode.removeChild(container);
+                container = null;
+                
+                //if the user has selected something we'll need to create a new container
+                if (t.value != 'None') {
+                    container = document.createElement('div');
+                    container.id = containerName;
+                }
+                //add a new field of the selected type
+                if (t.value == 'str') {
+                    //add some buttons which can be used to fill the field with helpful values
+                    container.appendChild(createHelperButton(
+                        field_name+'_testWorker',
+                        '=Test Worker',
+                        "javascript:document.getElementById('"+field_name+"').value='\"test.weblab\"'"
+                    ));
+                    container.appendChild(createHelperButton(
+                        field_name+'_testIP',
+                        '=Test IP',
+                        "javascript:document.getElementById('"+field_name+"').value='\"46.226.57.90\"'"
+                    ));
+                    container.appendChild(createHelperButton(
+                        field_name+'_fillNow',
+                        '=Now',
+                        "javascript:document.getElementById('"+field_name+"').value=new Date().getTime()/1000"
+                    ));
+                    container.appendChild(createHelperButton(
+                        field_name+'_fillNowMinus5Min',
+                        '=Now-5 min.',
+                        "javascript:document.getElementById('"+field_name+"').value=(new Date().getTime()/1000)-(5*60)"
+                    ));
+                    container.appendChild(createHelperButton(
+                        field_name+'_fillNowMinus1Hr',
+                        '=Now-1 hr.',
+                        "javascript:document.getElementById('"+field_name+"').value=(new Date().getTime()/1000)-(60*60)"
+                    ));
+                    container.appendChild(createHelperButton(
+                        field_name+'_fillNowMinus24Hr',
+                        '=Now-24 hr.',
+                        "javascript:document.getElementById('"+field_name+"').value=(new Date().getTime()/1000)-(24*60*60)"
+                    ));
+                    container.appendChild(createHelperButton(
+                        field_name+'_fillNowMinus1Wk',
+                        '=Now-1 wk.',
+                        "javascript:document.getElementById('"+field_name+"').value=(new Date().getTime()/1000)-(24*60*60*7)"
+                    ));
+
+                    var btn = createHelperButton(
+                        field_name+'_fillDatePicker',
+                        '=(pick date)',
+                        "javascript:console.log(document.datePickers['"+field_name+"'])"
+                    )
+                    container.appendChild(btn);
+                    if (!document.datePickers) document.datePickers = {};
+                    document.datePickers[field_name] = new DatePicker(btn, {
+                        timePicker: true,
+                        positionOffset: {x: 5, y: 0},
+                        pickerClass: 'datepicker_dashboard',
+                        onSelect: function(date) {
+                            document.getElementById(field_name).value=date.getTime()/1000;
+                        }
+                    });
+                    
+                    //and a textarea... for text!
+                    container.appendChild(document.createElement('br'));
+                    o = document.createElement('textarea');
+                    //o.type = 'text';
+                    o.name = field_name;
+                    o.id = o.name;
+                    o.tabIndex = "" + (new Number(t.tabIndex) + 1);
+                    container.appendChild(o);
+                    
+                } else if (t.value == 'file') {
+                    o = document.createElement('input');
+                    o.type = 'file';
+                    o.id = field_name;
+                    o.name = field_name;
+                    o.tabIndex = "" + (new Number(t.tabIndex) + 1);
+                    container.appendChild(o);
+                }
+                //add the container to the display
+                if (container) t.parentNode.appendChild(container);
+            }
+            function createHelperButton(id, caption, href) {
+                o = document.createElement('a');
+                o.name = id;
+                o.id = o.name;
+                o.href = href;
+                o.className = 'HelperButton'
+                o.appendChild(document.createTextNode(caption));
+                return o;
+            }
+            function updateSignature() {
+                var t = document.getElementById('doAuth');
+                if (t.checked) {
+                    var str = new SignedJSONRequest({
+                        url: "{{ target_url }}",
+                        app_key: document.getElementById('doAuthKey').value,
+                        app_secret: document.getElementById('doAuthSecret').value
+                    }).getAuthString();
+                    document.getElementById('_auth').value = str;
+                } else {
+                    document.getElementById('_auth').value = '';
+                }
+            }
+            </script>
+            <form target="output_frame" {% if target_url %}action="{{ target_url }}"{% endif %} method="{{ method_name }}" enctype="multipart/form-data">
+            <ul>
+                    
+            <li><b>URL:</b> {{ target_url }}</li>
+            <li><b>HTTP method:</b> {{ method_name }}</li>
+            <li><b>Request Parameters:</b><br /><br />
+            <table border="1"><tr><th>HTTP Request Parameter</th><th>Value</th></tr>
+                {% for i, arg in method_args_enum %}
+                    {% if i > 0 %}
+                        <tr><td>{{ arg }}</td>
+                        <td><select onchange="updateField(this, '{{ arg }}')" id="_type__{{ arg }}" tabindex="{{ (2 * i) - 1 }}"><option selected="selected" value="None">Omit this parameter</option><option value="str">Give this parameter a value:</option><option value="file">Send a file for this parameter</option></select>
+                        </td></tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            <br />
+            <b>Important</b>: Enter strings with "double quotes" and numbers without quotes. Booleans can be entered as 1 and 0 (without quotes).
+            <br />
+            <br />
+            </li>
+            <li><b>Additional Request Options:</b><br /><br />
+            <table border="1">
+            <tr><td colspan="2"><input id="doAuth" type="checkbox" onchange="updateSignature()" checked="checked" /><label for="doAuth">Sign this request</label><br />
+            App key: <input type="text" id="doAuthKey" size="80" value="{{ app_key }}" onchange="updateSignature()" /><br />
+            App secret: <input type="text" id="doAuthSecret" size="80" value="{{ app_secret }}" onchange="updateSignature()" /><br />
+            <div style="float:left" >_auth=</div><textarea name="_auth" id="_auth" readonly="readonly" style="float:right" ></textarea>
+            </td></tr>
+            <tr><td>_rtype</td><td><select name="_rtype" id="_rtype"><option value="">Omit this parameter</option><option value="text" selected="selected">Get response in text/plain</option><option value="json">Get response in application/json</option></select>
+            </table><br />
+
+            </ul><button>Send</button></form>
+            <h3>Test Request:</h3>
+            
+            <h3>Test Response:</h3><iframe name="output_frame" width="100%" height="1000px"></iframe>
+            <script type="text/javascript">
+            updateSignature();
+            </script>
+        {% endif %}
+    {% endif %}
+{% endblock %}

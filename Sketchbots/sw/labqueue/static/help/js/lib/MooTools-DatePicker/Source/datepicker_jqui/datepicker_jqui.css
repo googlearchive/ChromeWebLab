@@ -1,0 +1,299 @@
+/*
+Copyright (c) Arian Stolwijk
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+.datepicker_jqui {
+	position: absolute;
+	font-size: 10px;
+	font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif;
+	color: #333;
+	line-height: normal;
+	width: 185px;
+	height: 158px;
+	padding: 4px;
+	background: url(frame.png) no-repeat;
+}
+
+/* header
+********************************************************/
+.datepicker_jqui .header {
+	position: relative;
+	height: 15px;
+	margin-bottom: 5px;
+	padding-top: 1px;
+}
+
+.datepicker_jqui .header .title {
+	text-align: center;
+	margin: 3px 18px 0 18px;
+}
+
+.datepicker_jqui .header .titleText {
+	font-size: 11px;
+	color: #fff;
+}
+
+.datepicker_jqui .header .previous,
+.datepicker_jqui .header .next,
+.datepicker_jqui .header .closeButton {
+	position: absolute;
+	cursor: pointer;
+	text-indent: -40px;
+	overflow: hidden;
+	width: 16px;
+	height: 16px;
+	top: 4px;
+	background-image: url(arrows.png);
+	background-position: left top;
+	background-repeat: no-repeat;
+}
+
+.datepicker_jqui .header .previous {
+	left: 4px;
+}
+.datepicker_jqui .header .previous:hover {
+	background-position: left bottom;
+}
+.datepicker_jqui .header .next {
+	right: 4px;
+	background-position: -17px top;
+}
+.datepicker_jqui .header .next:hover {
+	background-position: -17px bottom;
+}
+.datepicker_jqui .header .closeButton {
+	display: none;
+	right: 0px;
+	top: 0px;
+	background-position: right top;
+}
+.datepicker_jqui .header .closeButton:hover {
+	background-position: right bottom;
+}
+
+/* body
+********************************************************/
+.datepicker_jqui .body {
+	position: relative;
+	top: 6px;
+	left: 2px;
+	width: 185px;
+	height: 131px;
+	overflow: hidden;
+}
+
+/* time
+********************************************************/
+.datepicker_jqui .time {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.datepicker_jqui .time .hour,
+.datepicker_jqui .time .separator,
+.datepicker_jqui .time .minutes {
+	background: #fff;
+	border: 0px;
+	width: 50px;
+	font-size: 32px;
+	color: #333;
+	border: 1px solid #aaa;
+	position: absolute;
+	top: 18px;
+	text-align: center;
+	padding: 2px;
+}
+
+.datepicker_jqui .time .hour {
+	left: 23px;
+}
+.datepicker_jqui .time .separator {
+	background: transparent;
+	border: 0px;
+	width: 10px;
+	left: 84px;
+}
+
+.datepicker_jqui .time .minutes {
+	left: 103px;
+}
+.datepicker_jqui .time .ok {
+	position: absolute;
+	top: 80px;
+	height: 32px;
+	width: 136px;
+	left: 23px;
+	font-size: 20px;
+}
+
+/* days-grid
+********************************************************/
+.datepicker_jqui .days .day {
+	float: left;
+	overflow: hidden;
+	width: 19px;
+	padding-top: 1px;
+	padding-right: 3px;
+	height: 13px;
+	border: 1px solid #aaa;
+	text-align: right;
+	margin: 0 2px 2px 0;
+}
+
+.datepicker_jqui .days .titles {
+	margin-bottom: 1px;
+}
+
+.datepicker_jqui .days .titles .title {
+	border: 1px solid transparent;
+	text-align: center;
+	height: 16px;
+	padding-right: 0px;
+	width: 22px;
+	padding-top: 2px;
+}
+
+.datepicker_jqui .days .day0 {
+	margin-right: 0;
+}
+
+.datepicker_jqui .days .week5 .day {
+	margin-bottom: 0;
+}
+
+/* days-colors
+********************************************************/
+.datepicker_jqui .days .week .day {
+	background: #fcfcfc;
+	cursor: pointer;
+	color: #1C94C4;
+}
+.datepicker_jqui .days .week .day:hover {
+	background: #fdf5ce;
+	color: #c77405;
+	border: 1px solid #fbcb09;
+}
+
+.datepicker_jqui .days .week .otherMonth {
+	background: #f2f2f2;
+	color: #94B2BE;
+	border: 1px solid #aaa;
+}
+
+.datepicker_jqui .days .week .selected {
+	background: #fff;
+	color: #c77405;
+	border: 1px solid #fbcb09;
+}
+
+/* months-grid
+********************************************************/
+.datepicker_jqui .months .month {
+	float: left;
+	text-align: center;
+	overflow: hidden;
+	width: 57px;
+	cursor: pointer;
+	background: #fcfcfc;
+	padding-top: 7px;
+	height: 22px;
+	border: 1px solid #aaa;
+	margin: 0 2px 2px 0;
+}
+
+.datepicker_jqui .months .month3,
+.datepicker_jqui .months .month6,
+.datepicker_jqui .months .month9,
+.datepicker_jqui .months .month12 {
+	margin-right: 0;
+}
+
+.datepicker_jqui .months .month10,
+.datepicker_jqui .months .month11,
+.datepicker_jqui .months .month12 {
+	margin-bottom: 0;
+}
+
+/* months-colors
+********************************************************/
+.datepicker_jqui .months .month:hover {
+	background: #fdf5ce;
+	color: #c77405;
+	border: 1px solid #fbcb09;
+}
+
+.datepicker_jqui .months .selected {
+	background: #fff;
+	color: #c77405;
+	border: 1px solid #fbcb09;
+}
+
+/* years-grid
+********************************************************/
+.datepicker_jqui .years .year {
+	float: left;
+	text-align: center;
+	overflow: hidden;
+	background: #fcfcfc;
+	width: 32px;
+	cursor: pointer;
+	padding-top: 7px;
+	height: 22px;
+	border: 1px solid #aaa;
+	margin: 0 2px 2px 0;
+}
+
+.datepicker_jqui .years .year4,
+.datepicker_jqui .years .year9,
+.datepicker_jqui .years .year14,
+.datepicker_jqui .years .year19 {
+	margin-right: 0;
+	width: 34px;
+}
+
+.datepicker_jqui .years .year15,
+.datepicker_jqui .years .year16,
+.datepicker_jqui .years .year17,
+.datepicker_jqui .years .year18,
+.datepicker_jqui .years .year19 {
+	margin-bottom: 0;
+}
+
+/* years-colors
+********************************************************/
+.datepicker_jqui .years .year:hover {
+	background: #fdf5ce;
+	color: #c77405;
+	border: 1px solid #fbcb09;
+}
+
+.datepicker_jqui .years .selected {
+	background: #fff;
+	color: #c77405;
+	border: 1px solid #fbcb09;
+}
+
+/* global
+********************************************************/
+.datepicker_jqui .unavailable {
+	cursor: default !important;
+	background: #f0f0f0 !important;
+	color: #ccc !important;
+	border: 1px solid #ccc !important;
+}
+
+.datepicker_jqui table {
+	border-spacing: 0;
+}
+
+.datepicker_jqui th,
+.datepicker_jqui td {
+	padding: 0;
+}

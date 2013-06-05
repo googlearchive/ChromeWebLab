@@ -1,0 +1,17 @@
+.DS_Store
+
+*.pyc
+*.swp
++node_modules
+node_modules/
+
+npm_debug.log
+
+Sketchbots/sw/robotcontrol/src/logs/*.log
+Sketchbots/sw/robotcontrol/src/ode_modules/*
+Sketchbots/sw/robotcontrol/src/captured_images/*.png
+Sketchbots/sw/robotcontrol/src/captured_images/*.jpg
+Sketchbots/sw/robotcontrol/src/captured_images/*.svg
+Sketchbots/sw/robotcontrol/src/captured_images/*.gcode
+Sketchbots/sw/robotcontrol/src/node_modules/*
+Sketchbots/sw/robotcontrol/src/downloaded_images/activeImage

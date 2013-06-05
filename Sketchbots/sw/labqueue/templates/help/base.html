@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+        h1 { color: white; background-color: lightblue; padding: 12px; }
+        h2, h3 { color: gray; border-bottom: 2px solid lightblue; padding-bottom: 4px; }
+        body { font-size: 85%; font-family: Helvetica; line-height: 130%; }
+        textarea {
+            display: block;
+            width: 400px;
+        }
+        .HelperButton, .HelperButton:visited, .HelperButton:link {
+            font-size: 10px;
+            text-decoration: none;
+            color: white;
+            padding: 3px;
+            background-color: lightgray;
+            border: 2px solid gray;
+            border-radius: 4px;
+            margin-right: 1px;
+        }
+        .HelperButton:hover {
+            background-color: #9999ff;
+        }
+        </style>
+        <title>Help</title>
+        <script type="text/javascript" src="/help/js/lib/mootools-core-1-1.4.5-full-nocompat-yc.js"></script>
+        <script type="text/javascript" src="/help/js/lib/mootools-more-1.4.0.1.js"></script>
+        <script type="text/javascript" src="/help/js/lib/lask.client.mootools.js"></script>
+        <script src="/help/js/lib/MooTools-DatePicker/Source/Locale.en-US.DatePicker.js" type="text/javascript"></script>
+        <script src="/help/js/lib/MooTools-DatePicker/Source/Picker.js" type="text/javascript"></script>
+        <script src="/help/js/lib/MooTools-DatePicker/Source/Picker.Attach.js" type="text/javascript"></script>
+        <script src="/help/js/lib/MooTools-DatePicker/Source/Picker.Date.js" type="text/javascript"></script>
+        <link href="/help/js/lib/MooTools-DatePicker/Source/datepicker_dashboard/datepicker_dashboard.css" rel="stylesheet" />
+    </head>
+    <body>
+    <h1>Help</h1>
+    {% block content %}{% endblock %}
+    </body>
+</html>

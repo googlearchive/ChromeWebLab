@@ -1,0 +1,36 @@
+/**
+* typography.css: typography with web fonts for museum-ui, heavily based on B-Reel's site
+* 
+* Copyright Google Inc, 2013
+* See LICENSE.TXT for licensing information.
+*/
+
+/* Roboto Condensed, a substitute for Univers Condensed */
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed);
+
+/* DejaVu */
+@font-face {
+    font-family: 'DejaVuSansMono'; 
+    src: url('../webfonts/DejaVu/DejaVuSansMono-webfont.ttf') format('truetype'),
+         url('../webfonts/DejaVu/DejaVuSansMono-webfont.woff') format('woff'),
+         url('../webfonts/DejaVu/DejaVuSansMono-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/**
+* global typography
+*/
+body, html {
+  font-family:"DejaVuSansMono", "Courier New", Courier, monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family:'Roboto Condensed', "Helvetica Neue", Arial, sans-serif;
+  font-weight: normal;
+  letter-spacing:-0.04em;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0;
+}

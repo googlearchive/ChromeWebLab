@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1000px">
+  <defs>
+    <linearGradient id="purpleNormal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:#897eb3;stop-opacity:1" />
+      <stop offset="1" style="stop-color:#bd6c91;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="purpleHover" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:#aa6c9e;stop-opacity:1" />
+      <stop offset="1" style="stop-color:#d76e80;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="purpleActive" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:#b86a95;stop-opacity:1" />
+      <stop offset="1" style="stop-color:#e77175;stop-opacity:1" />
+    </linearGradient>
+
+     <linearGradient id="maskHoverGradient" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0" stop-color="#FFFFFF" stop-opacity="0" />
+			<stop offset="0.5" stop-color="#FFFFFF" stop-opacity="1" />
+	</linearGradient>
+    <linearGradient id="maskActiveGradient" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0" />
+			<stop offset="1" stop-color="#FFFFFF" stop-opacity="1" />
+	</linearGradient>
+
+   <mask id="maskHover" x="0" y="0" maskUnits="userSpaceOnUse" width="100%" height="100%">
+			<rect x="0" y="0" width="100%" height="100%" fill="url(#maskHoverGradient)" />
+	</mask>
+	<mask id="maskActive" x="0" y="0%" maskUnits="userSpaceOnUse" width="100%" height="100%">
+			<rect x="0" y="0" width="100%" height="100%" fill="url(#maskActiveGradient)" />
+	</mask>
+  </defs>
+  <rect width="100%" height="1000px" fill="url(#purpleNormal)">  
+  </rect>
+  <rect width="100%" height="1000px" fill="url(#purpleHover)" mask="url(#maskHover)">  
+  </rect>
+   <rect width="100%" height="1000px" fill="url(#purpleActive)" mask="url(#maskActive)">  
+  </rect>
+</svg>

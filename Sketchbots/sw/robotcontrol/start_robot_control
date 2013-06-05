@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Copyright Google Inc, 2013
+# See LICENSE.TXT for licensing information.
+
+cd `dirname $0`/src
+node RobotControl.js

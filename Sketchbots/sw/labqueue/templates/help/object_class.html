@@ -1,0 +1,30 @@
+{#
+    Used variables:
+        target              - the class being described
+        class_docs          - docstring for the method
+        class_name          - the name of the class
+        class_attribs_dict  - dict of attributes of the class, with the values being help on each attribute
+#}
+{% extends "base.html" %}
+{% block content %}
+    {% if not class_name or not target %}
+            <h2>Error</h2>
+            We do not have help available for the API class <b>{{ class_name }}</b>.
+            </ul><h2>Description</h2>
+            That probably means that the class name is mis-spelled or does not exist,
+            but could also just mean that help is not available for it.
+    {% else %}
+        <h2>Class</h2>
+        This is the help page for the <b>{{ class_name }}</b> class.
+        <h2>Description</h2><ul>
+        <li><pre>{{ class_docs }}</pre></li>
+        </ul>
+        <h2>Members</h2><ul>
+        {% for a, docs in class_attribs_dict %}
+            <li><b>{{ a }}</b><br />
+                <pre>{{ docs }}</pre>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

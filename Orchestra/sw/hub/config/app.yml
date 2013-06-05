@@ -1,0 +1,10 @@
+# 
+#  app.yml: application config for renderworker
+#  
+
+messenger:
+  host: 127.0.0.1
+
+osc:
+  tx_port: 7403
+  rx_port: 7406

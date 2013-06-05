@@ -1,0 +1,11 @@
+cron:
+- description: run the LDC watchdog for recursively removing deleted LDCs
+  url: "/api/cron/do/ldc_watchdog_cull"
+  schedule: every 15 minutes
+
+- description: run the task watchdog
+  url: "/api/cron/do/task_watchdog_clean_tasks"
+  schedule: every 15 minutes
+
+
+

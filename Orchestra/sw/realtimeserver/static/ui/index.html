@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="utf-8" name="charset">
+  <title>Web Lab: Orchestra</title>
+
+  <!-- CSS -->
+  <link href="/ui/css/general.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/ui/css/typography.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/ui/css/orchestra-playVirtualPage.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/ui/css/orchestra.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <!-- JS -->
+  <script src="/js/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+  <script src="/js/lib/jquery-deparam.js" type="text/javascript"></script>
+  <script src="/ui/js/libs/tween.js/build/Tween.js" type="application/javascript"></script>
+  <script src="/ui/js/libs/jasmid/stream.js" type="text/javascript"></script>
+  <script src="/ui/js/libs/jasmid/midifile.js" type="text/javascript"></script>
+  <script src="/ui/js/libs/swfobject/swfobject.js" type="application/javascript"></script>
+
+  <!-- WebRTC (optional) -->
+  <script src="/js/lib/Tellart-SimpleWebRTC/simplewebrtc.js"></script>
+
+  <!-- Global -->
+  <script src="/ui/js/weblab/WebLab.js" type="application/javascript"></script>
+  
+  <!-- Utils -->
+  <script src="/ui/js/weblab/utils/Utils.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/websocket/WebSocketFunctions.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/events/ListenerFunctions.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/data/ArrayFunctions.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/data/NumberFunctions.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/htmldom/ElementUtils.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/math/BpmFunctions.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/math/Point.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/events/EventDispatcher.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/data/ArrayFunctions.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/data/MultidimensionalArrayHolder.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/url/UrlFunctions.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/loading/JsonLoader.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/loading/XmlLoader.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/loading/TextLoader.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/timer/TimedCommands.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/htmldom/DomElementCreator.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/htmldom/PositionFunctions.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/animation/TweenDelay.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/animation/DomElementPositionTween.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/animation/DomElementOpacityTween.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/animation/DomElementScaleTween.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/utils/animation/DomElementInDomTween.js" type="application/javascript"></script>
+
+  <!-- Common -->
+  <script src="/ui/js/weblab/common/constants/OrchestraGradients.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/common/constants/OrchestraCopyIds.js" type="application/javascript"></script>
+
+  <script src="/ui/js/weblab/common/ui/page/Page.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/common/ui/page/PageManager.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/common/ui/ReplaceableContent.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/common/ui/HelpPointer.js" type="application/javascript"></script>
+
+  <!-- Orchestra -->
+  <script src="/ui/js/weblab/orchestra/OrchestraConfiguration.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/constants/MessageIds.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/constants/InstrumentIds.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/constants/PlayerChangeEventTypes.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/constants/UserInteractionEventTypes.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/constants/TutorialEventTypes.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/websocket/MessageEncoder.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/websocket/UserWebSocketConnection.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/data/Note.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/data/InstrumentNotes.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/data/VirtualRecorder.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/data/PlayerLayout.js" type="application/javascript"></script>
+
+  <script src="/ui/js/weblab/orchestra/ui/video/LiveSyncedVideoPlayer.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/video/FixedLengthTimeCodeAdjust.js" type="application/javascript"></script>
+
+  <script src="/ui/js/weblab/orchestra/ui/page/items/ClockGraphics.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/page/items/CountdownClock.js" type="application/javascript"></script>
+
+  <script src="/ui/js/weblab/orchestra/ui/player/BlobCircle.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/player/BlobLine.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/player/BlobLineRetractionAnimation.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/player/Blob.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/player/RollOver.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/player/Player.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/player/BlobsLeftPanel.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/player/copy/StandAloneCopyGenerator.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/player/TutorialPlayer.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/MuseumLiveManager.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/VirtualManager.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/sequencer/PlayingNote.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/sequencer/SequencerNote.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/sequencer/Sequencer.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/timer/Timer.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/loading/BackendUrlGenerator.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/queue/QueueManager.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/page/StartPage.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/ui/page/OrchestraPageManager.js" type="application/javascript"></script>
+  <script src="/ui/js/weblab/orchestra/OrchestraManager.js" type="application/javascript"></script>
+
+  <!-- Logic -->
+  <script src="/ui/js/orchestra.js" type="text/javascript"></script>
+  <script src="/ui/js/orchestra/player.js" type="text/javascript"></script>
+  <script src="/ui/js/orchestra/instrument.js" type="text/javascript"></script>
+  <script src="/ui/js/orchestra/navigation.js" type="text/javascript"></script>
+  <script src="/ui/js/orchestra/jquery.midi_drop.js" type="text/javascript"></script>
+  <script src="/js/select-params.js" type="text/javascript"></script>
+
+</head>
+<body class="orchestra">
+  <div id="grandWLWrapper">
+    <!-- <div id="chromeHeader"></div> -->
+    <!-- svg background -->
+    <div id="sectionBackground">
+    </div>
+    
+    <div class="panes">
+
+      <!-- play pane: museum visitors can control -->
+      <div id="play" class="pane">
+
+        <div id="orchestra-playVirtual" class="notePlayerWrapper">
+          <div id="player">
+            <!-- Info panel -->
+            <div class="info-panel">
+              <div class="mainVirtualInstrument virtualInstrument">
+              </div>
+            </div>
+
+            <div class="instrument">
+              <select>
+              </select>
+            </div>
+
+            <div class="video">
+              <select>
+                <option value="none">No video stream</option>
+                <option value="flash">Flash video</option>
+                <option value="webrtc">WebRTC</option>
+              </select>
+              <div class="flash hide">
+                <div id="videoPlayer"></div>
+              </div>
+              <div id="webrtc" class="hide">
+              </div>
+            </div>
+
+            <div class="notePlayer" data-weblab-type="player">
+              <div class="virtualPlayer"></div>
+              <div class="relativePosition">
+                <div class="blobsLeftPanel">
+                  <span class="small">Number of notes</span>
+                  <div class="blobsWithClearAllButton">
+                    <div class="blobs">
+                      <div class="blob" data-weblab-type="blob">
+                        <div class="circleBackground"></div>
+                        <div class="filledImage" draggable="true"></div>
+                      </div>
+                      <div class="blob" data-weblab-type="blob">
+                        <div class="circleBackground"></div>
+                        <div class="filledImage" draggable="true"></div>
+                      </div>
+                      <div class="blob" data-weblab-type="blob">
+                        <div class="circleBackground"></div>
+                        <div class="filledImage" draggable="true"></div>
+                      </div>
+                      <div class="blob" data-weblab-type="blob">
+                        <div class="circleBackground"></div>
+                        <div class="filledImage" draggable="true"></div>
+                      </div>
+                      <div class="blob" data-weblab-type="blob">
+                        <div class="circleBackground"></div>
+                        <div class="filledImage" draggable="true"></div>
+                      </div>
+                      <div class="blob" data-weblab-type="blob">
+                        <div class="circleBackground"></div>
+                        <div class="filledImage" draggable="true"></div>
+                      </div>
+                      <div class="clearBoth"></div>
+                    </div>
+                    <div class="clearAllButton">
+                      <div class="animationLayer">
+                        <a href="#"><h4>Clear all</h4></a>
+                      </div>
+                    </div>
+                    <div class="clearBoth"></div>
+                  </div>
+                </div>
+                <div class="tutorialControls">
+                  <button class="skipTutorialButton"><h4>Skip Tutorial</h4></button>
+                </div>
+                <div class="clearBoth"></div>
+              </div>
+              <div class="helpLayer"></div>
+            </div>
+
+            <div class="midi">
+              <button class="uploadButton"><h4>Load MIDI file</h4></button>
+              <input type="file" id="midi" name="midi" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- loading pane -->
+      <div id="loading" class="pane">
+        <div class="spinner">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

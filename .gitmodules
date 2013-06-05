@@ -1,0 +1,3 @@
+[submodule "Orchestra/sw/streamer/signalmaster"]
+	path = Orchestra/sw/streamer/signalmaster
+	url = git://github.com/andyet/signalmaster.git

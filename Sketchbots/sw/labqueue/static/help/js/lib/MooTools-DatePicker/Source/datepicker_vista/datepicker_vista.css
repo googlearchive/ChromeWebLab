@@ -1,0 +1,266 @@
+/*
+Copyright (c) Arian Stolwijk
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+.datepicker_vista {
+	position: absolute;
+	font-size: 10px;
+	font-family: Tahoma, sans-serif;
+	color: #000;
+	line-height: normal;
+	width: 172px;
+	height: 135px;
+	padding: 14px;
+	background: url(frame.png) no-repeat;
+}
+
+/* header
+********************************************************/
+.datepicker_vista .header {
+	position: relative;
+	height: 15px;
+	margin-bottom: 5px;
+	padding-top: 1px;
+}
+
+.datepicker_vista .header .title {
+	text-align: center;
+	margin: 0 18px 0 18px;
+}
+
+.datepicker_vista .header .titleText {
+}
+
+.datepicker_vista .header .previous,
+.datepicker_vista .header .next,
+.datepicker_vista .header .closeButton {
+	position: absolute;
+	cursor: pointer;
+	text-indent: -40px;
+	overflow: hidden;
+	width: 12px;
+	height: 12px;
+	top: 2px;
+	background-image: url(buttons.png);
+	background-position: left top;
+	background-repeat: no-repeat;
+}
+
+.datepicker_vista .header .previous {
+	left: 4px;
+}
+.datepicker_vista .header .previous:hover {
+	background-position: left bottom;
+}
+.datepicker_vista .header .next {
+	right: 4px;
+	background-position: -13px top;
+}
+.datepicker_vista .header .next:hover {
+	background-position: -13px bottom;
+}
+.datepicker_vista .header .closeButton {
+	display: none;
+	right: 0px;
+	top: 0px;
+	background-position: right top;
+}
+.datepicker_vista .header .closeButton:hover {
+	background-position: right bottom;
+}
+
+/* body
+********************************************************/
+.datepicker_vista .body {
+	position: relative;
+	top: 0px;
+	left: 2px;
+	width: 168px;
+	height: 112px;
+	overflow: hidden;
+}
+
+/* time
+********************************************************/
+.datepicker_vista .time {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.datepicker_vista .time .hour,
+.datepicker_vista .time .separator,
+.datepicker_vista .time .minutes {
+	border: 1px solid #ccc;
+	background: #fff;
+	width: 50px;
+	font-size: 32px;
+	position: absolute;
+	top: 10px;
+	text-align: center;
+	padding: 2px;
+}
+
+.datepicker_vista .time .hour {
+	left: 15px;
+}
+.datepicker_vista .time .separator {
+	background: transparent;
+	border: 0px;
+	width: 10px;
+	left: 76px;
+}
+
+.datepicker_vista .time .minutes {
+	left: 95px;
+}
+.datepicker_vista .time .ok {
+	position: absolute;
+	top: 65px;
+	width: 136px;
+	left: 15px;
+	font-size: 20px;
+}
+
+/* days-grid
+********************************************************/
+.datepicker_vista .days .day {
+	float: left;
+	text-align: center;
+	overflow: hidden;
+	width: 23px;
+	height: 15px;
+	margin: 0 1px 1px 0;
+}
+.datepicker_vista .days .titles {
+	height: 15px;
+	border-bottom: 1px solid #e0e0e0;
+	margin-bottom: 1px;
+}
+.datepicker_vista .days .day0 {
+	margin-right: 0;
+}
+
+.datepicker_vista .days .week5 .day {
+	margin-bottom: 0;
+}
+
+/* days-colors
+********************************************************/
+.datepicker_vista .days .week .day {
+	cursor: pointer;
+}
+.datepicker_vista .days .week .day:hover {
+	background: url(days.png) left top no-repeat;
+	color: #0084AA;
+}
+
+.datepicker_vista .days .otherMonth {
+	color: #aaa;
+}
+
+.datepicker_vista .days .selected {
+	background: url(days.png) left bottom no-repeat;
+	color: #316879;
+}
+
+/* months-grid
+********************************************************/
+.datepicker_vista .months .month {
+	float: left;
+	cursor: pointer;
+	text-align: center;
+	padding-top: 6px;
+	width: 55px;
+	overflow: hidden;
+	height: 21px;
+	margin: 0 1px 1px 0;
+}
+
+.datepicker_vista .months .month3,
+.datepicker_vista .months .month6,
+.datepicker_vista .months .month9,
+.datepicker_vista .months .month12 {
+	margin-right: 0;
+}
+
+.datepicker_vista .months .month10,
+.datepicker_vista .months .month11,
+.datepicker_vista .months .month12 {
+	margin-bottom: 0;
+}
+
+/* months-colors
+********************************************************/
+.datepicker_vista .months .month:hover {
+	background: url(months.png) left top no-repeat;
+	color: #0084AA;
+}
+
+.datepicker_vista .months .selected {
+	background: url(months.png) left bottom no-repeat;
+	color: #316879;
+}
+
+/* years-grid
+********************************************************/
+.datepicker_vista .years .year {
+	float: left;
+	cursor: pointer;
+	text-align: center;
+	padding-top: 6px;
+	width: 32px;
+	overflow: hidden;
+	height: 21px;
+	margin: 0 1px 1px 0;
+}
+
+.datepicker_vista .years .year4,
+.datepicker_vista .years .year9,
+.datepicker_vista .years .year14,
+.datepicker_vista .years .year19 {
+	margin-right: 0;
+}
+
+.datepicker_vista .years .year15,
+.datepicker_vista .years .year16,
+.datepicker_vista .years .year17,
+.datepicker_vista .years .year18,
+.datepicker_vista .years .year19 {
+	margin-bottom: 0;
+}
+
+/* years-colors
+********************************************************/
+.datepicker_vista .years .year:hover {
+	background: url(years.png) left top no-repeat;
+	color: #0084AA;
+}
+
+.datepicker_vista .years .selected {
+	background: url(years.png) left bottom no-repeat;
+	color: #316879;
+}
+
+/* global
+********************************************************/
+.datepicker_vista .unavailable {
+	background: none !important;
+	color: #fbb !important;
+	cursor: default !important;
+}
+
+.datepicker_vista table {
+	border-spacing: 0;
+}
+
+.datepicker_vista th,
+.datepicker_vista td {
+	padding: 0;
+}

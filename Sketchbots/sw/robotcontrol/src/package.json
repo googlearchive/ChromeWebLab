@@ -1,0 +1,16 @@
+{
+  "name": "robotcontrol",
+  "description": "Sketchbots motion control interface",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "node-gyp": ">=0.9.5",
+    "serialport": "https://github.com/voodootikigod/node-serialport/tarball/master",
+    "canvas": ">=0.12.0",
+    "mootools": "1.4.x",
+    "restler": "2.0.x",
+    "streamlogger": "0.0.x",
+    "loggly": "0.3.x",
+    "node-nxt": ">=0.0.1"
+  }
+}

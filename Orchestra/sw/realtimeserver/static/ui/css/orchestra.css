@@ -1,0 +1,329 @@
+/**
+* orchestra.css: styles for orchestra
+*  
+* Copyright Google Inc, 2013
+* See LICENSE.TXT for licensing information.
+*/
+
+body {
+  background-image: -webkit-gradient(linear, 0% 0%, 100% 0%, from(#D9DBDB), to(#F0F2F2));
+}
+
+.relativePosition {
+	position: relative;
+}
+
+/* http://media.b-reel.com/WebLab/www/prototypes/orchestra/deploy/files/css/common/common-section.css */
+#sectionBackground {
+	width:100%;
+	height:100%;
+	position: absolute;
+	top:0px;
+	left:0px;
+	pointer-events: none;
+}
+/* http://media.b-reel.com/WebLab/www/prototypes/orchestra/deploy/files/css/orchestra/orchestra-main.css */
+#sectionBackground {
+	background-image: url("../svg/orchestra-background.svg");
+	background-repeat:no-repeat;
+	-o-background-size: 100% auto;
+	background-size: 100% auto;
+	-moz-background-size: 100% auto;
+	-webkit-background-size: 100% auto;
+}
+
+#sectionBackground {
+  opacity: 0.5;
+}
+
+/*
+* Navigation: panes + fades
+*/
+.pane {
+  display: none;
+  width: 100%;
+}
+.message {
+  display: none;
+}
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
+.fadeIn {
+  display: block;
+  opacity: 1.0;
+  -webkit-transition-duration: 0.4s;
+}
+.fadeOut {
+  display: block;
+  opacity: 0.0;
+  -webkit-transition-duration: 0.4s;
+  pointer-events: none;
+}
+.fadeIn.instaFade,
+.fadeOut.instaFade {
+  -webkit-transition-duration: 0;
+}
+
+/**
+* Blob UI
+*/
+.notePlayer {
+  background: none;
+  border: none;
+  margin: 0 auto;
+	width: 980px;
+	height: 248px; /*NUMBER_OF_PITCHES*/
+	position: relative;
+}
+.notePlayer .relativePosition {
+  height: 80px;
+}
+#orchestra-playVirtual .virtualPlayer {
+	height: 248px; /*NUMBER_OF_PITCHES*/
+}
+#orchestra-playVirtual .blobsLeftPanel .blobs .blob {
+	width: 25px;
+	height: 25px;
+}
+#orchestra-playVirtual .blobsLeftPanel .clearAllButton .animationLayer a {
+	background: #ccc;
+	color: #3e4544;
+	font-size: 16px;
+	font-family:'Roboto Condensed', "Helvetica Neue", Arial, sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	display: block;
+  text-align: center;
+  padding: 7px 15px 4px;
+	margin-left: 20px;
+}
+	#orchestra-playVirtual .blobsLeftPanel .clearAllButton .animationLayer a h4 {
+		margin: 0;
+		line-height: 1em;
+	}
+#orchestra-playVirtual .recordControls,
+#orchestra-playVirtual .tutorialControls,
+#orchestra-playVirtual .startAgainControls {
+	position: absolute;
+	overflow: hidden;
+  width: 275px;
+  height: 50px;
+  right: 0;
+  top: 20px;
+}
+#orchestra-playVirtual .cancelButton {
+	-webkit-transform: none;
+	pointer-events: auto;
+	opacity: 1.0;
+}
+#orchestra-playVirtual .mainVirtualInstrument{
+	width: 0;
+	float: left;
+}
+.blobsLeftPanel span.small {
+	font-size: 16px;
+	display: block;
+}
+#orchestra-playVirtual #player .timeRemaining {
+	margin-right: 0;
+}
+#orchestra-playVirtual #player .timeRemaining .textCounter {
+  margin-top: 0;
+}
+.textCounter h1,
+.textCounter p {
+	display: inline;
+	margin-right: 8px;
+	color: #D77083;
+}
+.textCounter h1 {
+	font-size: 24px;
+}
+.textCounter p {
+	font-size: 14px;
+}
+#orchestra-playVirtual #player .timeRemaining .clockGraphicsHolder {
+	width: 44px;
+	height: 44px;
+	margin-top: 5px;
+}
+#orchestra-playVirtual .helpPointer {
+	font-size: 20px;
+}
+#orchestra-playVirtual .helpPointer .tutorialContent {
+	white-space: nowrap;
+}
+
+/**
+* MIDI file upload
+*/
+#play.pane .midi {
+  clear: left;
+  width: 980px;
+  margin: 0 auto;
+  padding-top: 1em;
+  border-top: 1px solid rgba(50, 50, 50, 0.5);
+  position: relative;
+}
+  #play.pane .midi .uploadButton {
+    position: absolute;
+  }
+    #play.pane .midi.hover .uploadButton {
+      background: #c6c6c6;
+    }
+  #play.pane .midi input#midi {
+    position: absolute;
+
+    opacity: 0;
+    width: 212px;
+    height: 44px;
+  }
+
+/**
+* Video player
+*/
+#play.pane .video,
+#play.pane .instrument {
+  width: 980px;
+  margin: 15px auto;
+}
+  #play.pane .video .flash,
+  #play.pane .video #webrtc {
+    width: 480px;
+    height: 270px;
+    margin: 0 auto;
+  }
+    #play.pane .video #webrtc video {
+      height: 270px;
+    }
+
+/**
+* Play/watch pane header
+*/
+.panes {
+  position: relative;
+  width: 100%;
+}
+.pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+  .pane .header {
+    margin: 30px auto 20px;
+    width: 1120px;
+    background: url('../svg/orchestra-logo.svg') no-repeat top left;
+    -webkit-background-size: 45px 45px;
+    padding-left: 60px;
+    border-bottom: 2px solid #231920;
+  }
+  .pane .header h1 {
+    font-size: 30px;
+    color: #3e4544;
+		letter-spacing: 0.03em;
+  }
+  .pane .header h2 {
+    font-size: 16px;
+    color: #3e4544;
+  }
+
+/**
+* Loading pane. see also .spinner in general.css
+*/
+#loading.pane {
+  z-index: -1;
+}
+  #loading.pane .spinner {
+    margin: 325px auto;
+  }
+
+/**
+* Buttons
+*/
+button {
+  font-family:'Roboto Condensed', "Helvetica Neue", Arial, sans-serif;
+  color: #fff;
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: url('../svg/orchestra-button.svg');
+  width: 418px;
+  height: 36px;
+  display: block;
+  text-align: center;
+  padding: 18px 0;
+  border: none;
+  cursor: pointer;
+}
+
+.recordButton {
+  width: 275px;
+  height: 44px;
+  padding: 12px 0;
+}
+  .recordButton h4 {
+    letter-spacing: 0;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 40px;
+    background: url('../svg/orchestra/recordIcon.svg') no-repeat 8px 0;
+    -webkit-background-size: 48px auto;
+  }
+.cancelButton,
+.skipTutorialButton,
+.startAgainButton,
+.uploadButton {
+	background: #ccc;
+	color: #3e4544;
+	width: 212px;
+  height: 44px;
+  padding: 0;
+  float: right;
+}
+.uploadButton {
+  float: none;
+}
+  .startAgainButton {
+    padding: 8px 0;
+  }
+	.cancelButton h4,
+	.skipTutorialButton h4,
+	.startAgainButton h4,
+  .uploadButton h4 {
+		letter-spacing: 0;
+    font-size: 24px;
+    font-weight: normal;
+    margin: 0;
+	}
+	.startAgainButton h4 {
+	  color: #989898;
+	  background: url('../svg/orchestra/start-again.svg') no-repeat 15px 0;
+	  -webkit-background-size: 28px;
+	  padding: 4px 0 4px 35px;
+	}
+
+#message .messages button {
+  width: 292px;
+  height: 64px;
+  float: left;
+  margin-top: 30px;
+  margin-right: 16px;
+}
+#message .messages button:nth-of-type(2) {
+  margin-right: 0;
+}
+#message .messages button.secondary {
+  background: #ccc;
+}
+  #message .messages button h4 {
+    font-size: 28px;
+    padding-top: 3px;
+    font-weight: normal;
+    letter-spacing: normal;
+  }

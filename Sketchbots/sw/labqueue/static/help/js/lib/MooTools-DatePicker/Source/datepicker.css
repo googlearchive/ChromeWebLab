@@ -1,0 +1,308 @@
+/*
+Copyright (c) Arian Stolwijk
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+.datepicker {
+	position: absolute;
+	border: 2px solid #1C3262;
+	font-size: 11px;
+	width: 194px;
+	padding: 3px;
+	height: 221px;
+	background: #fff;
+	line-height: normal;
+	z-index: 3003;
+}
+
+.datepicker.column_2 {
+	width: 393px;
+}
+
+.datepicker.column_3 {
+	width: 592px;
+}
+
+.datepicker.column_4 {
+	width: 791px;
+}
+
+.datepicker.column_5 {
+	width: 990px;
+}
+
+/* header
+********************************************************/
+.datepicker .header {
+	position: relative;
+	background: #1C3262;
+	height: 21px;
+	padding-top: 4px;
+	margin-bottom: 3px;
+	overflow: hidden;
+}
+
+.datepicker .header .title {
+	text-align: center;
+	padding-top: 1px;
+	position: absolute;
+	color: #fff;
+	font-weight: bold;
+	width: 99999px;
+}
+
+.datepicker .header .titleText {
+}
+.datepicker .header .next,
+.datepicker .header .previous,
+.datepicker .header .closeButton {
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	background: #fff;
+	text-align: center;
+	color: #666;
+	top: 5px;
+	cursor: pointer;
+}
+.datepicker .header .previous {
+	left: 5px;
+}
+.datepicker .header .next {
+	right: 28px;
+}
+.datepicker .header .closeButton {
+	right: 5px;
+}
+
+/* body
+********************************************************/
+.datepicker .body {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	height: 193px;
+	overflow: hidden;
+}
+
+/* Columns */
+
+.datepicker .body .column {
+	float: left;
+	width: 194px;
+	min-height: 193px;
+	margin-left: 5px;
+}
+
+.datepicker .body .column.column_1 {
+	margin-left: 0;
+}
+
+.datepicker .titleText .column {
+	float: left;
+	width: 194px;
+	margin-left: 5px;
+}
+
+.datepicker .titleText .column.column_1 {
+	margin-left: 0;
+}
+
+/* Footer */
+
+.datepicker.footer {
+	height: 280px;
+}
+
+.datepicker .footer {
+	margin-top: 3px;
+	padding: 15px 5px;
+	height: 26px;
+}
+
+/* time
+********************************************************/
+.datepicker .time {
+	width: 100%;
+	height: 100%;
+	background: #eee;
+}
+
+.datepicker .time .hour,
+.datepicker .time .separator,
+.datepicker .time .minutes {
+	border: 1px solid #ccc;
+	background: #fff;
+	width: 50px;
+	font-size: 32px;
+	position: absolute;
+	top: 50px;
+	text-align: center;
+	padding: 2px;
+}
+
+.datepicker .time .hour {
+	left: 30px;
+}
+.datepicker .time .separator {
+	background: transparent;
+	border: 0px;
+	width: 10px;
+	left: 91px;
+}
+
+.datepicker .time .minutes {
+	left: 110px;
+}
+.datepicker .time .ok {
+	position: absolute;
+	top: 105px;
+	width: 136px;
+	left: 30px;
+	font-size: 20px;
+}
+
+/* days-grid
+********************************************************/
+.datepicker .days .day {
+	float: left;
+	background: #ccc;
+	cursor: pointer;
+	text-align: center;
+	padding-top: 4px;
+	width: 25px;
+	overflow: hidden;
+	height: 21px;
+	margin: 0 3px 3px 0;
+}
+
+.datepicker .days .day0 {
+	margin-right: 0;
+}
+
+.datepicker .days .week5 .day {
+	margin-bottom: 0;
+}
+
+/* days-colors
+********************************************************/
+.datepicker .days .title {
+	background: #5D6E95;
+	font-weight: bold;
+	color: #fff;
+	cursor: default;
+}
+
+.datepicker .days .otherMonth {
+	background: #eee;
+	color: #aaa;
+}
+
+/* months
+********************************************************/
+.datepicker .months .month {
+	float: left;
+	background: #eee;
+	cursor: pointer;
+	text-align: center;
+	overflow: hidden;
+	width: 62px;
+	height: 31px;
+	padding-top: 15px;
+	margin: 0 3px 3px 0;
+}
+
+.datepicker .months .month3,
+.datepicker .months .month6,
+.datepicker .months .month9,
+.datepicker .months .month12 {
+	margin-right: 0;
+	width: 64px;
+}
+
+.datepicker .months .month10,
+.datepicker .months .month11,
+.datepicker .months .month12 {
+	margin-bottom: 0;
+}
+
+/* years
+********************************************************/
+.datepicker .years .year {
+	float: left;
+	background: #eee;
+	cursor: pointer;
+	text-align: center;
+	padding-top: 11px;
+	width: 46px;
+	overflow: hidden;
+	height: 25px;
+	margin: 0 3px 3px 0;
+}
+
+.datepicker .years .year3,
+.datepicker .years .year7,
+.datepicker .years .year11,
+.datepicker .years .year15,
+.datepicker .years .year19 {
+	margin-right: 0;
+	width: 47px;
+}
+
+.datepicker .years .year16,
+.datepicker .years .year17,
+.datepicker .years .year18,
+.datepicker .years .year19 {
+	margin-bottom: 0;
+	height: 26px;
+}
+
+/* global
+********************************************************/
+.datepicker .selected {
+	background: #8C929F !important;
+	color: #fff !important;
+}
+
+.datepicker .days .otherMonth.selected {
+	background: #bbbfc8 !important;
+}
+
+.datepicker .unavailable,
+.datepicker .body .days .week .day.unavailable:hover {
+	background: #edd !important;
+	color: #b88 !important;
+	cursor: default !important;
+}
+
+.datepicker .days .week .day:hover,
+.datepicker .months .month:hover,
+.datepicker .years .year:hover {
+	background: #5D6E95 !important;
+	color: #fff !important;
+}
+
+.datepicker .days.weeknumbers .day {
+	width: 22px;
+}
+
+.datepicker .days.weeknumbers .day.weeknumber,
+.datepicker .days.weeknumbers .day.weeknumber:hover {
+	color: #AAA !important;
+	width: 16px !important;
+	background: #EEE !important;
+}
+
+.datepicker table {
+	border-spacing: 0;
+}
+
+.datepicker th,
+.datepicker td {
+	padding: 0;
+}
