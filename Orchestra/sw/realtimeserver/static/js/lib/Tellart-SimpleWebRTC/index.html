@@ -1,30 +1,16 @@
-<!-- Written by Henrik Joreteg.
-Copyright © 2013 by &yet, LLC.
-Released under the terms of the MIT License:
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
-OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
---><html>
+<!DOCTYPE html>
+<html>
     <head>
-        <title>Webrtc.js Demo</title>
+        <title>SimpleWebRTC Demo</title>
     </head>
     <body>
         <h1 id="title">Start a room</h1>
+        <style>
+            #remotes video {
+                height: 150px;
+            }
+        </style>
+        <button id="screenShareButton"></button>
         <p id="subTitle"></p>
         <form id="createRoom">
             <input id="sessionInput"/>
@@ -33,8 +19,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         <video id="localVideo" style="height: 150px;"></video>
         <div id="remotes"></div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-        <script src="http://signaling.simplewebrtc.com:8888/socket.io/socket.io.js"></script>
-        <script src="simplewebrtc.js"></script>
+        <script src="latest.js"></script>
         <script>
             // grab the room from the URL
             var room = location.search && location.search.split('?')[1];
@@ -77,6 +62,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                         }
                     });
                     return false;          
+                });
+            }
+
+            var button = $('#screenShareButton'),
+                setButton = function (bool) {
+                    button.text(bool ? 'share screen' : 'stop sharing');
+                };
+
+            setButton(true);
+
+            if (!webrtc.screenSharingSupport) {
+                button[0].disabled = true;
+            } else {
+                button.click(function () {
+                    if (webrtc.localScreen) {
+                        webrtc.stopScreenShare();
+                        setButton(true);
+                    } else {
+                        webrtc.shareScreen();
+                        setButton(false);
+                    }
                 });
             }
         </script>

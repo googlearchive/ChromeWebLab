@@ -31,7 +31,15 @@ $.getScript(OrchestraConfiguration.WEBRTC_SIGNALING_URL + "/socket.io/socket.io.
   // when video stream is loaded, join "room" for this instrument
   // 
   webrtc.on('readyToCall', function () {
-    if (params.instrument !== undefined) webrtc.joinRoom("instrument" + params.instrument.toString());
+    
+    if (params.instrument !== undefined) {
+      webrtc.createRoom("instrument" + params.instrument.toString(), function(err, name) {
+        console.log(err, name);
+        if(err) {
+          
+        }
+      });
+    }
   });
 
 });
