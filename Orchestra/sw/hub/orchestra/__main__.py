@@ -40,4 +40,4 @@ messenger.service(config['messenger']['host']).setServiceParent(app_services)
 # init OSC services (server + client)
 # 
 sequencer.server_service(config['osc']['rx_port']).setServiceParent(app_services)
-sequencer.client_service(('127.0.0.1', config['osc']['tx_port'])).setServiceParent(app_services)
+sequencer.client_service((config['osc]['host'], config['osc']['tx_port'])).setServiceParent(app_services)

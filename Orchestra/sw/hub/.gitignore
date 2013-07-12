@@ -1,3 +1,4 @@
 log/*.log
 log/*.log.*
 tmp/pids/*.pid
+*.swp
