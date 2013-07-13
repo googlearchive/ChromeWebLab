@@ -39,6 +39,7 @@ def send(message):
     OSC message is path + arguments in one string.
     """
     global client
+    print "SEND: %s" % message
     client.send(osc.Message(message), osc_send_address)
 
 def client_service(address):

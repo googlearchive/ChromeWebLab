@@ -22,9 +22,10 @@ from autobahn.websocket import WebSocketClientFactory, WebSocketClientProtocol
 from time import time
 import json
 import urllib2
-import sequencer
 from format import *
 from config import config
+
+sequencer = __import__(config['osc']['sequencer'])
 
 clients = []
 

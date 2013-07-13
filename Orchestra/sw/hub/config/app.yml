@@ -6,6 +6,7 @@ messenger:
   host: 127.0.0.1
 
 osc:
+  sequencer: max_sequencer
   host: 127.0.0.1
   tx_port: 7403
   rx_port: 7406
