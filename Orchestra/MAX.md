@@ -30,23 +30,23 @@ The main body of this MAX patcher is the interesting bit.   At a high-level it i
 
 1.  `loadbang` is triggered when the script is loaded and sends a 1 or if the user presses spacebar, the key module fires and is filtered on ASCII char 32
 2.  If either loadbang or keypress is 0, then the `toggle` module is toggled.
-3.  If the toggle `bangs` a 1, then the [p_sequencer](#p_Sequencer) sub-patcher is loaded - this is the main script that beats once every 250ms.
+3.  If the toggle `bangs` a 1, then the [p_sequencer](#p_sequencer) sub-patcher is loaded - this is the main script that beats once every 250ms.
 4.  Every time the p_sequencer bangs, it is sent through to the 16 bar timer and to playback.js script.  This script works out what note on the MIDI it should be playing for the current timestamp.  At the same time for each 250ms beat p_loop_start is executed and an OSC command is crafted and sent back the `hub` server. 
 5.  At this point the patcher is trying to play a MIDI note, it is displayed on the little keyboard control, but also sent through to the [p_picthmappings](#p_picthmappings) sub-patchers which converts the note to the correct scale.
 6.  The output is then sent to the [p_actuators](#p_actuators) script which creates the NOTE ON and NOTE OFF midi command (100ms duration)
 7.  NOTEOUT is then fired with all the corretly mapped settings.
 
 ## p_Sequencer ##
-![p_Sequencer](/docs/images/sequencer-p_sequencer.png "p_Sequencer")
+![p_sequencer](/docs/images/sequencer-p_sequencer.png "p_sequencer")
 
 ## Actuators ##
-![Actuators](/docs/images/actuators.png "actuators")
+![p_actuators](/docs/images/actuators.png "p_actuators")
 
 ## Loop Start ##
-![Loop_start](/docs/images/loop_start.png "Loop_start")
+![p_loop_start](/docs/images/loop_start.png "p_loop_start")
 
 ## Pitch Mappings ##
-![Pitch_Mappings](/docs/images/pitch-mappings.png "pitch-mappings")
+![p_pitch_mappings](/docs/images/pitch-mappings.png "p_pitch_mappings")
 
 ## Epoch ##
-![Epoch](/docs/images/epoch.png "epoch")
+![p_epoch](/docs/images/epoch.png "p_epoch")
