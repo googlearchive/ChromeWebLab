@@ -105,9 +105,10 @@ You may run it locally or on a 3rd party host such as Joyent.
 #### Hub
 
 1. You will need Cycling 74's [Max](http://cycling74.com/products/max). If you do not have Max already, you can download a [free trial of the full product](http://cycling74.com/downloads/). There is likely a time limit on the free trial. You can also get their free [runtime](http://cycling74.com/downloads/runtime/) which will let you use the Hub, but won't let you edit it.
-2. Open [sequencer.maxpat](Orchestra/sw/hub/max/sequencer.maxpat), from the [sw/hub/max](Orchestra/sw/hub/max) folder, in Max, the main Max patch. **Note**: Max will allow you to open and run more than one copy of the same file. Please Make sure only one copy of the sequencer patch
+2. Read our guide on [how we configured Max](MAX.md)
+3. Open [sequencer.maxpat](Orchestra/sw/hub/max/sequencer.maxpat), from the [sw/hub/max](Orchestra/sw/hub/max) folder, in Max, the main Max patch. **Note**: Max will allow you to open and run more than one copy of the same file. Please Make sure only one copy of the sequencer patch
 is running at a time!
-3. Double-click the `[noteout]` box and make sure your MIDI interface is selected.
+4. Double-click the `[noteout]` box and make sure your MIDI interface is selected.
 (If you have a full version of Max, you can pre-configure this.)
 
 You may stop and re-start the sequencer with the space bar.
