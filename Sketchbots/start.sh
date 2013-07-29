@@ -6,9 +6,12 @@
 
 (
   cd sw/labqueue
-  dev_appserver.py --port=8080 . > ../logs/labqueue.log &
+  echo "Starting LabQueue on port 8080"
+  dev_appserver.py --port=8080 . &> ../logs/labqueue.log &
 )
 (
   cd sw/robotcontrol
-  sh start_robot_control > ../logs/robotcontrol.log
+  echo "Starting RobotControl (node server)"
+  sh start_robot_control &> ../logs/robotcontrol.log &
 )
+echo "open http://localhost:8080/ui"
