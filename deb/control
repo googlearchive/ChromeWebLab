@@ -3,7 +3,7 @@ Version: 0.1
 Section: web
 Priority: optional
 Architecture: i386
-Depends: python, node,  
+Depends: python (>= 2.7), nodejs, libpng, cario, pixman, pkg-config  
 Maintainer: Paul Kinlan <paulkinlan@google.com> 
 Description: Web Lab is made of up 5 Chrome Experiment installations that bring the extraordinary workings of the internet to life and aims to inspire the world about the possibilities of the web.
 .
