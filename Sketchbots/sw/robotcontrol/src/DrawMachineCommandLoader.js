@@ -86,10 +86,11 @@ exports.DrawMachineCommandLoader = new Class({
 	},
 
     triggerTurntable: function(){
-        this.machine.moveTurntable();
         this.machine.once('turntableMotionComplete', function(){
                 this.emit('turntableMotionComplete');
             }.bind(this));
+        
+        this.machine.moveTurntable();
     },
     
     resetCommandBuffer: function(){
@@ -104,7 +105,7 @@ exports.DrawMachineCommandLoader = new Class({
     // the chain of events will trigger the homing and turntable movement
     // needed after each drawing is completed
     startDrawing: function(){
-        this.machine.goHome();
+        
         this.machine.once('robotAtHome', function(){
             this.machine.currentBufferIndex = 0;
             this.motorTimerCounter = 0;
@@ -121,6 +122,7 @@ exports.DrawMachineCommandLoader = new Class({
             }.bind(this));
         }.bind(this));
 
+        this.machine.goHome();
     },
     
     // prepare the robot and table for drawing, and emit 
@@ -155,18 +157,21 @@ exports.DrawMachineCommandLoader = new Class({
     prepareRobotForFirstDrawing: function(){
         console.log("DMCL preparing robot for first drawing");
         this.machine.zero();
-        this.machine.doInitialCalibration();
         this.machine.once('robotCalibrated', function(movement){
             console.log("Robot is calibrated. Moving the dot.");
-            //once at calibrated, move the turntable shift the calibration dot
- 		 	this.machine.partialWipe();
+            
             //once the turntable is done moving, emit a ready event
             this.machine.once('turntableMotionComplete', function(movement){
                 this.readyToDraw = true;
                 console.log("Turntable motion complete. Emitting readyToStartDrawing");
                 this.emit('readyToStartDrawing');
             }.bind(this));
+            
+            //once at calibrated, move the turntable shift the calibration dot
+            this.machine.partialWipe();
         }.bind(this));
+        
+        this.machine.doInitialCalibration();
     },
 
     createRobot: function(){
