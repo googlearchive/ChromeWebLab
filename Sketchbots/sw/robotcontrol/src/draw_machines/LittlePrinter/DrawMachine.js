@@ -210,7 +210,7 @@ exports.DrawMachine = new Class({
       if (err) throw err;
       
       var uri = canvas.toDataURL("image/png");
-      var htmlstring = '<html><body><h1>Web Lab</h1><img style="width:640px; height: 480px<img src="' + uri +'"></body></html>';
+      var htmlstring = '<html><body><h1>Web Lab</h1><img style="width:384px; height: 288px" src="' + uri +'"></body></html>';
       console.log(htmlstring)
       
       that.emit('drawingComplete');
@@ -234,7 +234,7 @@ exports.DrawMachine = new Class({
 	 */
 	calibrate: function() {
 	  console.log('robotCalibrated')
-		this.emit('robotCalibrated');
+          this.emit('robotCalibrated');
 	},
 
 	/**
