@@ -159,6 +159,8 @@ exports.DrawMachine = new Class({
     //TODO - start drawing
     
     console.log("LITTLE PRINTER: Start")
+    console.log(this.maxBufferIndex)
+    console.log(JSON.stringify(this.buff_cart))
     this._simulateMachineEvent('timeEstimate', 1000, (new Date().getTime()/1000) + 60); //simulate 60 second drawings
     var canvas = new Canvas(640, 480);
     var ctx = canvas.getContext('2d');
@@ -183,7 +185,6 @@ exports.DrawMachine = new Class({
     var scaleX = 640 / (maxX - minX);
     var scaleY = 480 / (maxY - minY);
     
-  
     var xOffset = 0;
     if(minX < 0)
       xOffset = -minX;
@@ -196,14 +197,37 @@ exports.DrawMachine = new Class({
     else
       yOffset = -minY;
 
+    var penDown = true;
     for(var i = 0; i < this.maxBufferIndex; i++) {
        var x = parseFloat(this.buff_cart[0][i]);  
        var y = parseFloat(this.buff_cart[1][i]);
+       var z = parseFloat(this.buff_cart[2][i]);
        
        var xD = 640 - Math.floor(((x + xOffset) / (maxX - minX)) * 640)
        var yD = 480 - Math.floor( ((y + yOffset)/ (maxY - minY)) * 480)
-
-       ctx.fillRect(xD , yD, 2, 2);
+       
+       if(z == 1 && penDown == false) {
+         // The pen needs to be put down
+         ctx.save()
+         ctx.beginPath();
+         ctx.moveTo(xD, yD);
+         
+         penDown = true;
+       }
+       else if(z == 1 && penDown == true) {
+         // the pen needs to come up
+         ctx.lineWidth=2;
+         ctx.strokeStyle="black";
+         ctx.stroke();
+         ctx.restore();
+         penDown = false;
+       }
+       
+       if(z == 0) {
+         // We know the pen must be down, so draw lines.
+         ctx.lineTo(xD, yD);
+       }
+       
     }     
     
     var that = this;
@@ -213,6 +237,7 @@ exports.DrawMachine = new Class({
       
       var uri = canvas.toDataURL("image/png");
       var htmlstring = '<html><body><h1>Web Lab</h1><img style="width:384px; height: 288px;" src="' + uri +'"></body></html>';
+      console.log(htmlstring);
       
       restler.post("http://remote.bergcloud.com/playground/direct_print/" + ConfigParams.LITTLE_PRINTER.DEVICE_ID,
           {
@@ -224,7 +249,6 @@ exports.DrawMachine = new Class({
           that.emit('drawingComplete');
           that.emit('readyForPicture');
         });
-      
     });
 },
 
