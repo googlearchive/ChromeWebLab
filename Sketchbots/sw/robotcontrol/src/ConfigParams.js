@@ -184,7 +184,13 @@ exports.ConfigParams = {
             'limitSwitchPort': null
         },
     ],
-
+    
+    /*
+      Little Printer Configuration
+    */
+    LITTLE_PRINTER: {
+      DEVICE_ID: "N9DQRWTNBHCO" // This needs to be code found at the bottom of http://remote.bergcloud.com/developers/direct_print_codes
+    },
 
     /**********************************************************
      *

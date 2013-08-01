@@ -14,6 +14,8 @@
     limitations under the License.
 */
 require('mootools');
+
+var restler = require('restler');
 var ConfigParams = require('../../ConfigParams').ConfigParams;
 
 var Canvas = require('canvas')
@@ -198,8 +200,8 @@ exports.DrawMachine = new Class({
        var x = parseFloat(this.buff_cart[0][i]);  
        var y = parseFloat(this.buff_cart[1][i]);
        
-       var xD =  Math.floor(((x + xOffset) / (maxX - minX)) * 640)
-       var yD = Math.floor( ((y + yOffset)/ (maxY - minY)) * 480)
+       var xD = 640 - Math.floor(((x + xOffset) / (maxX - minX)) * 640)
+       var yD = 480 - Math.floor( ((y + yOffset)/ (maxY - minY)) * 480)
 
        ctx.fillRect(xD , yD, 2, 2);
     }     
@@ -210,11 +212,19 @@ exports.DrawMachine = new Class({
       if (err) throw err;
       
       var uri = canvas.toDataURL("image/png");
-      var htmlstring = '<html><body><h1>Web Lab</h1><img style="width:384px; height: 288px" src="' + uri +'"></body></html>';
-      console.log(htmlstring)
+      var htmlstring = '<html><body><h1>Web Lab</h1><img style="width:384px; height: 288px;" src="' + uri +'"></body></html>';
       
-      that.emit('drawingComplete');
-      that.emit('readyForPicture');
+      restler.post("http://remote.bergcloud.com/playground/direct_print/" + ConfigParams.LITTLE_PRINTER.DEVICE_ID,
+          {
+            data: {html: htmlstring}
+          }
+        ).on("complete", function(data, response) {
+          console.log(data)
+          console.log(response)
+          that.emit('drawingComplete');
+          that.emit('readyForPicture');
+        });
+      
     });
 },
 
