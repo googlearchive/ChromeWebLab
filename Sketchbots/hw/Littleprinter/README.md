@@ -14,9 +14,9 @@ If you have a LittlePrinter this guide shows you how to hook it up to an instanc
 2.  Change the DRAW_MACHINE_TYPE: to DRAW_MACHINE_TYPE: 'LittlePrinter',
 3.  Visit http://remote.bergcloud.com/developers/direct_print_codes and get your Printer Code
 4.  Add in your direct print code to
-    LITTLE_PRINTER: {
-        DEVICE_ID: "[YOUR CODE HERE]" // This needs to be code found at the bottom of http://remote.bergcloud.com/developers/direct_print_codes
-    },
+        `LITTLE_PRINTER: {
+           DEVICE_ID: "[YOUR CODE HERE]" // This needs to be code found at the bottom of http://remote.bergcloud.com/developers/direct_print_codes
+        },`
 
 That is it.
 
