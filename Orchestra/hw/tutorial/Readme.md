@@ -18,8 +18,9 @@ Electronics:
 | Quantity | Description |
 |----------|-------------|
 | 1        | USB MIDI interface &mdash; look around, there are [some inexpensive ones out there](https://www.google.com/search?biw=1025&bih=760&tbm=shop&q=usb+midi+interface) |
+| 1        | Standard Male/Male [MIDI cable](https://www.google.com/search?q=midi+cable&source=univ&tbm=shop) |
 | 1        | Arduino &mdash; nearly any will do, such as the [Leonardo](http://store.arduino.cc/ww/index.php?main_page=product_info&cPath=11_12&products_id=226) |
-| 4        | [RS120 Servos](#LINK) |
+| 4        | standard 6v metal gear hobby servos &mdash; [such as these](https://www.sparkfun.com/products/10333) |
 | 1        | [DIN 5/180 MIDI Connector](https://www.sparkfun.com/products/9536) |
 | 1        | [XXXXX Optoisolator](#LINK) |
 | 1        | 220ohm resistor |
