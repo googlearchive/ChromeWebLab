@@ -40,4 +40,29 @@ Follow the images and wiring diagram.
 
 ## Building the Base
 
+1. Layout on Clock Face
 We're going to lay out all the cutlines on the clock face first. First, draw two perpendicular diameters. Make a mark at 2" and 2 1/4" in from the circle's edge along each line. The 2" mark is where we're going to drill. 
+
+2. Drill and Cut Slots
+
+3. Cut Cam and other Parts
+
+4. Predrill for Screws
+
+5. Attach cams to servos
+
+6. Align servos in slots and mark
+
+7. Attach Hinges and Servos
+
+8. Attach Base Legs
+
+9. Connect wiring
+
+10. Glue Glasses
+
+11. Make Threaded Bead
+
+12. Tune Glasses with water
+
+13. Fire it up!
