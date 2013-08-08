@@ -12,31 +12,29 @@ The Dremelphone. A Dremel powered, servo percussive tonal experience unlike any 
 ## What We'll Be Using
 
 Electronics:
-Arduino
-4 RS120 Servos
-MIDI Connector
-Optoisolator
-Resistors: 220, 270, 100 (2), 1000
-Diode
-Voltage?
-12 volt power supply
+* Arduino
+* 4x RS120 Servos
+* MIDI Connector
+* Optoisolator
+* Resistors: 220, 270, 100 (2), 1000
+* Diode
+* 12 volt power supply
 
 Base:
-4 Glasses
-Dremel with flex shaft
-10" diameter wooden clock base, 3/4" thick
-3/4" thick solid wood (we used a spare stair tread we had laying around, plywood would also work)
-  enough for 4 3" squares, and 4 3/4" x 3/4" x 1" blocks
-3/16" ply for cams (1/8" would work), a 3" x 10" piece is plenty
-Thumb Tacks
-Masking Tape
-Small wooden bead (1)
-Cotton twine
-4 3" narrow hinges with screws
+* 4x Glasses
+* Dremel with flex shaft
+* 10" diameter wooden clock base, 3/4" thick
+* 3/4" thick solid wood (we used a spare stair tread we had laying around, plywood would also work) enough for 4 3" squares, and 4 3/4" x 3/4" x 1" blocks
+* 3/16" ply for cams (1/8" would work), a 3" x 10" piece is plenty
+* Thumb Tacks
+* Masking Tape
+* Small wooden bead (1)
+* Cotton twine
+* 4x 3" narrow hinges with screws
 
 ## Electronics
 
-Follow the images and wiring diagram.
+1. Follow the images and wiring diagram.
 
 ## Building the Base
 
