@@ -5,7 +5,7 @@ This hardware demo is here to give an example of a 'musical' instrument that can
 
 But we're here to make an instrument. Specifically, this one:
 
-![Dremelphone](Orchestra/hw/tutorial/images/intro1.jpg)
+![Dremelphone](https://github.com/GoogleChrome/ChromeWebLab/blob/hardware-tutorials-dev/Orchestra/hw/tutorial/images/intro1.jpg)
 
 The Dremelphone. A Dremel powered, servo percussive tonal experience unlike any other.
 
