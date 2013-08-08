@@ -1,13 +1,13 @@
 # The Dremelphone 2013
 
 ## Introduction
-This hardware demo is here to give an example of a 'musical' instrument that can be developed using the Universal Orchestra code from the Chrome Web Labs. For a full rundown on the History and Concept of the project you can go [here](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Orchestra). 
+This an example of a 'musical' instrument that can be developed using the Chrome Web Lab's Orchestra system. For a full description of the history and concept of the project, see [this page](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Orchestra).
 
-But we're here to make an instrument. Specifically, this one:
+But we're here to make something. Specifically, this thing:
 
 ![Dremelphone](images/intro1.jpg)
 
-The Dremelphone. A Dremel powered, servo percussive tonal experience unlike any other.
+The Dremelphone. A MIDI-controlled, Dremel-powered, servo/percussive tonal experience.
 
 ## Materials
 
@@ -17,6 +17,7 @@ Electronics:
 
 | Quantity | Description |
 |----------|-------------|
+| 1        | USB MIDI interface &mdash; look around, there are [some inexpensive ones out there](https://www.google.com/search?biw=1025&bih=760&tbm=shop&q=usb+midi+interface) |
 | 1        | Arduino &mdash; nearly any will do, such as the [Leonardo](http://store.arduino.cc/ww/index.php?main_page=product_info&cPath=11_12&products_id=226) |
 | 4        | [RS120 Servos](#LINK) |
 | 1        | [DIN 5/180 MIDI Connector](https://www.sparkfun.com/products/9536) |
@@ -35,7 +36,7 @@ Other materials:
 
 | Quantity | Description |
 |----------|-------------|
-| 4        | drinking glasses &mdash; any kind will do, really |
+| 4        | drinking glasses, roughly 3" diameter base &mdash; any kind will do, really |
 | 1        | [Dremel hobby tool with flex shaft, or similar motorized rotary tool](https://www.google.com/search?q=dremel+tool+with+flex+shaft) |
 | 1        | [10" diameter wooden clock base, 3/4" thick](#LINK) |
 | quarter-sheet | quarter sheet of 3/4" plywood &mdash; we used scrap wood we had laying around, enough for 4 3" squares, and 4 3/4" x 3/4" x 1" blocks |
