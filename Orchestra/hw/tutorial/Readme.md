@@ -78,7 +78,7 @@ Tools:
 
 2.Connect the Servos (TODO: add servo circuit)
 
-![Breadboard](images/breadboard.jpg)
+![Breadboard](images/breadBoard.jpg)
 
 ![Full Circuit](images/fullWiring.jpg)
 
