@@ -154,7 +154,7 @@ The striker needs to be hard enough to strike the glasses solidly, but not so ha
 
 If you have a sewing needle with an eye thick enough for your twine, use that, otherwise fashion a 'sewing needle' from a paper clip. Straighten the paper clip out and then fold it back on itself with a small 'eye' left in the bend. Thread your twine through the eye. Now your just going to pass your needle through the center hole of the bead as many times as you can.
 
-![Bead Wrapping](images/bead1.jpg)
+![Bead Wrapping](images/bead.jpg)
 
 As you continue threading it will become harder and harder to pull the twine through. Needle nose pliers will aid at this point. Make as many wraps as you can. The more fully the bead is covered, the more consistent the sound will be and the less likely it will be to crack your glasses.
 
