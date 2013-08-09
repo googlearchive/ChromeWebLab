@@ -51,7 +51,7 @@ Tools:
 | spool    | Black hookup wire |
 | 1        | [breadboard](https://www.sparkfun.com/products/9567) |
 
-**We used 7.4V servos and powered them on a separate supply from the Arduino. Typically powering servos through the Arduino is not a good idea unless they are very small or you only need to power one or two.*
+*We used 7.4V servos and powered them on a separate supply from the Arduino. Typically powering servos through the Arduino is not a good idea unless they are very small or you only need to power one or two.
 
 ###Other materials
 
@@ -70,13 +70,12 @@ Tools:
 
 ## Electronics
 
-1. Following the diagram, assemble the the MIDI input circuit. 
-
+1. Following the diagram, assemble the the MIDI input circuit.
 ![Dremelphone](images/midi-in-circuit.jpg)
 
-2. Connect the Servos (TODO: add servo circuit)
+2.Connect the Servos (TODO: add servo circuit)
 
-*note that your power supply needs for the servos will vary based on the required supply voltage
+*Note that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust their voltage with a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
 
 ## Building the Base
 
