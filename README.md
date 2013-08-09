@@ -13,7 +13,7 @@ This Open Source project makes two of the experiments - [Orchestra](Orchestra) a
 
 We fundamentaly believe that what we have learnt building and developing this project should be available for everyone to learn from and be inspired to build upon.
 
-There is a lot of new technologies in this project that the WebLab was the first major project to use in production.  getUserMedia for example was integrated in a single day on the day it landed in Stable Chrome
+There is a lot of new technologies in this project that the WebLab was the first major project to use in production.  getUserMedia for example was integrated in a single day on the day it landed in Stable Chrome.
 
 ## Why not all 5 experiements.
 
@@ -21,4 +21,6 @@ We had to start somewhere and the two most popular and interactive experiments s
 
 ## Is this the exact same code as in Web Lab.
 
-Yes and No.  We used a huge amount of the code, but there are parts of the weblab that make detract from the core-experience so we have removed them.  You have the ability to build the hardware and controllers to the same level we had them in the museum, and we improved the launch experience too.  Heck, we even added some features such as WebRTC to the orchestra just for this project.
+Yes and No.  We used a HUGE amount of the code, but there are parts of the weblab that detract from the core-experience so we have removed them (such as user account management).  
+
+You have the ability to build the hardware and controllers to the same level we had them in the museum, and we improved the launch experience too.  Heck, we even added some features such as WebRTC to the orchestra just for this project.
