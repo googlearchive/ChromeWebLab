@@ -90,6 +90,7 @@ The first step is to acquire all of the parts we will need to build this project
  * ![MIDI Circuit](images/servo-circuit.jpg)
   * *Note:* that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust the voltage from your power source using a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
   * *Note:* you can also replace the 9v battery with a 9v wall power supply for longer playing time.
+* Connect the Arduino to your computer and upload [this sketch](../MIDIwhirlophone/MIDIwhirlophone.ino).
 
 ## Building the Base
 
