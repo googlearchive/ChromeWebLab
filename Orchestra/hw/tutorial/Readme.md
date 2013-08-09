@@ -109,7 +109,8 @@ Tools:
  * Cut out the cam and sand the edges so there are no rough edges.
  * Drill the center hole large enough for the shaft of the servo's double arm horn to fit through. 
 
-* Now cut the other wood parts. You'll need four 3" x 3" pieces for bases for the glasses and eight 3/4" x 3/4" x 1" pieces for the servo supports: ![Wood Parts](images/woodParts.jpg)
+* Now cut the other wood parts. You'll need four 3" x 3" pieces for bases for the glasses and eight 3/4" x 3/4" x 1" pieces for the servo supports:
+ * ![Wood Parts](images/woodParts.jpg)
 
 * Predrill for Screws
  * The pine that we used is very prone to breaking, so you need to predrill all of your screw holes.
