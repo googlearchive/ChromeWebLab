@@ -178,7 +178,6 @@ Now that everything is running we will test the full system end-to-end.
 If you saw everything as described, then the system should be basically working. If you saw some unexpected results, review the Getting Started instructions for troubleshooting help. If you are still stuck, create a new [issue](../../issues) to get  help.
 
 
-<!--
 ## Getting Started: Using a Drawing Machine
 
 These instructions build upon the [Basic Setup](#getting-started-basic-setup) by adding a simple LEGO Mindstorms NXT drawing machine. For more information on this type of drawing machine see [MindstormsNXT DrawMachine](#mindstormsnxt-drawmachine) in the reference section.
@@ -222,7 +221,6 @@ You will need the following materials to complete this setup:
 > 	* If the drawing machine starts drawing but does not draw correctly, you may need to check the physical build of the machine. Review the [build instructions here](hw/MindstormsNXT/README.md). You should also re-check the dimensional and gear ratio settings as shown in step 7, above.
 > 
 
--->
 
 ----------------------------------------------------------------
 
