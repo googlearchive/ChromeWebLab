@@ -15,7 +15,7 @@ This an example of a 'musical' instrument that can be developed using the Chrome
 
 But we're here to make something. Specifically, this thing:
 
-![Dremelphone](images/intro1.jpg)
+<a href="http://youtu.be/MxbYEo85gAY" target="_blank"><img src="images/videoPreview.png" /></a>
 
 A MIDI-controlled whirlophone. A MIDI-controlled servo/percussive tonal experience, powered by a hobby rotary power tool.
 
@@ -23,20 +23,20 @@ A striker (bead on string) continuously spins in the center of an arrangement of
 
 The speed of the spinning bead is *not* tied to the tempo or rhythm of the music. It has a sort of "tremmolo" effect because the bead continuously strikes the glass as long as the note is playing.
 
-It looks like [this (video)](http://youtu.be/MxbYEo85gAY) when it is running.
-
 
 ## Materials
 
 The first step is to acquire all of the parts we will need to build this project. 
 
-Tools:
+###Tools
 
 * Safety goggles
-* Band saw or handheld jigsaw
+* Band saw or jigsaw
 * Scissors
 * Hot glue gun and a little bit of hot glue
 * Wire cutter/stripper
+* Large sewing needle or paperclip
+* Needle-nose pliars
 
 ###Electronic Components
 
@@ -54,8 +54,7 @@ Tools:
 | 2        | 100ohm resistors |
 | 1        | 1kOhm resistor |
 | 1        | [1N914 diode](http://www.digikey.com/product-detail/en/1N914/1N914FS-ND/978749) |
-| 1        | 9v battery |
-| 1        | 9v battery harness &mdash; such as [this one](http://www.radioshack.com/product/index.jsp?productId=2062219) |
+| 1        | 9v power supply &mdash; such as [this one](http://www.adafruit.com/products/63) |
 | spool    | Red hookup wire |
 | spool    | Black hookup wire |
 | 1        | [breadboard](https://www.sparkfun.com/products/9567) |
@@ -81,12 +80,14 @@ Tools:
 
 ## Electronics
 
-* Following the diagram, assemble the the MIDI input circuit.
+* Following the diagram, assemble the the MIDI input circuit *on your breadboard*.
  * ![MIDI Circuit](images/midi-in-circuit.jpg)
-* Following the diagram, assemble the servo circuit.
+* Now add the servo circuit to your breadboard according to the diagram below:
+ * You will need to determine which side of your power supply cable is +V and *be sure to hook that up as shown by the red line in the diagram*. If in doubt, use a multimeter to determine which side is +V.
  * Your signal pins (depicted in yellow) should connect to the digital PWM pins 3, 5, 6 and 9 on the Arduino board.
  * ![MIDI Circuit](images/servo-circuit.jpg)
- * Note that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust the voltage from your power source using a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
+  * *Note:* that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust the voltage from your power source using a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
+* Connect the Arduino to your computer and upload [this sketch](../MIDIwhirlophone/MIDIwhirlophone.ino).
 
 ## Building the Base
 
@@ -184,7 +185,7 @@ Tools:
  * Make sure the Arduino is connected to your computer's USB port for power. We will not be using the USB connection for data, however. It is merely to power the Arduino.
  * Connect your USB MIDI adaptor to the computer.
  * Connect the MIDI cable between the 'MIDI OUT' port on the adaptor and the MIDI jack on the breadboard.
- * If you haven't already, connect the battery for your servos. The glasses should all move out away from the center of the circle at this point.
+ * If you haven't already, connect the 9v power supply for your servos. The glasses should all move out away from the center of the circle at this point.
  * *Put on your safety goggles!*
  * Turn on the power to your Dremel to *LOW SPEED*. The bead should start spinning around, but just barely *miss* hitting the glasses. If it does, turn off the Dremel and adjust the length of the twine on the bead.
  * Start the Orchestra software and load the UI in Chrome.
