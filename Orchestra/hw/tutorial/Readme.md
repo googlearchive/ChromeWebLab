@@ -54,7 +54,8 @@ Tools:
 | 2        | 100ohm resistors |
 | 1        | 1kOhm resistor |
 | 1        | [1N914 diode](http://www.digikey.com/product-detail/en/1N914/1N914FS-ND/978749) |
-| 1        | 12 volt DC power supply &mdash; such as [this one](#LINK) |
+| 1        | 9v battery |
+| 1        | 9v battery harness &mdash; such as [this one](http://www.radioshack.com/product/index.jsp?productId=2062219) |
 | spool    | Red hookup wire |
 | spool    | Black hookup wire |
 | 1        | [breadboard](https://www.sparkfun.com/products/9567) |
@@ -80,15 +81,12 @@ Tools:
 
 ## Electronics
 
-1. Following the diagram, assemble the the MIDI input circuit.
-
-![MIDI Circuit](images/midi-in-circuit.jpg)
-
-2. Following the diagram, assemble the servo circuit. Your signal pins (depicted in yellow) should connect to the digital PWM pins 3, 5, 6 and 9 on the Arduino board.
-
-![MIDI Circuit](images/servo-circuit.jpg)
-
-*Note that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust the voltage from your power source using a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
+* Following the diagram, assemble the the MIDI input circuit.
+ * ![MIDI Circuit](images/midi-in-circuit.jpg)
+* Following the diagram, assemble the servo circuit.
+ * Your signal pins (depicted in yellow) should connect to the digital PWM pins 3, 5, 6 and 9 on the Arduino board.
+ * ![MIDI Circuit](images/servo-circuit.jpg)
+ * Note that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust the voltage from your power source using a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
 
 ## Building the Base
 
@@ -186,7 +184,7 @@ Tools:
  * Make sure the Arduino is connected to your computer's USB port for power. We will not be using the USB connection for data, however. It is merely to power the Arduino.
  * Connect your USB MIDI adaptor to the computer.
  * Connect the MIDI cable between the 'MIDI OUT' port on the adaptor and the MIDI jack on the breadboard.
- * Turn on the power supply for your servos. The glasses should all move out away from the center of the circle at this point.
+ * If you haven't already, connect the battery for your servos. The glasses should all move out away from the center of the circle at this point.
  * *Put on your safety goggles!*
  * Turn on the power to your Dremel to *LOW SPEED*. The bead should start spinning around, but just barely *miss* hitting the glasses. If it does, turn off the Dremel and adjust the length of the twine on the bead.
  * Start the Orchestra software and load the UI in Chrome.
