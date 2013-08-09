@@ -54,8 +54,7 @@ The first step is to acquire all of the parts we will need to build this project
 | 2        | 100ohm resistors |
 | 1        | 1kOhm resistor |
 | 1        | [1N914 diode](http://www.digikey.com/product-detail/en/1N914/1N914FS-ND/978749) |
-| 1        | 9v battery |
-| 1        | 9v battery harness &mdash; such as [this one](http://www.radioshack.com/product/index.jsp?productId=2062219) |
+| 1        | 9v power supply &mdash; such as [this one](http://www.adafruit.com/products/63) |
 | spool    | Red hookup wire |
 | spool    | Black hookup wire |
 | 1        | [breadboard](https://www.sparkfun.com/products/9567) |
@@ -84,10 +83,10 @@ The first step is to acquire all of the parts we will need to build this project
 * Following the diagram, assemble the the MIDI input circuit *on your breadboard*.
  * ![MIDI Circuit](images/midi-in-circuit.jpg)
 * Now add the servo circuit to your breadboard according to the diagram below:
+ * You will need to determine which side of your power supply cable is +V and *be sure to hook that up as shown by the red line in the diagram*. If in doubt, use a multimeter to determine which side is +V.
  * Your signal pins (depicted in yellow) should connect to the digital PWM pins 3, 5, 6 and 9 on the Arduino board.
  * ![MIDI Circuit](images/servo-circuit.jpg)
   * *Note:* that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust the voltage from your power source using a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
-  * *Note:* you can also replace the 9v battery with a 9v wall power supply for longer playing time.
 * Connect the Arduino to your computer and upload [this sketch](../MIDIwhirlophone/MIDIwhirlophone.ino).
 
 ## Building the Base
