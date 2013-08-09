@@ -30,13 +30,15 @@ It looks like [this (video)](http://youtu.be/MxbYEo85gAY) when it is running.
 
 The first step is to acquire all of the parts we will need to build this project. 
 
-Tools:
+###Tools
 
 * Safety goggles
-* Band saw or handheld jigsaw
+* Band saw or jigsaw
 * Scissors
 * Hot glue gun and a little bit of hot glue
 * Wire cutter/stripper
+* Large sewing needle or paperclip
+* Needle-nose pliars
 
 ###Electronic Components
 
