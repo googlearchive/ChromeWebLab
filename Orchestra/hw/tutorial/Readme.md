@@ -185,7 +185,7 @@ The first step is to acquire all of the parts we will need to build this project
  * Make sure the Arduino is connected to your computer's USB port for power. We will not be using the USB connection for data, however. It is merely to power the Arduino.
  * Connect your USB MIDI adaptor to the computer.
  * Connect the MIDI cable between the 'MIDI OUT' port on the adaptor and the MIDI jack on the breadboard.
- * If you haven't already, connect the battery for your servos. The glasses should all move out away from the center of the circle at this point.
+ * If you haven't already, connect the 9v power supply for your servos. The glasses should all move out away from the center of the circle at this point.
  * *Put on your safety goggles!*
  * Turn on the power to your Dremel to *LOW SPEED*. The bead should start spinning around, but just barely *miss* hitting the glasses. If it does, turn off the Dremel and adjust the length of the twine on the bead.
  * Start the Orchestra software and load the UI in Chrome.
