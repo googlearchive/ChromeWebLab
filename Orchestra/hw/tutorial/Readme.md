@@ -1,4 +1,14 @@
-# The Dremelphone 2013
+# MIDI Whirlophone
+
+**WARNING** **WARNING** **WARNING** **WARNING**
+
+Moving machines can cause damage to personal property, personal injury or death. It is the responsibility of the reader of this document to take adequate safety precautions when operating, designing, or building any machinery, or when offering machinery to others for use.
+
+None of the software, documents, firmware, schematics, drawings or other materials accompanying this document have been checked for errors, omissions or mistakes of any kind. Use it at your own risk.
+
+Your use of the software, documents, firmware, schematics, drawings or other materials accompanying this document is governed by the [License Agreement](../LICENSE.txt). Read it before proceeding.
+
+All trademarks are the property of their respective owners.
 
 ## Introduction
 This an example of a 'musical' instrument that can be developed using the Chrome Web Lab's Orchestra system. For a full description of the history and concept of the project, see [this page](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Orchestra).
@@ -7,11 +17,19 @@ But we're here to make something. Specifically, this thing:
 
 ![Dremelphone](images/intro1.jpg)
 
-The Dremelphone. A MIDI-controlled, Dremel-powered, servo/percussive tonal experience.
+A MIDI-controlled whirlophone. A MIDI-controlled servo/percussive tonal experience, powered by a hobby rotary power tool.
 
 ## Materials
 
 The first step is to acquire all of the parts we will need to build this project. 
+
+Tools:
+
+* Safety goggles
+* Band saw or handheld jigsaw
+* Scissors
+* Hot glue gun and a little bit of hot glue
+* Wire cutter/stripper
 
 Electronics:
 
@@ -48,18 +66,13 @@ Other materials:
 | a few inches | Cotton twine |
 | 4        | 3" narrow hinges with screws &mdash; [like these](http://www.homedepot.com/p/Everbilt-3-in-Zinc-Plated-Non-Removable-Pin-Narrow-Utility-Hinges-2-Pack-15168/202033931#.UgQn92Tm3kg) |
 
-Tools:
-
-* Band saw or handheld jigsaw
-* Scissors
-* Hot glue gun and a little bit of hot glue
-* Wire cutter/stripper
-
 ## Electronics
 
 1. Follow the images and wiring diagram.
 
 ## Building the Base
+
+**Important**: Always wear safety goggles while using power tools. In fact, you should wear safety goggles while using this instrument.
 
 1. Layout on Clock Face
 We're going to lay out all the cutlines on the clock face first. First, draw two perpendicular diameters. Make a mark at 2" and 2 1/4" in from the circle's edge along each line. The 2" mark is where we're going to drill. 
