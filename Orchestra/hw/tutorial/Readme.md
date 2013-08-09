@@ -31,7 +31,7 @@ Tools:
 * Hot glue gun and a little bit of hot glue
 * Wire cutter/stripper
 
-###Electronics
+###Electronic Components
 
 | Quantity | Description |
 |----------|-------------|
@@ -41,6 +41,7 @@ Tools:
 | 4        | Standard 6V metal gear hobby servos* &mdash; [such as these](https://www.sparkfun.com/products/10333) 
 | 1        | [DIN 5/180 MIDI Connector](https://www.sparkfun.com/products/9536) |
 | 1        | [6N138 Optocoupler](http://www.digikey.com/product-detail/en/6N138-000E/516-1600-5-ND/825236) |
+| 1        | [L7806CV voltage regulator](http://www.digikey.com/product-detail/en/L7806CV/497-1445-5-ND/585966) |
 | 1        | 220ohm resistor |
 | 1        | 270ohm resistor |
 | 2        | 100ohm resistors |
