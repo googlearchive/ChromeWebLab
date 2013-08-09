@@ -84,6 +84,8 @@ See the [Configuration](#configuration) section below.
 
 ### Running
 
+The Orchestra project contains a git submodule for the signalmaster WebRTC component. It is important to understand that there are some potential issues when using git submodules. Please read this [note from the git documentation](http://git-scm.com/book/en/Git-Tools-Submodules#Issues-with-Submodules) before proceeding. Essentially, though, if you don't use branches within the submodule then you should be safe.
+
 Before start any of the Orchestra components, please update the repository's submodules via the GitHub app, or by running this shell command from the repository [root folder](../):
 
 `git submodule update --init`
