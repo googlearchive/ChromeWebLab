@@ -19,6 +19,13 @@ But we're here to make something. Specifically, this thing:
 
 A MIDI-controlled whirlophone. A MIDI-controlled servo/percussive tonal experience, powered by a hobby rotary power tool.
 
+A striker (bead on string) continuously spins in the center of an arrangement of water-filled drinking glasses. As notes are played in the Orchestra software, the glasses are moved into the path of the spnning striker producing sound.
+
+The speed of the spinning bead is *not* tied to the tempo or rhythm of the music. It has a sort of "tremmolo" effect because the bead continuously strikes the glass as long as the note is playing.
+
+It looks like [this (video)](http://youtu.be/MxbYEo85gAY) when it is running.
+
+
 ## Materials
 
 The first step is to acquire all of the parts we will need to build this project. 
