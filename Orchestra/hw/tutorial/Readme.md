@@ -31,34 +31,36 @@ Tools:
 * Hot glue gun and a little bit of hot glue
 * Wire cutter/stripper
 
-Electronics:
+###Electronics
 
 | Quantity | Description |
 |----------|-------------|
 | 1        | USB MIDI interface &mdash; look around, there are [some inexpensive ones out there](https://www.google.com/search?biw=1025&bih=760&tbm=shop&q=usb+midi+interface) |
 | 1        | Standard Male/Male [MIDI cable](https://www.google.com/search?q=midi+cable&source=univ&tbm=shop) |
 | 1        | Arduino &mdash; nearly any will do, such as the [Leonardo](http://store.arduino.cc/ww/index.php?main_page=product_info&cPath=11_12&products_id=226) |
-| 4        | standard 6v metal gear hobby servos &mdash; [such as these](https://www.sparkfun.com/products/10333) |
+| 4        | Standard 6V metal gear hobby servos* &mdash; [such as these](https://www.sparkfun.com/products/10333) 
 | 1        | [DIN 5/180 MIDI Connector](https://www.sparkfun.com/products/9536) |
-| 1        | [XXXXX Optoisolator](#LINK) |
+| 1        | [6N138 Optocoupler](http://www.digikey.com/product-detail/en/6N138-000E/516-1600-5-ND/825236) |
 | 1        | 220ohm resistor |
 | 1        | 270ohm resistor |
 | 2        | 100ohm resistors |
 | 1        | 1kOhm resistor |
-| 1        | [XXXXXX diode](#LINK) |
+| 1        | [1N914 diode](http://www.digikey.com/product-detail/en/1N914/1N914FS-ND/978749) |
 | 1        | 12 volt DC power supply &mdash; such as [this one](#LINK) |
 | spool    | Red hookup wire |
 | spool    | Black hookup wire |
 | 1        | [breadboard](https://www.sparkfun.com/products/9567) |
 
-Other materials:
+**We used 7.4V servos and powered them on a separate supply from the Arduino. Typically powering servos through the Arduino is not a good idea unless they are very small or you only need to power one or two.*
+
+###Other materials
 
 | Quantity | Description |
 |----------|-------------|
-| 4        | drinking glasses, roughly 3" diameter base &mdash; any kind will do, really |
+| 4        | Drinking glasses, roughly 3" diameter base &mdash; any kind will do, really |
 | 1        | [Dremel hobby tool with flex shaft, or similar motorized rotary tool](https://www.google.com/search?q=dremel+tool+with+flex+shaft) |
 | 1        | [10" diameter wooden clock base, 3/4" thick](#LINK) |
-| quarter-sheet | quarter sheet of 3/4" plywood &mdash; we used scrap wood we had laying around, enough for 4 3" squares, and 4 3/4" x 3/4" x 1" blocks |
+| quarter-sheet | Quarter sheet of 3/4" plywood &mdash; we used scrap wood we had laying around, enough for 4 3" squares, and 4 3/4" x 3/4" x 1" blocks |
 | quarter-sheet | 3/16" plywood for cams (1/8" would work), a 3" x 10" piece is plenty |
 | 1 box    | [Thumb Tacks](http://www.officedepot.com/a/products/323873/OIC-Thumb-Tacks-No-2-38/) |
 | | Masking Tape |
@@ -68,7 +70,13 @@ Other materials:
 
 ## Electronics
 
-1. Follow the images and wiring diagram.
+1. Following the diagram, assemble the the MIDI input circuit. 
+
+![Dremelphone](images/midi-in-circuit.jpg)
+
+2. Connect the Servos (TODO: add servo circuit)
+
+*note that your power supply needs for the servos will vary based on the required supply voltage
 
 ## Building the Base
 
