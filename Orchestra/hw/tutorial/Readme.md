@@ -84,18 +84,18 @@ Tools:
 
 **Important**: Always wear safety goggles while using power tools. In fact, you should wear safety goggles while using this instrument.
 
-1. Layout on Clock Face
+* Layout on Clock Face
 We're going to lay out all the cutlines on the clock face first. First, draw two perpendicular diameters. Make a mark at 2" and 2 1/4" in from the circle's edge along each line. The 2" mark is where we'll drill a clearance hole. The 2 1/4" mark is an alignment mark for the hinges. Draw a 1/2" slot from the edge of the disc to the 2 1/4" mark. Draw a line perpendicular to the 2 1/4" mark, this will align our hinges. The finished layout should look like this.
 
 ![Layout](images/discLayout.jpg)
 
-2. Drill and Cut Slots
+* Drill and Cut Slots
 Drill the center hole of the disc so that it accomodates the shaft of your rotary tool. Ours was  1/2". We can go ahead and mark the L-bracket position now. The L-bracket holds the flex shaft straight and vertical during operation. Hold the shaft in what you think will be the final position, press the L-bracket against it tightly and mark the screw holes.
 Drill 1/2" holes at the 2" marks on your disc. Next use a band saw or jig saw to cut along the slot lines until you hit the hole you just drilled. The finished disc will look like this.
 
 ![Cuts](images/slottedDisc.jpg)
 
-3. Cut Cam and other Parts
+* Cut Cam and other Parts
 The cam is a simple ovoid shape. Hold the servo flat against the bottom of the slotted disc. Measure from the center point of the servo shaft to the top of the slotted disc. This will give you the base circle of the cam. Ours was 1 1/8". The long axis of the cam is arbitrary. Make it as long as you want your hinged plate to rise. We picked 2 3/8". Here's the cam laid out. 
 
 ![Cam Layout](images/camLayout.jpg)
@@ -106,17 +106,17 @@ Now cut the other wood parts. You'll need 4 3" x 3" pieces for bases for the gla
 
 ![Wood Parts](images/woodParts.jpg)
 
-4. Predrill for Screws
+* Predrill for Screws
 The pine that we used is very prone to breaking, so you need to predrill all of your screw holes. Align your hinges centered on the 2 1/4" marks on your disc and mark and drill the holes. Align the hinges with the glasses base plates and mark and drill those holes. Hold the support blocks against the servos and mark where the screws will go and drill those holes.
 
-5. Attach Servos to base
+* Attach Servos to base
 Assemble 1 cam and put it on one of the servos. Place it inside the slot so that the cam can move freely. Mark the servo position and the servo shaft line. These will help alignment when attaching the servos.
 
 It's easier at this point to attach the servo supports to the servos and then attach that to the base rather than the other way around. 
 
 ![Servo Mount](images/servoMount.jpg)
 
-6. Attach cams to servos
+* Attach cams to servos
 There are probably better ways to attach the cam to the servo, but this is the way we did it.
 Place the double harm horn into the hole of the cam. Press two thumb tacks through the outermost holes in the horn. Cover with masking tape.
 
@@ -124,19 +124,19 @@ Place the double harm horn into the hole of the cam. Press two thumb tacks throu
 
 Press the horn onto the servo and tighten the screw to the servo shaft.
 
-7. Attach Hinges to Base
+* Attach Hinges to Base
 Screw the hinges to the base pieces for the glasses. Then attach the other half of the hinge to the circular base.
 
 ![Hinges](images/hingeAttach.jpg)
 
-8. Attach Base Legs
+* Attach Base Legs
 The machine will need some support. The height of the legs will vary depending on your flex shaft and your servos. Ours were 3" tall. We attached them with 1 1/4" drywall screws.
 
 We can also go ahead and attach the L-bracket where we marked it earlier near the center hole.
 
 ![Base Support](images/baseSupport.jpg)
 
-9. Connect wiring
+* Connect wiring
 Thread the flex shaft through the center hole. Make it as straight and vertical as possible. Tighten hose clamps to hold it in place.
 
 ![Shaft Mount](images/shaftMount.jpg)
@@ -145,12 +145,12 @@ If not attached already, attach all of your servo wiring to the breadboard.
 
 ![Servo Wiring](images/servoWiring.jpg)
 
-10. Glue Glasses
+* Glue Glasses
 Again, there are probably more elegant ways of attaching the glasses, but this is what we did.
 Hot glue the glasses down to the hinged bases.
 Fill them with various levels of water for different tones.
 
-11. Make Threaded Bead
+* Make Threaded Bead
 The striker needs to be hard enough to strike the glasses solidly, but not so hard the the glasses will break. We decided to cover a wooden bead with cotton twine. It provides a nice solid strike. Depending on how thick your twine is, you might need to ream out the hole in the wooden bead to a slightly larger diameter. Be careful thought because they break quite easily.
 
 If you have a sewing needle with an eye thick enough for your twine, use that, otherwise fashion a 'sewing needle' from a paper clip. Straighten the paper clip out and then fold it back on itself with a small 'eye' left in the bend. Thread your twine through the eye. Now your just going to pass your needle through the center hole of the bead as many times as you can.
@@ -165,5 +165,5 @@ The twine is so tight in the bead that you can just trim off the excess to make 
 
 ![Bead Final](images/beadFinal.jpg)
 
-13. Fire it up!
+* Fire it up!
 Everything should be all set up. You can fire up the software portion, hookup your USB to MIDI cord and play away!
