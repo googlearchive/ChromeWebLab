@@ -73,9 +73,14 @@ Tools:
 ## Electronics
 
 1. Following the diagram, assemble the the MIDI input circuit.
-![Dremelphone](images/midi-in-circuit.jpg)
+
+![MIDI Circuit](images/midi-in-circuit.jpg)
 
 2.Connect the Servos (TODO: add servo circuit)
+
+![Breadboard](images/breadboard.jpg)
+
+![Full Circuit](images/fullWiring.jpg)
 
 *Note that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust their voltage with a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
 
