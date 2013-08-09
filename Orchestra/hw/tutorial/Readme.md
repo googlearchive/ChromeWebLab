@@ -77,8 +77,11 @@ Tools:
 
 ![MIDI Circuit](images/midi-in-circuit.jpg)
 
-2.Connect the Servos (TODO: add servo circuit)
-*Note that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust their voltage with a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
+2. Following the diagram, assemble the servo circuit. Your signal pins (depicted in yellow) should connect to the digital PWM pins 3, 5, 6 and 9 on the Arduino board.
+
+![MIDI Circuit](images/servo-circuit.jpg)
+
+*Note that your power requirements for the servos will vary based on the type of servo you use. Once you figure out the power requirements of your motors you can adjust the voltage from your power source using a [linear regulator](http://en.wikipedia.org/wiki/Linear_regulator).
 
 ## Building the Base
 
