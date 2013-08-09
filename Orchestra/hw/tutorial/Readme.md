@@ -23,13 +23,17 @@ A striker (bead on string) continuously spins in the center of an arrangement of
 
 The speed of the spinning bead is *not* tied to the tempo or rhythm of the music. It has a sort of "tremmolo" effect because the bead continuously strikes the glass as long as the note is playing.
 
-*This tutorial assumes some basic knowledge about code, electronics and construction. It also relies on the Arduino microcontroller as a platform for physical control. If any of this is new to you there is a wealth of information online you can refer to. Below we've provided some useful links to help you get going.*
+---
 
-*[Arduino.cc](arduino.cc)
-*[The Bildr Blog](http://bildr.org/)
-*[Background on Servos](http://wiki.bildr.org/index.php/Servo)
-*[Multi Servo Control Examples](http://www.pyroelectro.com/tutorials/arduino_multi_servo/)
-*[Info on MIDI](http://wiki.bildr.org/index.php/MIDI)
+*NOTE: This tutorial assumes some basic knowledge about code, electronics and construction. It also relies on the Arduino microcontroller as a platform for physical control. If any of this is new to you there is a wealth of information online you can refer to. Below we've provided some useful links to help you get going.*
+
+* [Arduino.cc](arduino.cc)
+* [The Bildr Blog](http://bildr.org/)
+* [Background on Servos](http://wiki.bildr.org/index.php/Servo)
+* [Multi Servo Control Examples](http://www.pyroelectro.com/tutorials/arduino_multi_servo/)
+* [Info on MIDI](http://wiki.bildr.org/index.php/MIDI)
+
+---
 
 ## Materials
 
