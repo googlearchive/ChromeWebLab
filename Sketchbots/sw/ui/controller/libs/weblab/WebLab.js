@@ -25,7 +25,9 @@ var ENABLE_DEBUG = true;
 
 
 //to avoid 'console' is undefined Error in IE
-if (!window.console || !ENABLE_DEBUG) console = {log: function() {}};
+if (!window.console || !ENABLE_DEBUG) console = {
+    log: function() {}
+};
 /*alert("WINDOWS MODE!");
 
 var alertFallback = true;
@@ -43,21 +45,18 @@ var alertFallback = true;
 console.log("ENABLE_DEBUG: ", ENABLE_DEBUG);
 
 //safari bind fix
-if (typeof Function.prototype.bind != 'function')
-{
+if (typeof Function.prototype.bind != 'function') {
     console.log("WEBLAB adding bind function...");
-    Function.prototype.bind = function (bind)
-    {
+    Function.prototype.bind = function(bind) {
         var self = this;
-        return function ()
-        {
+        return function() {
             var args = Array.prototype.slice.call(arguments);
             return self.apply(bind || null, args);
         };
     };
 }
 
-WEBLAB.namespace = function (aNamespace){
+WEBLAB.namespace = function(aNamespace) {
     var parts = aNamespace.split('.'),
         parent = WEBLAB,
         i;

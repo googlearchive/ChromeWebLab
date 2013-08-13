@@ -1,7 +1,7 @@
 /**
-* select-params.js: keep drop-down menus and URLs in sync
-*
-*/
+ * select-params.js: keep drop-down menus and URLs in sync
+ *
+ */
 
 /*
     Copyright 2013 Google Inc
@@ -29,25 +29,25 @@ var params = $.deparam(location.search.replace(/^\?/, ""));
 params.instrument = params.instrument ? parseInt(params.instrument) : 0;
 
 /**
-* Init options menus
-*/
+ * Init options menus
+ */
 $(document).ready(function() {
-  // Instruments menu: populate
-  // 
-  for (var i = 0; i < NUM_INSTRUMENTS; i++) {
-    $('.instrument select').append("<option value=\"" + i + "\">Instrument " + i + "</option>");
-  }
+    // Instruments menu: populate
+    // 
+    for (var i = 0; i < NUM_INSTRUMENTS; i++) {
+        $('.instrument select').append("<option value=\"" + i + "\">Instrument " + i + "</option>");
+    }
 
-  // Menus: init selection
-  // 
-  $('.video select').val(params.video);
-  $('.instrument select').val(params.instrument);
+    // Menus: init selection
+    // 
+    $('.video select').val(params.video);
+    $('.instrument select').val(params.instrument);
 
-  // Menus: init on change
-  // 
-  $('select').change(function() {
-    if ($('.video select').length) params.video = $('.video select').val();
-    if ($('.instrument select').length) params.instrument = $('.instrument select').val();
-    location = location.pathname + "?" + $.param(params);
-  });
+    // Menus: init on change
+    // 
+    $('select').change(function() {
+        if ($('.video select').length) params.video = $('.video select').val();
+        if ($('.instrument select').length) params.instrument = $('.instrument select').val();
+        location = location.pathname + "?" + $.param(params);
+    });
 });

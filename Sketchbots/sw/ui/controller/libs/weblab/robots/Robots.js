@@ -13,15 +13,14 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-WEBLAB.init = function()
-{
-	console.log("init");
+WEBLAB.init = function() {
+    console.log("init");
 
-	//DEPENDENCIES: use private vars
-	var robots = WEBLAB.robots;	
+    //DEPENDENCIES: use private vars
+    var robots = WEBLAB.robots;
 
-	var robotsStart = new robots.RobotsStart();
-	robotsStart.init();	
+    var robotsStart = new robots.RobotsStart();
+    robotsStart.init();
 
 };
 
