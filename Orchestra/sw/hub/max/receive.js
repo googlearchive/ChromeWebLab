@@ -24,23 +24,24 @@ var sequencer = new Global("sequencer");
 anything.immediate = 1;
 
 /**
-* catch-all for OSC messages
-*/
+ * catch-all for OSC messages
+ */
+
 function anything() {
-  // Because this comes directly from [udpreceive],
-  // all args are globbed into 'messagename' keyword.
-  // That's actually a good thing, as it keeps Max
-  // from treating commas in JSON params as message delimeters.
-  // 
-  var message_parts = messagename.match(/(\/\S+) (.*)/);
-  var path = message_parts[1];
-  var params = eval(message_parts[2]);
-  
-  // dispatch
-  switch (path) {
-    case "/instruments":
-      // store in global
-      sequencer.instruments = params;
-      break;
-  }
+    // Because this comes directly from [udpreceive],
+    // all args are globbed into 'messagename' keyword.
+    // That's actually a good thing, as it keeps Max
+    // from treating commas in JSON params as message delimeters.
+    // 
+    var message_parts = messagename.match(/(\/\S+) (.*)/);
+    var path = message_parts[1];
+    var params = eval(message_parts[2]);
+
+    // dispatch
+    switch (path) {
+        case "/instruments":
+            // store in global
+            sequencer.instruments = params;
+            break;
+    }
 }

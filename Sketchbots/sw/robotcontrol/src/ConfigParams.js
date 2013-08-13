@@ -17,8 +17,8 @@
 ///// ConfigParams
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-if (exports == null){
-	var exports = {};
+if (exports == null) {
+    var exports = {};
 }
 var os = require('os');
 //var process = require('process');
@@ -86,7 +86,7 @@ exports.ConfigParams = {
 
     /* when outputting an SVG prepresentation of the current drawing, this is the color used for paths */
     SVG_CONVERSION_PATH_COLOR: '#ec967b',
-    
+
     /* when outputting a PNG prepresentation of the current drawing, this is the color used for paths */
     PNG_CONVERSION_PATH_COLOR: '#ec967b',
 
@@ -97,7 +97,7 @@ exports.ConfigParams = {
 
     /* image dimension, used to scale the drawing */
     CAM_X: 200,
-    CAM_Y: Math.floor((200/3.0)*4.0),
+    CAM_Y: Math.floor((200 / 3.0) * 4.0),
     /* max draw time determines the size of the buffer used for commands */
     MAX_DRAW_TIME: 10,
     /*
@@ -122,24 +122,24 @@ exports.ConfigParams = {
     LINK_B: 13.75, //distance, in cm, from center of lower large gear to center of upper large gear
     LINK_C: 0.0, //distance, in cm, from axis of upper large gear, along its radius, to its intersection with midline of the forearm
     LINK_D: 19.0, //distance, in cm, from aforementioned intersection to tool tip
-    BASE_GEAR_RATIO: 50/8,
-    LOWER_ARM_GEAR_RATIO: 40/8,
+    BASE_GEAR_RATIO: 50 / 8,
+    LOWER_ARM_GEAR_RATIO: 40 / 8,
     UPPER_ARM_GEAR_RATIO: 1,
     PAN_GEAR_RATIO: 1,
 
 
     /* controls rate and geometry of drawing */
     DRAW_PARAMETERS: {
-        'chunkSize':3000,
-        'velocity':100,
-        'acceleration':200,
-        'robotXMin':-15,
-        'robotXMax':15,
-        'robotYMin':25,
-        'robotYMax':55,
-        'drawPlaneHeight':-9.5,
-        'liftDistance':2,
-        'turntableTravel':120
+        'chunkSize': 3000,
+        'velocity': 100,
+        'acceleration': 200,
+        'robotXMin': -15,
+        'robotXMax': 15,
+        'robotYMin': 25,
+        'robotYMax': 55,
+        'drawPlaneHeight': -9.5,
+        'liftDistance': 2,
+        'turntableTravel': 120
     },
 
 
@@ -151,10 +151,10 @@ exports.ConfigParams = {
      * Uncomment ONE and only ONE DRAW_MACHINE_TYPE line.
      *
      */
-     //DRAW_MACHINE_TYPE: 'HomebrewGalil', // For any 4-axis draw machine using a Galil motion controller
-     //DRAW_MACHINE_TYPE: 'NoMachine', // Use this setting if you do not have a machine connected to the computer. Drawings will be "drawn" in software only.
-     //DRAW_MACHINE_TYPE: 'MindstormsNXT', // A 3-axis robot arm built with the LEGO(TM) Mindstorms system. Instructions for building this arm are included in the "hw" folder.
-     DRAW_MACHINE_TYPE: 'LittlePrinter', // Use this for drawing to a pre-configure little printer. 
+    //DRAW_MACHINE_TYPE: 'HomebrewGalil', // For any 4-axis draw machine using a Galil motion controller
+    //DRAW_MACHINE_TYPE: 'NoMachine', // Use this setting if you do not have a machine connected to the computer. Drawings will be "drawn" in software only.
+    //DRAW_MACHINE_TYPE: 'MindstormsNXT', // A 3-axis robot arm built with the LEGO(TM) Mindstorms system. Instructions for building this arm are included in the "hw" folder.
+    DRAW_MACHINE_TYPE: 'LittlePrinter', // Use this for drawing to a pre-configure little printer. 
     /**********************************************************
      *
      * MindstormsNXT-based draw machine configuration parameters
@@ -164,32 +164,28 @@ exports.ConfigParams = {
      *
      */
     MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodemfd121',
-    MINDSTORMS_NXT__AXIS_CONFIG: [
-        {
-            'motorPort': 1,
-            'zeroingDirection': 1,
-            'zeroingSpeed': 15,
-            'limitSwitchPort': 1
-        },
-        {
-            'motorPort': 2,
-            'zeroingDirection': 1,
-            'zeroingSpeed': 20,
-            'limitSwitchPort': null
-        },
-        {
-            'motorPort': 3,
-            'zeroingDirection': 1,
-            'zeroingSpeed': 50,
-            'limitSwitchPort': null
-        },
-    ],
-    
+    MINDSTORMS_NXT__AXIS_CONFIG: [{
+        'motorPort': 1,
+        'zeroingDirection': 1,
+        'zeroingSpeed': 15,
+        'limitSwitchPort': 1
+    }, {
+        'motorPort': 2,
+        'zeroingDirection': 1,
+        'zeroingSpeed': 20,
+        'limitSwitchPort': null
+    }, {
+        'motorPort': 3,
+        'zeroingDirection': 1,
+        'zeroingSpeed': 50,
+        'limitSwitchPort': null
+    }, ],
+
     /*
       Little Printer Configuration
     */
     LITTLE_PRINTER: {
-      DEVICE_ID: "N9DQRWTNBHCO" // This needs to be code found at the bottom of http://remote.bergcloud.com/developers/direct_print_codes
+        DEVICE_ID: "N9DQRWTNBHCO" // This needs to be code found at the bottom of http://remote.bergcloud.com/developers/direct_print_codes
     },
 
     /**********************************************************
@@ -201,45 +197,45 @@ exports.ConfigParams = {
      *
      */
 
-        /* if true, will use the LOWER_SERIAL_PORT and UPPER_SERIAL_PORT direct connections to the arm sensors.
+    /* if true, will use the LOWER_SERIAL_PORT and UPPER_SERIAL_PORT direct connections to the arm sensors.
         If false, we will use socket connections to HOMEBREW_GALIL__LOWER_NET_PORT and HOMEBREW_GALIL__UPPER_NET_PORT */
-        HOMEBREW_GALIL__USE_DIRECT_SERIAL_ARM_SENSORS: true,
-        /* if connecting to serial ports directly, these are the ports for the upper and lower arm sensor arduinos */
-        HOMEBREW_GALIL__LOWER_SERIAL_PORT: '/dev/cu.usbmodemfa1341',
-        HOMEBREW_GALIL__UPPER_SERIAL_PORT: '/dev/cu.usbmodemfa121',
-        /* HOMEBREW_GALIL__ARDUINO_BAUD is the buad rate at which to connect to LOWER_SERIAL_PORT and UPPER_SERIAL_PORT */
-        HOMEBREW_GALIL__ARDUINO_BAUD: 38400,
-        /* if connecting to serial proxies (serproxy script), these are the ports for the upper and lower arduinos */
-        HOMEBREW_GALIL__LOWER_NET_PORT: 10000,
-        HOMEBREW_GALIL__UPPER_NET_PORT: 10001,
+    HOMEBREW_GALIL__USE_DIRECT_SERIAL_ARM_SENSORS: true,
+    /* if connecting to serial ports directly, these are the ports for the upper and lower arm sensor arduinos */
+    HOMEBREW_GALIL__LOWER_SERIAL_PORT: '/dev/cu.usbmodemfa1341',
+    HOMEBREW_GALIL__UPPER_SERIAL_PORT: '/dev/cu.usbmodemfa121',
+    /* HOMEBREW_GALIL__ARDUINO_BAUD is the buad rate at which to connect to LOWER_SERIAL_PORT and UPPER_SERIAL_PORT */
+    HOMEBREW_GALIL__ARDUINO_BAUD: 38400,
+    /* if connecting to serial proxies (serproxy script), these are the ports for the upper and lower arduinos */
+    HOMEBREW_GALIL__LOWER_NET_PORT: 10000,
+    HOMEBREW_GALIL__UPPER_NET_PORT: 10001,
 
-        /* the IP or hostname of the arm motion controller */
-        HOMEBREW_GALIL__CONTROLLER_HOSTNAME: '192.168.3.3',
-        HOMEBREW_GALIL__CONTROLLER_TCP_PORT: 23,
-        HOMEBREW_GALIL__CONTROLLER_UDP_PORT: 3333,
+    /* the IP or hostname of the arm motion controller */
+    HOMEBREW_GALIL__CONTROLLER_HOSTNAME: '192.168.3.3',
+    HOMEBREW_GALIL__CONTROLLER_TCP_PORT: 23,
+    HOMEBREW_GALIL__CONTROLLER_UDP_PORT: 3333,
 
-        /* number of steps in one turn of the motor */
-        HOMEBREW_GALIL__MOTOR_STEPS_PER_REV: 200,
-        /* number of microsteps per step */
-        HOMEBREW_GALIL__MICROSTEPS: 10,
-        /* the tip sensor value that indicates the tip is in the sand */
-        HOMEBREW_GALIL__TIP_VALUE_THRESHOLD: 40, //cm
-        /* how far down the tip goes when checking for sand */
-        HOMEBREW_GALIL__SAND_DEPTH_MEASUREMENT_END_POINT: -13,
-        /* these angles are used to slightly adjust the coordinate system so it is parallel to the sand */
-        HOMEBREW_GALIL__HOMING_UPPER_ANGLE: 90,
-        HOMEBREW_GALIL__HOMING_LOWER_ANGLE: 91.5,
-        HOMEBREW_GALIL__TURNTABLE_DEGREES_SHORT_WIPE: 90,
-        /* used when moving from home (default angles above) to  */
-        HOMEBREW_GALIL__SLEEP_STEP_COUNTS_FROM_HOME: [0,0,-2800],
-        /* speed acceleration and decelleration for sand pan movement  */
-        HOMEBREW_GALIL__PAN_SP: 10000,
-        HOMEBREW_GALIL__PAN_AC: 10000,
-        HOMEBREW_GALIL__PAN_DC: 10000,
+    /* number of steps in one turn of the motor */
+    HOMEBREW_GALIL__MOTOR_STEPS_PER_REV: 200,
+    /* number of microsteps per step */
+    HOMEBREW_GALIL__MICROSTEPS: 10,
+    /* the tip sensor value that indicates the tip is in the sand */
+    HOMEBREW_GALIL__TIP_VALUE_THRESHOLD: 40, //cm
+    /* how far down the tip goes when checking for sand */
+    HOMEBREW_GALIL__SAND_DEPTH_MEASUREMENT_END_POINT: -13,
+    /* these angles are used to slightly adjust the coordinate system so it is parallel to the sand */
+    HOMEBREW_GALIL__HOMING_UPPER_ANGLE: 90,
+    HOMEBREW_GALIL__HOMING_LOWER_ANGLE: 91.5,
+    HOMEBREW_GALIL__TURNTABLE_DEGREES_SHORT_WIPE: 90,
+    /* used when moving from home (default angles above) to  */
+    HOMEBREW_GALIL__SLEEP_STEP_COUNTS_FROM_HOME: [0, 0, -2800],
+    /* speed acceleration and decelleration for sand pan movement  */
+    HOMEBREW_GALIL__PAN_SP: 10000,
+    HOMEBREW_GALIL__PAN_AC: 10000,
+    HOMEBREW_GALIL__PAN_DC: 10000,
 
     /*
      * end of HomebrewGalil draw machine parameters
      *
      ***********************************************************/
 
-}; 
+};

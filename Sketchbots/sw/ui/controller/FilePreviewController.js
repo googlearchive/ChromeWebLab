@@ -24,11 +24,10 @@ var BLANK_IMAGE_DATAURL = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAA
  * The FilePreviewController is a complete UI widget for previewing files before they are uploaded from a form.
  *
  */
-var FilePreviewController = new Class(
-{
-	Implements: [Events],
+var FilePreviewController = new Class({
+    Implements: [Events],
 
-	_UIContainer: null,
+    _UIContainer: null,
     _previewContainer: null,
     _previewImage: null,
     _gcodePreviewSceneContainer: null,
@@ -40,17 +39,14 @@ var FilePreviewController = new Class(
      * @param UIContainer a Mootools Element in which the preview UI should be contained
      *
      */
-	initialize: function(UIContainer)
-    {		
-		this._UIContainer = UIContainer;
-        this._previewContainer = new Element('div',
-        {
+    initialize: function(UIContainer) {
+        this._UIContainer = UIContainer;
+        this._previewContainer = new Element('div', {
             'class': 'Preview Empty',
         }).inject(this._UIContainer);
 
         // create an image which we will use to display a preview of the file (assuming it is an image)
-        this._previewImage = new Element('img',
-        {
+        this._previewImage = new Element('img', {
             id: 'filePickerPreview',
             'src': BLANK_IMAGE_DATAURL, // default preview image is a tiny transparent GIF, per http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever
             'alt': 'preview',
@@ -58,8 +54,7 @@ var FilePreviewController = new Class(
         }).inject(this._previewContainer);
 
         // for g-code files we need a Three.js scene to do some custom rendering
-        this._gcodePreviewSceneContainer = new Element('div',
-        {
+        this._gcodePreviewSceneContainer = new Element('div', {
             id: 'filePickerPreviewScene',
             hidden: false,
         }).inject(this._previewContainer);
@@ -70,8 +65,7 @@ var FilePreviewController = new Class(
     },
 
 
-    refresh: function(field)
-    {
+    refresh: function(field) {
         if (!field.hasOwnProperty('files') || field.files.length <= 0) {
             console.warn('Attempted to preview file upload, but no file was selected');
             return;
@@ -79,10 +73,8 @@ var FilePreviewController = new Class(
 
         var reader = new FileReader();
         console.log("Uploaded file of type " + field.files[0].type);
-        if ((field.files[0].type.substr(5) == 'text/') || (field.files[0].name.toLowerCase().substr(-6) == '.gcode') || (field.files[0].name.toLowerCase().substr(-4) == '.txt'))
-        {
-            reader.onload = function(e)
-            {
+        if ((field.files[0].type.substr(5) == 'text/') || (field.files[0].name.toLowerCase().substr(-6) == '.gcode') || (field.files[0].name.toLowerCase().substr(-4) == '.txt')) {
+            reader.onload = function(e) {
                 //
                 // preview as g-code (text)
                 //
@@ -96,10 +88,8 @@ var FilePreviewController = new Class(
             }.bind(this);
             reader.readAsText(field.files[0]);
 
-        }
-        else {
-            reader.onload = function(e)
-            {
+        } else {
+            reader.onload = function(e) {
                 //
                 // preview as an image
                 //
@@ -120,4 +110,3 @@ var FilePreviewController = new Class(
     },
 
 });
-

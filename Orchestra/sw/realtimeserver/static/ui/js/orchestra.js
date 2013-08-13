@@ -1,9 +1,9 @@
 /**
-* orchestra.js: controller logic for Orchestra UI,
-* receives messages from the badge reader and Node.js server,
-* and displays blob interface.
-*
-*/
+ * orchestra.js: controller logic for Orchestra UI,
+ * receives messages from the badge reader and Node.js server,
+ * and displays blob interface.
+ *
+ */
 
 /*
     Copyright 2013 Google Inc
@@ -29,15 +29,15 @@ var OrchestraConfiguration = WEBLAB.namespace("WEBLAB.orchestra").OrchestraConfi
 
 $(document).ready(function() {
 
-  // Set instrument ID based on query string (default 0)
-  // 
-  instrument_id = params.instrument;
+    // Set instrument ID based on query string (default 0)
+    // 
+    instrument_id = params.instrument;
 
-  // init player
-  // 
-  instrument = new Orchestra.Instrument(instrument_id, params.video);
+    // init player
+    // 
+    instrument = new Orchestra.Instrument(instrument_id, params.video);
 
-  // init MIDI drop zone
-  // 
-  $('#midi').midi_drop(instrument.player);
+    // init MIDI drop zone
+    // 
+    $('#midi').midi_drop(instrument.player);
 });
