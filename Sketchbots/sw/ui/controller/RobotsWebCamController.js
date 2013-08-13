@@ -31,11 +31,10 @@ var robotsWebCamManager; // see RobotsWebCamController._initWebCamManager for mo
  *      RobotsMainControllerEvents.IMAGE_READY_FOR_UPLOAD
  *
  */
-var RobotsWebCamController = new Class(
-{
-	Implements: [Events],
+var RobotsWebCamController = new Class({
+    Implements: [Events],
 
-	_UIContainer: null,
+    _UIContainer: null,
 
     _backgroundBlocker: null,
     _webCamContainer: null,
@@ -67,9 +66,8 @@ var RobotsWebCamController = new Class(
      * @param webCamH The number of pixels high the web cam UI should be
      *
      */
-	initialize: function(UIContainer, webCamSWFURL, webCamW, webCamH)
-    {		
-		this._UIContainer = UIContainer;
+    initialize: function(UIContainer, webCamSWFURL, webCamW, webCamH) {
+        this._UIContainer = UIContainer;
 
         this._webCamSWFURL = webCamSWFURL;
         this._webCamW = webCamW;
@@ -78,81 +76,68 @@ var RobotsWebCamController = new Class(
         //
         //a box to contain the webcam preview image (only ONE of these for the whole UI)
         //
-        this._webCamBox = new Element('div',
-        {
+        this._webCamBox = new Element('div', {
             id: 'webCamBox',
             hidden: true,
         });
-        if ($(this._webCamBox.id))
-        {
+        if ($(this._webCamBox.id)) {
             this._webCamBox.replaces(new Element($(this._webCamBox.id)));
-        }
-        else {
+        } else {
             this._webCamBox.inject(this._UIContainer);
         }
 
-        this._backgroundBlocker = new Element('div',
-        {
+        this._backgroundBlocker = new Element('div', {
             'class': 'Background',
         }).inject(this._webCamBox);
 
-        this._webCamContainer = new Element('div',
-        {
+        this._webCamContainer = new Element('div', {
             'class': 'Window',
         }).inject(this._backgroundBlocker);
 
-        this._countdownUIContainer = new Element('div',
-        {
+        this._countdownUIContainer = new Element('div', {
             class: 'Countdown',
             hidden: true,
         }).inject(this._webCamContainer);
 
 
-        this._help = new Element('div',
-        {
+        this._help = new Element('div', {
             'class': 'Help',
             'html': ''
         }).inject(this._webCamContainer);
 
-        new Element('div',
-        {
+        new Element('div', {
             'id': 'webCamPreviewHolder',
             'class': 'Preview'
         }).inject(this._webCamContainer);
 
-        var buttons = new Element('div',
-        {
+        var buttons = new Element('div', {
             id: 'webCamTools',
             'class': 'Tools',
             hidden: true,
         }).inject(this._webCamContainer);
 
-        UIWidgets.getNewButtonElement(
-        {
+        UIWidgets.getNewButtonElement({
             'class': 'Cancel',
             'text': _('CANCEL_WEBCAM_PICTURE_LABEL'),
         }).inject(buttons).addEvent('click', this.hide.bind(this));
-        
+
         // it also needs some buttons
-        this._takePictureButton = UIWidgets.getNewButtonElement(
-        {
+        this._takePictureButton = UIWidgets.getNewButtonElement({
             'class': 'TakePicture',
             'text': _('TAKE_WEBCAM_PICTURE_LABEL'),
             hidden: false,
         }).inject(buttons).addEvent('click', function(e) {
             this._startImageCapture();
         }.bind(this));
-        
+
         // it also needs some buttons
-        this._resetButton = UIWidgets.getNewButtonElement(
-        {
+        this._resetButton = UIWidgets.getNewButtonElement({
             'class': 'Reset',
             'text': _('RESET_WEBCAM_PICTURE_LABEL'),
             hidden: true,
         }).inject(buttons).addEvent('click', this._reset.bind(this));
 
-        this._saveButton = UIWidgets.getNewButtonElement(
-        {
+        this._saveButton = UIWidgets.getNewButtonElement({
             'class': 'Save',
             'text': _('SAVE_WEBCAM_PICTURE_LABEL'),
             hidden: true,
@@ -166,8 +151,7 @@ var RobotsWebCamController = new Class(
      * @param topicName a String containing the name of the queue topic to which the image will be sent (if captured)
      *
      */
-    show: function(topicName)
-    {
+    show: function(topicName) {
         this._currentTopicName = topicName;
         this._reset();
         this._webCamBox.hidden = false;
@@ -177,8 +161,7 @@ var RobotsWebCamController = new Class(
      * Hides the webcam UI regardness of its state.
      *
      */
-    hide: function()
-    {
+    hide: function() {
         this._webCamBox.hidden = true;
     },
 
@@ -186,21 +169,18 @@ var RobotsWebCamController = new Class(
     // private methods
     //
 
-    _startImageCapture: function()
-    {
+    _startImageCapture: function() {
         //this._showCountdown(); // TODO - fix "Uncaught RangeError: Maximum call stack size exceeded" bug in the countdown functionality
         // for now, just go straight to the flash
         this._showCameraFlash();
     },
 
-    _setUserMessage: function(msg)
-    {
+    _setUserMessage: function(msg) {
         //document.fireEvent(RobotsMainControllerEvents.SET_USER_MESSAGE, msg);
         this._help.innerHTML = msg;
     },
 
-    _reset: function() 
-    {
+    _reset: function() {
         if (!robotsWebCamManager)
             this._initWebCamManager(this._webCamSWFURL, this._webCamW, this._webCamH);
         robotsWebCamManager.reset();
@@ -210,14 +190,12 @@ var RobotsWebCamController = new Class(
         this._takePictureButton.hidden = false;
     },
 
-    _save: function()
-    {
+    _save: function() {
         //notify listeners that there is an image ready to use
         this.fireEvent(RobotsMainControllerEvents.IMAGE_READY_FOR_UPLOAD, [this._currentTopicName, this._currentImage.toDataURL()]);
     },
 
-    _showCountdown: function()
-    {
+    _showCountdown: function() {
         this._countdownController = new WEBLAB.robots.webcam.WebCamCountdown();
         this._countdownController.init();
         this._countdownController.scaleNumbers(this._showCameraFlash.bind(this));
@@ -225,24 +203,21 @@ var RobotsWebCamController = new Class(
         this._countdownUIContainer.hidden = false;
     },
 
-    _showCameraFlash: function()
-    {
+    _showCameraFlash: function() {
         this._countdownUIContainer.hidden = true;
 
-        var cameraFlash = new Element('div',
-        {
+        var cameraFlash = new Element('div', {
             id: 'robotsWebCamWhiteFlash'
         }).inject(this._UIContainer);
 
 
         setTimeout(this._onCameraFlashEnd.bind(this), 1000);
-        
+
         // don't interfere with rendering
         //TODO
     },
 
-    _onCameraFlashEnd: function()
-    {
+    _onCameraFlashEnd: function() {
         //get rid of the flash
         new Element($('robotsWebCamWhiteFlash')).dispose();
         //take the current video frame and turn it into image data
@@ -251,8 +226,7 @@ var RobotsWebCamController = new Class(
     },
 
 
-    _initWebCamManager: function(swfUrl, w, h)
-    {
+    _initWebCamManager: function(swfUrl, w, h) {
         // make sure we don't do this twice
         if (robotsWebCamManager != null) return;
 
@@ -304,13 +278,11 @@ var RobotsWebCamController = new Class(
         robotsWebCamManager.init(swfUrl, w, h, this._useWebCamImage.bind(this));
     }, //_initWebCamManager
 
-    _useWebCamImage: function(onFaceChecked)
-    {
+    _useWebCamImage: function(onFaceChecked) {
         //TODO
         robotsWebCamManager.domElement.id = 'webCamImage';
         document.body.appendChild(robotsWebCamManager.domElement); // required for later stages of anim //MENOTE: What? and why?
     },
-    
+
 
 });
-

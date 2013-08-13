@@ -1,0 +1,11 @@
+{
+  "name": "ChromeWebLab",
+  "version": "0.0.0",
+  "description": "The Chrome Web Lab for Makers, Hackers and everyone",
+  "main": "Gruntfile.js",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-jsbeautifier": "~0.2.0"
+  }
+}

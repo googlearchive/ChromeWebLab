@@ -15,31 +15,31 @@
 */
 
 var Note = function Note() {
-	
-	this.position = -1;
-	this.pitch = -1;
-	
+
+    this.position = -1;
+    this.pitch = -1;
+
 };
 
 var p = Note.prototype;
 
 p.setPositionAndPitch = function(aPosition, aPitch) {
-	
-	this.position = aPosition;
-	this.pitch = aPitch;
-	
-	return this;
+
+    this.position = aPosition;
+    this.pitch = aPitch;
+
+    return this;
 }
 
 p.toString = function() {
-	return "[Note (position: " + this.position +", pitch, " + this.pitch + ")]";
+    return "[Note (position: " + this.position + ", pitch, " + this.pitch + ")]";
 };
 
 exports.Note = Note;
 exports.create = function(aPosition, aPitch) {
-	var newNote = new Note();
-	
-	newNote.setPositionAndPitch(aPosition, aPitch);
-	
-	return newNote;
+    var newNote = new Note();
+
+    newNote.setPositionAndPitch(aPosition, aPitch);
+
+    return newNote;
 }

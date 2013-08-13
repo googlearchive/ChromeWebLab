@@ -19,16 +19,16 @@
 // to insert a string somewhere, use _('KEY_NAME')
 //
 var _ = function(key) {
-    if (this.hasOwnProperty(key)) return this[key]; else throw new Error('Invalid string key "'+key+'"');
-}.bind(
-{
+    if (this.hasOwnProperty(key)) return this[key];
+    else throw new Error('Invalid string key "' + key + '"');
+}.bind({
     'LABQUEUE_OK': 'Successfully connected to labqueue',
 
     'LOADING_DRAWING_QUEUES': '...',
 
     'PAGE_TITLE': 'Sketchbots',
     'PAGE_SUBTITLE': 'Exp. 03',
-    
+
     'ADD_FROM_WEBCAM_LABEL': 'New from Web Cam',
     'ADD_FROM_FILE_LABEL': 'New from File',
     'COMPLETED_TASKS_LIST_TITLE': 'Completed',
@@ -70,5 +70,3 @@ var _ = function(key) {
 
     'VIEW_FINAL_BUTTON_LABEL': 'View Completed Drawing',
 });
-
-

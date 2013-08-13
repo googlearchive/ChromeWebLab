@@ -20,26 +20,26 @@ var OrchestraConfiguration = WEBLAB.namespace("WEBLAB.orchestra").OrchestraConfi
 // 
 $.getScript(OrchestraConfiguration.WEBRTC_SIGNALING_URL + "/socket.io/socket.io.js", function(script, textStatus, jqXHR) {
 
-  // create our webrtc connection
-  // 
-  var webrtc = new WebRTC({
-    url: OrchestraConfiguration.WEBRTC_SIGNALING_URL,
-    localVideoEl: 'localVideo',
-    autoRequestMedia: true
-  });
+    // create our webrtc connection
+    // 
+    var webrtc = new WebRTC({
+        url: OrchestraConfiguration.WEBRTC_SIGNALING_URL,
+        localVideoEl: 'localVideo',
+        autoRequestMedia: true
+    });
 
-  // when video stream is loaded, join "room" for this instrument
-  // 
-  webrtc.on('readyToCall', function () {
-    
-    if (params.instrument !== undefined) {
-      webrtc.createRoom("instrument" + params.instrument.toString(), function(err, name) {
-        console.log(err, name);
-        if(err) {
-          
+    // when video stream is loaded, join "room" for this instrument
+    // 
+    webrtc.on('readyToCall', function() {
+
+        if (params.instrument !== undefined) {
+            webrtc.createRoom("instrument" + params.instrument.toString(), function(err, name) {
+                console.log(err, name);
+                if (err) {
+
+                }
+            });
         }
-      });
-    }
-  });
+    });
 
 });

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 process.on('uncaughtException', function(err) {
-  console.log(err);
+    console.log(err);
 });
 
 var ImageProcessingManager = require('./ImageProcessingManager').ImageProcessingManager;

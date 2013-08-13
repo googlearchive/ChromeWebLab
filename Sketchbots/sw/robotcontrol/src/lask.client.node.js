@@ -22,10 +22,10 @@
  *
  *
  */
- 
+
 var crypto = require('crypto');
 
-var transports = [ 'http', 'https' ];
+var transports = ['http', 'https'];
 
 transports.forEach(function(tName) {
     exports[tName] = Object.create(require(tName));
@@ -40,18 +40,18 @@ transports.forEach(function(tName) {
     exports[tName].__old_request = exports[tName].request;
     exports[tName].request = function(options, callback) {
         if (!this.hasOwnProperty('app_key') || (this.app_key == null) || (this.app_key == undefined))
-            throw new Error('When using the Lask client for Node, you must set '+tName+'.app_key before calling '+tName+'.get() or '+tName+'.request()');
+            throw new Error('When using the Lask client for Node, you must set ' + tName + '.app_key before calling ' + tName + '.get() or ' + tName + '.request()');
         if (!this.hasOwnProperty('app_secret') || (this.app_secret == null) || (this.app_secret == undefined))
-            throw new Error('When using the Lask client for Node, you must set '+tName+'.app_secret before calling '+tName+'.get() or '+tName+'.request()');
+            throw new Error('When using the Lask client for Node, you must set ' + tName + '.app_secret before calling ' + tName + '.get() or ' + tName + '.request()');
         if (!options.hasOwnProperty('path') || !options.path)
             throw new Error('The options parameter to get() or request() must contain a path');
         if (!options.hasOwnProperty('host') || !options.host)
             throw new Error('The options parameter to get() or request() must contain a host');
-            
+
         if (!options.hasOwnProperty('headers'))
             options.headers = {};
         if (!options.headers.hasOwnProperty('Authorization')) {
-            options.headers['Authorization'] = 'CWL '+this.app_key+':'+this.getSignature(this.app_secret, options.path);
+            options.headers['Authorization'] = 'CWL ' + this.app_key + ':' + this.getSignature(this.app_secret, options.path);
         }
         var r = this.__old_request(options, callback);
         r.transportType = this.transportType;
@@ -66,4 +66,3 @@ transports.forEach(function(tName) {
         return hmac.digest('hex');
     };
 });
-
