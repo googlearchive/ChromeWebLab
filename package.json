@@ -36,6 +36,7 @@
     "path": "~0.4.9",
     "restler": "~2.0.1",
     "serialport": "~1.1.3",
-    "node-nxt": "0.0.1"
+    "node-nxt": "0.0.1",
+    "canvas": "~1.1.0"
   }
 }
