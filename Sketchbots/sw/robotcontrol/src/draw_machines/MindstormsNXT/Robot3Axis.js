@@ -186,8 +186,8 @@ exports.Robot3Axis = new Class({
 			minDelta = Math.min(minDelta, realDeltas[a]);
 
 		}
-		console.log('maxD: ' + maxDelta);
-		console.log('minD: ' + minDelta);
+		//console.log('maxD: ' + maxDelta);
+		//console.log('minD: ' + minDelta);
 
 		//figure out speeds for each axis and set up listeners
 		for (a = 0; a < al; a++) {
@@ -200,7 +200,7 @@ exports.Robot3Axis = new Class({
 			// speed proprtional to the distance over which
 			// each axis must travel
 			//
-			realSpeeds[a] = speed * (realDeltas[a] / maxDelta);
+			realSpeeds[a] = speed; // * (realDeltas[a] / maxDelta);
 			console.log('realspeed ' + a + ': ' + realSpeeds[a]);
 
 			//set up a handler to wait for all axes to finish their moves
