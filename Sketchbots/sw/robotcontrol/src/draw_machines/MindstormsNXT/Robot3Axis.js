@@ -180,9 +180,15 @@ exports.Robot3Axis = new Class({
 		for (delta = 0, a = 0; a < al; a++) {
 			realPositions[a] = this._gearBoxes[a].getInputFromOutput(targetDegrees[a]);
 			realDeltas[a] = Math.abs(this._axis[a].getCurrentPosition() - realPositions[a]);
+			//console.log('realpos ' + a + ': ' + realPositions[a]);
+			//console.log('realdel ' + a + ': ' + realDeltas[a]);
 			maxDelta = Math.max(maxDelta, realDeltas[a]);
 			minDelta = Math.min(minDelta, realDeltas[a]);
+
 		}
+		console.log('maxD: ' + maxDelta);
+		console.log('minD: ' + minDelta);
+
 		//figure out speeds for each axis and set up listeners
 		for (a = 0; a < al; a++) {
 			// figure out the right speed for this axis,
@@ -195,6 +201,7 @@ exports.Robot3Axis = new Class({
 			// each axis must travel
 			//
 			realSpeeds[a] = speed * (realDeltas[a] / maxDelta);
+			console.log('realspeed ' + a + ': ' + realSpeeds[a]);
 
 			//set up a handler to wait for all axes to finish their moves
 			if (targetDegrees[a] != null)
@@ -598,6 +605,7 @@ var _Axis = new Class({
 		//speed = Math.floor(speed * 100) / 100;
 		//targetDegrees = Math.floor(targetDegrees * 100) / 100;
 		speed = Math.max(this._minSpeed, this._speedQuantize <= 1 ? Math.floor(speed) : Math.floor((speed / this._speedQuantize) * this._speedQuantize));
+		console.log('final speed: ' + speed);
 		targetDegrees = Math.floor(targetDegrees);
 
 		// turn on output regulation -- http://hempeldesigngroup.com/lego/pblua/nxtfunctiondefs/#OutputAPI
@@ -612,7 +620,12 @@ var _Axis = new Class({
 
 			//safety
 			var start_tacho = this._currentTacho;
-			targetDegrees = Math.min(0, targetDegrees - this._currentTacho);
+			//console.log('targetDegrees pre: ' + targetDegrees);
+			//console.log('start_tacho: ' + start_tacho);
+			//console.log('targetdeg - start_tacho: ' + (targetDegrees - start_tacho));
+			//targetDegrees = Math.min(0, targetDegrees - this._currentTacho);
+			targetDegrees = targetDegrees - this._currentTacho;
+			//console.log('targetDegrees post: ' + targetDegrees);
 
 			// set up a periodic check to see if we have reached our destination
 			var hInterval = setInterval(function() {

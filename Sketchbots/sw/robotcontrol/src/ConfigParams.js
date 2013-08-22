@@ -118,7 +118,7 @@ exports.ConfigParams = {
     PAN_GEAR_RATIO: 72,
     */
     //These values are applicable to the MindstormsNXT robots described in ../../../README.md
-    LINK_A: 2.25, //distance, in cm, plate from the center of the base axis, along the surface of the base, to the axis of the lower large gear
+    LINK_A: 2.25, //LINK_A: 2.46, //distance, in cm, plate from the center of the base axis, along the surface of the base, to the axis of the lower large gear
     LINK_B: 13.75, //distance, in cm, from center of lower large gear to center of upper large gear
     LINK_C: 0.0, //distance, in cm, from axis of upper large gear, along its radius, to its intersection with midline of the forearm
     LINK_D: 19.0, //distance, in cm, from aforementioned intersection to tool tip
@@ -153,8 +153,8 @@ exports.ConfigParams = {
      */
      //DRAW_MACHINE_TYPE: 'HomebrewGalil', // For any 4-axis draw machine using a Galil motion controller
      //DRAW_MACHINE_TYPE: 'NoMachine', // Use this setting if you do not have a machine connected to the computer. Drawings will be "drawn" in software only.
-     //DRAW_MACHINE_TYPE: 'MindstormsNXT', // A 3-axis robot arm built with the LEGO(TM) Mindstorms system. Instructions for building this arm are included in the "hw" folder.
-     DRAW_MACHINE_TYPE: 'LittlePrinter', // Use this for drawing to a pre-configure little printer. 
+     DRAW_MACHINE_TYPE: 'MindstormsNXT', // A 3-axis robot arm built with the LEGO(TM) Mindstorms system. Instructions for building this arm are included in the "hw" folder.
+     //DRAW_MACHINE_TYPE: 'LittlePrinter', // Use this for drawing to a pre-configure little printer. 
     /**********************************************************
      *
      * MindstormsNXT-based draw machine configuration parameters
@@ -163,7 +163,7 @@ exports.ConfigParams = {
      * These are only used if for the "MindstormsNXT" draw machine type
      *
      */
-    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodemfd121',
+    MINDSTORMS_NXT__SERIAL_PORT: '/dev/tty.usbmodem621',  //'/dev/cu.usbmodemfd121',
     MINDSTORMS_NXT__AXIS_CONFIG: [
         {
             'motorPort': 1,

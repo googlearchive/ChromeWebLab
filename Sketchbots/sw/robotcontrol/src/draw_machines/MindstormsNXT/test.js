@@ -19,7 +19,7 @@ var BASE_GEARBOX_CONFIG = [8, 50]; //list of gear sizes starting with the one mo
 var LOWER_ARM_GEARBOX_CONFIG = [8, 40]; //list of gear sizes starting with the one mounted on the motor's axle
 var UPPER_ARM_GEARBOX_CONFIG = null; //no gears on the upper arm axis
 
-var robot = new Robot3Axis('/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
+var robot = new Robot3Axis('/dev/cu.usbmodem621', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
@@ -42,34 +42,266 @@ var robot = new Robot3Axis('/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 		'gearBoxConfig': UPPER_ARM_GEARBOX_CONFIG,
 	},
 ]);
+
 robot.once('connected', function() {
 	console.log('Connected. Moving to zero...')
 	//after connecting, get the robot to zero
 	robot.moveToZero();
+	//process.exit(0);
 }.bind(this));
+
+var debug = 'false'; // 'false' runs the 4 corners, 'true' runs 2 easy moves, anything else just zeroes
+
+if (debug == 'true'){
+robot.once('moveToZeroDone', function() {
+	console.log('Zeroed!');
+	//goToPos(20, 10, 5);
+
+	setTimeout(function() {
+		robot.synchronizedMove(20, [ 90, 30, -60 ] );
+	}.bind(this), 2000);
+
+	robot.once('synchronizedMoveDone', function() {
+		console.log('Done with move 1.');
+
+		setTimeout(function() {
+			robot.synchronizedMove(20, [ 45, 0, 0 ] );
+		}.bind(this), 2000);
+
+		robot.once('synchronizedMoveDone', function() {
+			console.log('Done with move 2.');
+			
+			process.exit(0);
+
+		}.bind(this));
+
+	}.bind(this));
+
+	//process.exit(0);
+}.bind(this));
+}
+
+var corner1 = calcAngles(20, 15, 0);
+var corner2 = calcAngles(20, 20, 0);
+var corner3 = calcAngles(15, 20, 0);
+var corner4 = calcAngles(15, 25, 0);
+
+console.log('corner1: ' + corner1);
+console.log('corner2: ' + corner2);
+console.log('corner3: ' + corner3);
+console.log('corner4: ' + corner4);
+
+if (debug == 'false'){
+robot.once('moveToZeroDone', function() {
+	console.log('Zeroed!');
+	
+//+++++++++++++++++++++++
+
+	console.log('Doing corner 1...');
+	setTimeout(function() {
+		robot.synchronizedMove(30, corner1 );
+	}.bind(this), 2000);
+
+	robot.once('synchronizedMoveDone', function() {
+		console.log('Done with corner 1.');
+
+//+++++++++++++++++++++++
+
+		console.log('Doing corner 2...');
+		setTimeout(function() {
+			robot.synchronizedMove(30, corner2 );
+		}.bind(this), 2000);
+
+		robot.once('synchronizedMoveDone', function() {
+			console.log('Done with corner 2.');
+
+//++++++++++++++++++++++
+
+			console.log('Doing corner 3...');
+			setTimeout(function() {
+				robot.synchronizedMove(30, corner3 );
+			}.bind(this), 2000);
+
+			robot.once('synchronizedMoveDone', function() {
+				console.log('Done with corner 3.');
+
+//++++++++++++++++++++++
+
+				console.log('Doing corner 4...');
+				setTimeout(function() {
+					robot.synchronizedMove(30, corner4 );
+				}.bind(this), 2000);
+
+				robot.once('synchronizedMoveDone', function() {
+					console.log('Done with corner 4.');
+
+					process.exit(0);
+
+				}.bind(this));
+
+			}.bind(this));
+
+		}.bind(this));
+
+	}.bind(this));
+
+}.bind(this));
+}
+
+
+function calcAngles(x,y,z){
+	var theta0,	// base angle
+		theta1,	// gear 1 angle
+		theta2,	// gear 2 angle
+		l1,		// leg 1 length
+		l2,		// leg 2 length	
+		l1sq, l2sq,
+		k1,
+		k2,
+		d,
+		dsq,
+		r,
+		xsq,
+		ysq,
+		zprime,
+		zprimesq,
+		theta2calc,
+		sinTheta2,
+		cosTheta2,
+		theta0deg, theta1deg, theta2deg,
+		angsrad,
+		angsdeg,
+		nxttheta0, nxttheta1, nxttheta2,
+		nxtangs
+		;
+
+	var GEAR0ZEROANGLE = 16.187;
+	var GEAR1ZEROANGLE = 45.584;
+	var GEAR2ZEROANGLE = -134.5;
+	var baseheight = 0; //7.65;
+
+	l1 = 13.75; // Link B from ConfigParams.js
+	l2 = 17.0;  // Link D from ConfigParams.js
+	xsq = x*x;
+	ysq = y*y;
+	d = Math.sqrt(xsq + ysq);
+	dsq = d*d;
+	zprime = z - baseheight;
+	zprimesq = zprime*zprime;
+	l1sq = l1*l1;
+	l2sq = l2*l2;
+    
+    console.log('-------------------');
+	// base angle
+	theta0 = Math.atan2(y, x);
+    //console.log('theta0: ' + theta0);
+
+	theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
+	//console.log('theta2calc: ' + theta2calc);
+	sinTheta2 = Math.sqrt( 1 - Math.pow( theta2calc, 2 ) );
+	cosTheta2 = theta2calc;
+	//console.log('sinTheta2: ' + sinTheta2 + ', cosTheta2: ' + cosTheta2);
+	theta2 = Math.atan2(-sinTheta2, cosTheta2);
+	//console.log('theta2: ' + theta2);
+
+	k1 = l1 + l2*Math.cos(theta2);
+	k2 = l2*Math.sin(theta2);
+	theta1 = Math.atan2(zprime,d) - Math.atan2(k2,k1);
+	//console.log('theta1: ' + theta1);
+
+	theta0deg = theta0 * 180 / Math.PI;
+	theta1deg = theta1 * 180 / Math.PI;
+	theta2deg = theta2 * 180 / Math.PI;
+    
+    //theta2deg = -(180 - Math.abs(theta2deg));
+    //theta1deg = 90 - theta1deg;
+    
+    angsrad = [theta0, theta1, theta2];
+	angsdeg = [theta0deg, theta1deg, theta2deg];
+    console.log('thetas in radians: ' + angsrad);
+	console.log('thetas in degrees: ' + angsdeg);
+
+	if (theta0deg < GEAR0ZEROANGLE){
+		console.log("Coordinate is outside of arm bounds. Gear 0 is the culprit.")
+	}
+	if (theta1deg > GEAR1ZEROANGLE){
+		console.log("Coordinate is outside of arm bounds. Gear 1 is the culprit.")
+	}
+	if (theta2deg < GEAR2ZEROANGLE){
+		console.log("Coordinate is outside of arm bounds. Gear 2 is the culprit.")
+	}
+
+	// convert angles into mindstorm space
+	nxttheta0 = theta0deg - GEAR0ZEROANGLE;
+	nxttheta1 = GEAR1ZEROANGLE - theta1deg;
+	nxttheta2 = GEAR2ZEROANGLE - theta2deg;
+	
+	nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
+	console.log('angles for nxt in degrees: ' + nxtangs);
+	return(nxtangs);
+}
+
+
+
 
 /*
 robot.once('moveToZeroDone', function() {
 	console.log('Zeroed!');
-	//do a move
-	robot.once('synchronizedMoveDone', function() {
-		console.log('Done with move 1 of 2.');
-		//do another move
-		robot.once('synchronizedMoveDone', function() {
-			console.log('Done with move 2 of 2.');
-			process.exit(0);
+	
+//+++++++++++++++++++++++
 
-		}.bind(this));
-		console.log('Move 2 of 2...');
+	console.log('Doing corner 1...');
+	setTimeout(function() {
+		robot.synchronizedMove(40, [20, 0, 0]);
+	}.bind(this), 1000);
+
+	robot.once('synchronizedMoveDone', function() {
+		console.log('Done with corner 1.');
+
+//+++++++++++++++++++++++
+
+		console.log('Doing corner 2...');
 		setTimeout(function() {
-			robot.synchronizedMove(40, [null, 30, -145]);
+			robot.synchronizedMove(40, [20, 20, 0]);
 		}.bind(this), 1000);
 
+		robot.once('synchronizedMoveDone', function() {
+			console.log('Done with corner 2.');
+
+//++++++++++++++++++++++
+
+			console.log('Doing corner 3...');
+			setTimeout(function() {
+				robot.synchronizedMove(40, [0, 0, -20]);
+			}.bind(this), 1000);
+
+			robot.once('synchronizedMoveDone', function() {
+				console.log('Done with corner 3.');
+
+//++++++++++++++++++++++
+
+				console.log('Doing corner 4...');
+				setTimeout(function() {
+					robot.synchronizedMove(40, [0, 0, 0]);
+				}.bind(this), 1000);
+
+				robot.once('synchronizedMoveDone', function() {
+					console.log('Done with corner 4.');
+
+					process.exit(0);
+
+				}.bind(this));
+
+			}.bind(this));
+
+		}.bind(this));
+
 	}.bind(this));
-	console.log('Move 1 of 2...');
-	robot.synchronizedMove(40, [30, 0, 0]);
+
 }.bind(this));
 */
+
+
 
 console.log('Connecting...')
 robot.connect(); //start here
