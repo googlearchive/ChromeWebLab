@@ -48,8 +48,8 @@ exports.DrawMachine = new Class({
 	 */
 
 	buff_type: new Array(), //will contain an array of integers, one element for each slot in the current command buffer; each element in the array will have one of these values: 0=point, 1=line, 2=bezier
-	buff_vel: new Array(), //will contain an array of numbers, one element for each slot in the current command buffer; each element is the velocity of one command
-	buff_acc: new Array(), //will contain an array of numbers, one element for each slot in the current command buffer; each element is the acceleration of one command
+	buff_vel:  new Array(), //will contain an array of numbers, one element for each slot in the current command buffer; each element is the velocity of one command
+	buff_acc:  new Array(), //will contain an array of numbers, one element for each slot in the current command buffer; each element is the acceleration of one command
 	buff_dist: new Array(), //will contain an array of numbers, one element for each slot in the current command buffer; each element is the distance parameter of one command
 	buff_cart: [
 		new Array(), //buf_cart[0] will contain an array of numbers, one element for each slot in the current command buffer;  each element contains the X coordinate for the target point of that command
@@ -85,7 +85,10 @@ exports.DrawMachine = new Class({
 	  * initialize the DrawMachine class. Do not set up machine communication here. This is for state initialization.
 	  *
 	  */
-	 initialize: function(options){
+	 initialize: function(options) {
+	 	console.log("------------------------------------------------------>>>>>>>>>>>>>");
+	 	console.log("INITIALIZING MINDSTORM-NXT DRAWMACHINE");
+
 		this.setOptions(options);
 
 		this.BUFFER_SIZE = 3000;
@@ -186,10 +189,10 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	goHome: function() {
-		this.robot.once('moveToZeroDone', function() {
+		this._robot.once('moveToZeroDone', function() {
 			this.emit('robotAtHome');
 		}.bind(this));
-		this.robot.moveToZero();
+		this._robot.moveToZero();
 	},
 
 	/**
@@ -198,10 +201,12 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	calibrate: function() {
-		this.robot.once('moveToZeroDone', function() {
+		console.log("------------------------------------------------------>>>>>>>>>>>>>");
+		console.log(this._robot);
+		this._robot.once('moveToZeroDone', function() {
 			this.emit('robotCalibrated');
 		}.bind(this));
-		this.robot.moveToZero();
+		this._robot.moveToZero();
 	},
 
 	/**
@@ -254,16 +259,17 @@ exports.DrawMachine = new Class({
     		this.emit('readyForPicture');
     		return;
     	}
-    	this.robot.removeAllListeners();
-    	this.robot.once('synchronizedMoveDone', this._drawNextPart.bind(this));
-    	this.robot.synchronizedMove(this.DRAWING_SPEED, this._drawingServoAnglesCursor[this._drawingServoAnglesCursor]);
+    	this._robot.removeAllListeners();
+    	this._robot.once('synchronizedMoveDone', this._drawNextPart.bind(this));
+    	this._robot.synchronizedMove(this.DRAWING_SPEED, this._drawingServoAnglesCursor[this._drawingServoAnglesCursor]);
     	this._drawingServoAnglesCursor++;
     },
 
     _calculateDrawingAngles: function() {
     	this._drawingServoAngles = new Array(this.buff_cart.length);
-    	for (var i = 0, il = this._drawingServoAngles.length; i < il; i++)
+    	for (var i = 0, il = this._drawingServoAngles.length; i < il; i++) {
     		this._drawingServoAngles[i] = this._doIk(this.buff_cart[0][i], this.buff_cart[1][i], this.buff_cart[2][i]);
+    	}
     },
 
     /**
@@ -374,8 +380,3 @@ exports.DrawMachine = new Class({
 
 
 });
-
-
-
-
-
