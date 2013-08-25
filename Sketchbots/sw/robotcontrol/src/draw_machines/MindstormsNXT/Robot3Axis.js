@@ -162,6 +162,9 @@ exports.Robot3Axis = new Class({
 	 *
 	 */
 	synchronizedMove: function(speed, targetDegrees) {
+		console.log(speed);
+		console.log(targetDegrees);
+
 		if (!this._allZeroed) throw new Error('Robot not yet zeroed. synchronizedMove() can only be used after calling moveToZero() and waiting for a "moveToZeroDone" event.')
 		if (!targetDegrees || targetDegrees.length < this._axis.length) throw new Error('targetDegrees must have exactly '+this._axis.length+' elements');
 		if (speed < 0) throw new Error('Speed is negative');
@@ -189,6 +192,15 @@ exports.Robot3Axis = new Class({
 		////console.log('maxD: ' + maxDelta);
 		////console.log('minD: ' + minDelta);
 
+			console.log('al => ' + al);
+			console.log('realSpeeds => ' + realSpeeds);
+			console.log('realPositions => ' + realPositions);
+			console.log('realDeltas => ' + realDeltas);
+			console.log('maxDeltas => ' + maxDelta);
+			console.log('minDelta => ' + minDelta);
+			console.log('delta => ' + al);
+			console.log("------------------------------------------");
+
 		//figure out speeds for each axis and set up listeners
 		for (a = 0; a < al; a++) {
 			// figure out the right speed for this axis,
@@ -201,7 +213,7 @@ exports.Robot3Axis = new Class({
 			// each axis must travel
 			//
 			realSpeeds[a] = speed; // * (realDeltas[a] / maxDelta);
-			//console.log('realspeed ' + a + ': ' + realSpeeds[a]);
+			console.log('realspeed ' + a + ': ' + realSpeeds[a]);
 
 			//set up a handler to wait for all axes to finish their moves
 			if (targetDegrees[a] != null)
@@ -219,10 +231,13 @@ exports.Robot3Axis = new Class({
 
 		// command all axes
 		// IMPORTANT: we don't want to do much (any?) processing inside this loop
-		for (a = 0; a < al; a++)
+		for (a = 0; a < al; a++) {
 			//actually command the move:
-			if (targetDegrees[a] != null)
+			if (targetDegrees[a] != null) {
 				this._axis[a].move(realSpeeds[a], realPositions[a]);
+			}
+			
+		}
 
 		this._synchMoving = true; //set flag
 	},
@@ -250,6 +265,7 @@ exports.Robot3Axis = new Class({
 
 		}.bind(this));
 		//console.log('Zeroing Axis #'+axisIndex);
+
 		this._axis[axisIndex].moveToZeroAndResetCounter();
 	},
 
@@ -424,10 +440,9 @@ var _Axis = new Class({
 	moveToZeroAndResetCounter: function() {
 		if (this._moving) throw new Error('Axis is already moving. Wait for "moveDone", call stopAndIdleNow() or stopAndHoldNow() before calling moveToZeroAndResetCounter() again');
 		this._moving = true;
-
-		//console.log('Zeroing axis '+this);
-
-		this.stopAndIdleNow();
+		
+		//this.stopAndIdleNow();
+		this.stopAndHoldNow(); //This seems to hold the axis better than stopAndIdleNow
 
 		//handler for move completion
 		this.once('moveDone', function() {
@@ -600,7 +615,7 @@ var _Axis = new Class({
 		if (this._moving) throw new Error('Axis is already moving. Wait for "moveDone", call stopAndIdleNow() or stopAndHoldNow() before calling move() again');
 		if (speed < 0) throw new Error('Speed is negative');
 
-		this.stopAndIdleNow(); //is this necessary?
+		//this.stopAndIdleNow(); //is this necessary?
 
 		//make sure speed an target degrees have the right degree of precision
 		speed = Math.floor(speed * 100) / 100;
@@ -608,6 +623,8 @@ var _Axis = new Class({
 		speed = Math.max(this._minSpeed, this._speedQuantize <= 1 ? Math.floor(speed) : Math.floor((speed / this._speedQuantize) * this._speedQuantize));
 		//console.log('final speed: ' + speed);
 		targetDegrees = Math.floor(targetDegrees);
+
+		console.log("TARGET DEG => " + targetDegrees);
 
 		// turn on output regulation -- http://hempeldesigngroup.com/lego/pblua/nxtfunctiondefs/#OutputAPI
 		//this._nxt.OutputSetRegulation(this._motorPort, 1, 1); // redundant because we turned it on in moveToZeroAndResetCounter()
