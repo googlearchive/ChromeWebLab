@@ -135,7 +135,7 @@ These instructions are intended to get the whole Sketchbots system up and runnin
 ### Installing robotcontrol
 
 1. Download and install the latest version of Node.js from [this page](http://nodejs.org/).
-2. **robotcontrol** depends on node-canvas, which, in turn depends on: `pkg-config`, `Pixman`, and `Cairo`. Install these dependencies by following the instructions on the node-canvas GitHub project's wiki [for Mac OS X](https://github.com/LearnBoost/node-canvas/wiki/Installation---OSX) (and [other operating systems](https://github.com/LearnBoost/node-canvas/wiki)).
+2. **robotcontrol** depends on `node-canvas`, which, in turn depends on: `pkg-config`, `Pixman`, and `Cairo`. Install these dependencies by following the instructions on the node-canvas GitHub project's wiki [for Mac OS X](https://github.com/LearnBoost/node-canvas/wiki/Installation---OSX) (and [other operating systems](https://github.com/LearnBoost/node-canvas/wiki)).
     - Tips:
         + You will need `libpng` **before** you install `cairo`. You may already have it installed, but if not a binary version of `libpng` for Mac OS X is available [here](http://ethan.tira-thompson.com/Mac_OS_X_Ports.html).
         + When installing on OS X, try using `sudo make install` rather than simply `make install` for the dependencies. By default they will attempt to install in `/usr/local/` which is read-only for normal users.
