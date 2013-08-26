@@ -17,12 +17,12 @@
 var Robot3Axis = require('./Robot3Axis').Robot3Axis;
 
 //CONFIG
-var BASE_GEARBOX_CONFIG = [8, 50]; //list of gear sizes starting with the one mounted on the motor's axle
+var BASE_GEARBOX_CONFIG = [8, 56]; //list of gear sizes starting with the one mounted on the motor's axle
 var LOWER_ARM_GEARBOX_CONFIG = [8, 40]; //list of gear sizes starting with the one mounted on the motor's axle
 var UPPER_ARM_GEARBOX_CONFIG = null; //no gears on the upper arm axis
 var GLOBAL_SPEED = 20;
 
-var robot = new Robot3Axis('/dev/cu.usbmodem1421', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
+var robot = new Robot3Axis('/dev/cu.usbmodem411', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
@@ -81,7 +81,7 @@ function goto(coords) {
 /* COORD TESTS
   --------------------------------------------------- */
 
-var useIk = false; //when false uses direct coords
+var useIk = true; //when false uses direct coords
 
 var coords = [];
 
@@ -89,36 +89,50 @@ var coords = [];
 if(useIk) {
 
 	coords = [
-		calcAngles(20, 15, 1),
-		calcAngles(20, 16, 1),
-		calcAngles(20, 15, 1),
-		calcAngles(20, 16, 1)
+		calcAngles(20, 15, 0),
+		calcAngles(20, 16, 0),
+		calcAngles(20, 17, 0),
+		calcAngles(20, 18, 0),
+		calcAngles(20, 18, 0)
+		//[null, null, null]
 	];
 
 } else {
-
+	var slop = 6;
 	coords = [
 
-		//leg 2 (gear 2)
+		[0,0,0]
 
-	 //  [0,0,-54],
-	 //  [0,0,-99],
-	 //  [0,0,-54],
-		// [0,0,-99]
+		//base (gear 0)
+
+		// [0,0,-180],
+		// [10 + slop,0,null],
+		// [20 + slop,0,null],
+		// [30 + slop,0,null],
+		// [40 + slop,0,null],
+		// [50 + slop,0,null],
+		// [60 + slop,0,null],
+		// [70 + slop,0,null],
+		// [null,0,null]
 
 		//leg 1 test (gear 1)
 
-		[0,0,-180],
+	//	[0,0,-180],
+	//	[0,10 + slop,-180],
+	//	[0,20 + slop,-180],
+	//	[0,30 + slop,-180],
+	//	[0,40 + slop,-180],
+	//	[0,50 + slop,-180],
+	//	[0,60 + slop,-180],
+	//	[0,null,null]
 
-		[0,10,-180],
-		[0,20,-180],
-		[0,30,-180],
-		[0,40,-180],
-		[0,50,-180],
-		[0,60,-180],
-		[0,70,-180],
-		[0,80,-180],
-		[0,null,-180]
+		//leg 2 (gear 2)
+
+	//	[0,0,-10 - slop],
+	//  [0,0,-20 - slop],
+	//  [0,0,-30 - slop],
+	//	[0,0,-20 - slop],
+	//	[0,null,null]
 	 
 	];
 }
@@ -193,10 +207,15 @@ function calcAngles(x,y,z){
 	var GEAR0ZEROANGLE = 16.187;
 	var GEAR1ZEROANGLE = 45.584;
 	var GEAR2ZEROANGLE = -134.5;
+
+	var GEAR0OFFSET = 6;
+	var GEAR1OFFSET = 8.5;
+	var GEAR2OFFSET = 12.5;
+
 	var baseheight     = 0; //7.65;
 
 	l1 = 13.75; // Link B from ConfigParams.js
-	l2 = 17.0;  // Link D from ConfigParams.js
+	l2 = 18.0;  // Link D from ConfigParams.js
 	xsq = x*x;
 	ysq = y*y;
 	d = Math.sqrt(xsq + ysq);
@@ -252,6 +271,11 @@ function calcAngles(x,y,z){
 	
 	nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
 	console.log('angles for nxt in degrees: ' + nxtangs);
+	
+	nxtangs[0] += GEAR0OFFSET;
+	nxtangs[1] += GEAR1OFFSET;
+	nxtangs[2] -= GEAR2OFFSET;
+	console.log('angles for nxt offset for slop: ' + nxtangs);
 
 	return(nxtangs);
 }
