@@ -89,12 +89,13 @@ var coords = [];
 if(useIk) {
 
 	coords = [
-		calcAngles(20, 15, 0),
-		calcAngles(20, 16, 0),
-		calcAngles(20, 17, 0),
-		calcAngles(20, 18, 0),
-		calcAngles(20, 18, 0)
+		//calcAngles(20, 10, 0),
+		//calcAngles(20, 15, 0),
+		calcAngles(15, 15, 0),
+		//calcAngles(15, 10, 0),
 		//[null, null, null]
+		//calcAngles(15, 10, 0),
+		[null, null, null]
 	];
 
 } else {
@@ -188,8 +189,8 @@ function drawCoords() {
 function calcAngles(x,y,z){
 	var theta0,	// base angle
 			theta1,	// gear 1 angle
-		  theta2,	// gear 2 angle
-		  l1,l2,	// leg lengths
+		    theta2,	// gear 2 angle
+		    l1,l2,	// leg lengths
 			l1sq, l2sq,
 			k1, k2,
 			d, r,
@@ -211,23 +212,31 @@ function calcAngles(x,y,z){
 	var GEAR0OFFSET = 6;
 	var GEAR1OFFSET = 8.5;
 	var GEAR2OFFSET = 12.5;
+    
+    var BASEROFFSET = 2.5; // radial distance from center of base gear to center of gear1
+    var BASEZOFFSET = 3.44; // vertical distance from top of base gear to center of gear1
+    var GEAR1GEOMOFFSET = 5.593; // degrees, angle of rt triangle with l1 as hyp and 1.34 as opp leg, 1.34 is the offset of gear2 from the plane of l1
 
-	var baseheight     = 0; //7.65;
+	var baseheight     = 6.43;
 
 	l1 = 13.75; // Link B from ConfigParams.js
-	l2 = 18.0;  // Link D from ConfigParams.js
-	xsq = x*x;
-	ysq = y*y;
-	d = Math.sqrt(xsq + ysq);
-	dsq = d*d;
-	zprime = z - baseheight;
-	zprimesq = zprime*zprime;
-	l1sq = l1*l1;
-	l2sq = l2*l2;
+	l2 = 18.4;  // Link D from ConfigParams.js
     
 	// base angle
 	theta0 = Math.atan2(y, x);
-  //console.log('theta0: ' + theta0);
+    //console.log('theta0: ' + theta0);
+    var xadj = x - BASEROFFSET*Math.cos(theta0);
+    var yadj = y - BASEROFFSET*Math.sin(theta0);
+    var zadj = z - BASEZOFFSET;
+    
+    xsq = xadj*xadj;
+	ysq = yadj*yadj;
+	d = Math.sqrt(xsq + ysq);
+	dsq = d*d;
+	zprime = zadj - baseheight;
+	zprimesq = zprime*zprime;
+	l1sq = l1*l1;
+	l2sq = l2*l2;
 
 	theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
 	//console.log('theta2calc: ' + theta2calc);
@@ -263,7 +272,8 @@ function calcAngles(x,y,z){
 	if (theta2deg < GEAR2ZEROANGLE){
 		console.log("Coordinate is outside of arm bounds. Gear 2 is the culprit.")
 	}
-
+    
+    theta1deg -= GEAR1GEOMOFFSET; // account for offset of gear2
 	// convert angles into mindstorm space
 	nxttheta0 = theta0deg - GEAR0ZEROANGLE;
 	nxttheta1 = GEAR1ZEROANGLE - theta1deg;
