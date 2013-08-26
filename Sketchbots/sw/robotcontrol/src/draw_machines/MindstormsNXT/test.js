@@ -22,7 +22,7 @@ var LOWER_ARM_GEARBOX_CONFIG = [8, 40]; //list of gear sizes starting with the o
 var UPPER_ARM_GEARBOX_CONFIG = null; //no gears on the upper arm axis
 var GLOBAL_SPEED = 20;
 
-var robot = new Robot3Axis('/dev/cu.usbmodem1411', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
+var robot = new Robot3Axis('/dev/cu.usbmodem1421', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
@@ -98,15 +98,32 @@ if(useIk) {
 } else {
 
 	coords = [
-  [5,0,0],
-  [10,0,0],
-  [5,0,0],
-  [10,0,0],
+
+		//leg 2 (gear 2)
+
+	 //  [0,0,-54],
+	 //  [0,0,-99],
+	 //  [0,0,-54],
+		// [0,0,-99]
+
+		//leg 1 test (gear 1)
+
+		[0,0,-180],
+
+		[0,10,-180],
+		[0,20,-180],
+		[0,30,-180],
+		[0,40,-180],
+		[0,50,-180],
+		[0,60,-180],
+		[0,70,-180],
+		[0,80,-180],
+		[0,null,-180]
+	 
 	];
 }
 
-
-var delay = 2000;
+var delay = 3000;
 
 robot.once('moveToZeroDone', function() {
 
@@ -118,12 +135,11 @@ robot.once('moveToZeroDone', function() {
 
 function drawCoords() {
 
-	console.log("Going to next coord at:  " + coords[0]);
-
 	if(coords.length) { //if remaining coords, go to next
 
-		setTimeout(function() {
+		console.log('Going to next coord at:  ' + coords[0] + ' in ' + (delay/1000) + ' seconds');
 
+		setTimeout(function() {
 
 			robot.once('synchronizedMoveDone', function() {
 
@@ -134,16 +150,20 @@ function drawCoords() {
 			robot.synchronizedMove(GLOBAL_SPEED, coords[0]);
 
 			coords.shift();
+
 			console.log("remaining coords => " + coords.length);
 
 		}.bind(this), delay);
 
 	} else {
-		console.log("finished drawing coords, exiting");
 
-		robot.moveToZero();
+		console.log("finished drawing coords, zeroing and exiting");
+
+		robot.moveToZero(true);
 
 		robot.once('moveToZeroDone', function() {
+
+			console.log("EXITING");
 
 			process.exit(0);
 

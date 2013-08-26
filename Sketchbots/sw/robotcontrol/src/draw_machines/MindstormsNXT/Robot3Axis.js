@@ -122,6 +122,7 @@ exports.Robot3Axis = new Class({
 	 */
 	moveToZero: function() {
 		if (!this._nxt) throw new Error('Robot not yet connected. moveToZero() can only be used after calling connect() and waiting for a "connected" event.');
+
 		//calibrate the motors and reset tacho by calling moveToZero() on each axis
 		//and then waiting for all axes to complete the operation
 		this._zeroingOrderIndex = 0;
