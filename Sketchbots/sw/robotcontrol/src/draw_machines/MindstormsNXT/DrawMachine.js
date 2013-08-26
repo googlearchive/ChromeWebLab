@@ -122,6 +122,7 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	zero: function() {
+		console.log("ZEROING????");
 		//TODO - zero the machine state
 	},
 

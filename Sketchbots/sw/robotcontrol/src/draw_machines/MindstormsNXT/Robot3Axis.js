@@ -192,14 +192,14 @@ exports.Robot3Axis = new Class({
 		////console.log('maxD: ' + maxDelta);
 		////console.log('minD: ' + minDelta);
 
-			console.log('al => ' + al);
-			console.log('realSpeeds => ' + realSpeeds);
-			console.log('realPositions => ' + realPositions);
-			console.log('realDeltas => ' + realDeltas);
-			console.log('maxDeltas => ' + maxDelta);
-			console.log('minDelta => ' + minDelta);
-			console.log('delta => ' + al);
-			console.log("------------------------------------------");
+			// console.log('al => ' + al);
+			// console.log('realSpeeds => ' + realSpeeds);
+			// console.log('realPositions => ' + realPositions);
+			// console.log('realDeltas => ' + realDeltas);
+			// console.log('maxDeltas => ' + maxDelta);
+			// console.log('minDelta => ' + minDelta);
+			// console.log('delta => ' + al);
+			// console.log("------------------------------------------");
 
 		//figure out speeds for each axis and set up listeners
 		for (a = 0; a < al; a++) {
@@ -213,7 +213,7 @@ exports.Robot3Axis = new Class({
 			// each axis must travel
 			//
 			realSpeeds[a] = speed; // * (realDeltas[a] / maxDelta);
-			console.log('realspeed ' + a + ': ' + realSpeeds[a]);
+			//console.log('realspeed ' + a + ': ' + realSpeeds[a]);
 
 			//set up a handler to wait for all axes to finish their moves
 			if (targetDegrees[a] != null)
@@ -224,6 +224,7 @@ exports.Robot3Axis = new Class({
 					}.bind(this))) {
 						//all axes have finished their moves
 						this._synchMoving = false;
+						console.log("MOVE IS DONE!");
 						this.emit('synchronizedMoveDone');
 					}
 				}.bind(this));
@@ -624,7 +625,7 @@ var _Axis = new Class({
 		//console.log('final speed: ' + speed);
 		targetDegrees = Math.floor(targetDegrees);
 
-		console.log("TARGET DEG => " + targetDegrees);
+		//console.log("TARGET DEG => " + targetDegrees);
 
 		// turn on output regulation -- http://hempeldesigngroup.com/lego/pblua/nxtfunctiondefs/#OutputAPI
 		//this._nxt.OutputSetRegulation(this._motorPort, 1, 1); // redundant because we turned it on in moveToZeroAndResetCounter()
@@ -657,7 +658,6 @@ var _Axis = new Class({
 					////console.log(arguments);
 
 					var n = Math.abs(this._currentTacho - (start_tacho + targetDegrees));
-				
 					if (4 > n) { //what is this number 4 doing in this case?
 						//we're there!
 						clearInterval(hInterval);

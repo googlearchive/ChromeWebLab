@@ -20,9 +20,9 @@ var Robot3Axis = require('./Robot3Axis').Robot3Axis;
 var BASE_GEARBOX_CONFIG = [8, 50]; //list of gear sizes starting with the one mounted on the motor's axle
 var LOWER_ARM_GEARBOX_CONFIG = [8, 40]; //list of gear sizes starting with the one mounted on the motor's axle
 var UPPER_ARM_GEARBOX_CONFIG = null; //no gears on the upper arm axis
-var GLOBAL_SPEED = 40;
+var GLOBAL_SPEED = 20;
 
-var robot = new Robot3Axis('/dev/cu.usbmodem1421', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
+var robot = new Robot3Axis('/dev/cu.usbmodem1411', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
@@ -47,142 +47,133 @@ var robot = new Robot3Axis('/dev/cu.usbmodem1421', [     //'/dev/cu.NXT-DevB', [
 ]);
 
 robot.once('connected', function() {
+
 	console.log('Connected. Moving to zero...')
-	
-	robot.once('moveToZeroDone', function() {
-		sweepX();
-	}.bind(this));
 	
 	//after connecting, get the robot to zero
 	robot.moveToZero();
+
 }.bind(this));
 
 
-process.on('exit', function() {
+process.on('exit', function() { //ensure node's process doesn't hang
 	console.log("Killing Process ID #" + process.pid);
   process.kill(process.pid, 'SIGTERM');
 });
 
-/* POSITION TESTING TO FIND LIMITS
+/* DIRECT DEGREE TEST
    --------------------------------------------------- */
 
-var xPos = 10, xLimit = 20;
+function goto(coords) {
 
-function sweepX() {		
-		robot.synchronizedMove(GLOBAL_SPEED, [xPos, 0, 0] );
-
-		robot.once('synchronizedMoveDone', function() {
-			xPos++;
-			if(xPos >= xLimit) {
-				console.log("EXITING");
-				process.exit(0);
-			} else {
-				console.log("MOVING TO " + xPos);
-				sweepX();
-			}
-		}.bind(this));
-
-}//end sweep
-
-/* --------------------------------------------------- */
-
-/*
-
-robot.once('moveToZeroDone', function() {
-	
-	console.log('Zeroed!');
-	
-//+++++++++++++++++++++++
-
-	console.log('Doing corner 1...');
-	setTimeout(function() {
-		robot.synchronizedMove(GLOBAL_SPEED, corner1 );
-	}.bind(this), 2000);
-
+	var _x = (coords.x)? coords.x: 0,
+			_y = (coords.y)? coords.y: 0,
+			_z = (coords.z)? coords.z: 0;
 
 	robot.once('synchronizedMoveDone', function() {
-		console.log('Done with corner 1.');
-
-//+++++++++++++++++++++++
-
-		console.log('Doing corner 2...');
-		setTimeout(function() {
-			robot.synchronizedMove(GLOBAL_SPEED, corner2 );
-		}.bind(this), 2000);
-
-		robot.once('synchronizedMoveDone', function() {
-			console.log('Done with corner 2.');
-				process.exit(0);
-
-//++++++++++++++++++++++
-
-			console.log('Doing corner 3...');
-			setTimeout(function() {
-				robot.synchronizedMove(GLOBAL_SPEED, corner3 );
-			}.bind(this), 2000);
-
-			robot.once('synchronizedMoveDone', function() {
-				console.log('Done with corner 3.');
-
-//++++++++++++++++++++++
-
-				console.log('Doing corner 4...');
-				setTimeout(function() {
-					robot.synchronizedMove(GLOBAL_SPEED, corner4 );
-				}.bind(this), 2000);
-
-				robot.once('synchronizedMoveDone', function() {
-					console.log('Done with corner 4.');
-
-					console.log('EXITING PROGRAM');
-
-				  console.log('sending SIGTERM to process %d', process.pid);
-					
-					process.exit(0);
-
-
-				}.bind(this));
-
-			}.bind(this));
-
-		}.bind(this));
-
+		console.log("exiting");
+		process.exit(0);
 	}.bind(this));
+
+	robot.synchronizedMove(GLOBAL_SPEED, [_x, _y, _z] );
+}
+
+/* COORD TESTS
+  --------------------------------------------------- */
+
+var useIk = false; //when false uses direct coords
+
+var coords = [];
+
+
+if(useIk) {
+
+	coords = [
+		calcAngles(20, 15, 1),
+		calcAngles(20, 16, 1),
+		calcAngles(20, 15, 1),
+		calcAngles(20, 16, 1)
+	];
+
+} else {
+
+	coords = [
+  [5,0,0],
+  [10,0,0],
+  [5,0,0],
+  [10,0,0],
+	];
+}
+
+
+var delay = 2000;
+
+robot.once('moveToZeroDone', function() {
+
+	console.log('Zeroed...');	
+
+	drawCoords();
 
 }.bind(this));
 
-*/
+function drawCoords() {
+
+	console.log("Going to next coord at:  " + coords[0]);
+
+	if(coords.length) { //if remaining coords, go to next
+
+		setTimeout(function() {
+
+
+			robot.once('synchronizedMoveDone', function() {
+
+				drawCoords(); //recursion
+
+			}.bind(this));
+
+			robot.synchronizedMove(GLOBAL_SPEED, coords[0]);
+
+			coords.shift();
+			console.log("remaining coords => " + coords.length);
+
+		}.bind(this), delay);
+
+	} else {
+		console.log("finished drawing coords, exiting");
+
+		robot.moveToZero();
+
+		robot.once('moveToZeroDone', function() {
+
+			process.exit(0);
+
+		}.bind(this));
+	}
+}
 
 function calcAngles(x,y,z){
 	var theta0,	// base angle
-		theta1,	// gear 1 angle
-		theta2,	// gear 2 angle
-		l1,		// leg 1 length
-		l2,		// leg 2 length	
-		l1sq, l2sq,
-		k1,
-		k2,
-		d,
-		dsq,
-		r,
-		xsq,
-		ysq,
-		zprime,
-		zprimesq,
-		theta2calc,
-		sinTheta2,
-		cosTheta2,
-		theta0deg, theta1deg, theta2deg,
-		angsrad,
-		angsdeg,
-		nxttheta0, nxttheta1, nxttheta2,
-		nxtangs
-		;
+			theta1,	// gear 1 angle
+		  theta2,	// gear 2 angle
+		  l1,l2,	// leg lengths
+			l1sq, l2sq,
+			k1, k2,
+			d, r,
+			dsq,
+			xsq, ysq,
+			zprime, zprimesq,
+			theta2calc,
+			sinTheta2,
+			cosTheta2,
+			theta0deg, theta1deg, theta2deg,
+			angsrad, angsdeg,
+			nxttheta0, nxttheta1, nxttheta2,
+			nxtangs;
 
 	var GEAR0ZEROANGLE = 16.187;
 	var GEAR1ZEROANGLE = 45.584;
 	var GEAR2ZEROANGLE = -134.5;
-	var baseheight = 0; //7.65;
+	var baseheight     = 0; //7.65;
 
 	l1 = 13.75; // Link B from ConfigParams.js
 	l2 = 17.0;  // Link D from ConfigParams.js
@@ -195,10 +186,9 @@ function calcAngles(x,y,z){
 	l1sq = l1*l1;
 	l2sq = l2*l2;
     
-    console.log('-------------------');
 	// base angle
 	theta0 = Math.atan2(y, x);
-    //console.log('theta0: ' + theta0);
+  //console.log('theta0: ' + theta0);
 
 	theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
 	//console.log('theta2calc: ' + theta2calc);
@@ -217,12 +207,12 @@ function calcAngles(x,y,z){
 	theta1deg = theta1 * 180 / Math.PI;
 	theta2deg = theta2 * 180 / Math.PI;
     
-    //theta2deg = -(180 - Math.abs(theta2deg));
-    //theta1deg = 90 - theta1deg;
+  //theta2deg = -(180 - Math.abs(theta2deg));
+  //theta1deg = 90 - theta1deg;
     
-    angsrad = [theta0, theta1, theta2];
+  angsrad = [theta0, theta1, theta2];
 	angsdeg = [theta0deg, theta1deg, theta2deg];
-    console.log('thetas in radians: ' + angsrad);
+  console.log('thetas in radians: ' + angsrad);
 	console.log('thetas in degrees: ' + angsdeg);
 
 	if (theta0deg < GEAR0ZEROANGLE){
@@ -242,10 +232,9 @@ function calcAngles(x,y,z){
 	
 	nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
 	console.log('angles for nxt in degrees: ' + nxtangs);
+
 	return(nxtangs);
 }
 
-
-console.log('Connecting...')
+console.log('Connecting...');
 robot.connect(); //start here
-
