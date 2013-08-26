@@ -24,3 +24,11 @@ We had to start somewhere and the two most popular and interactive experiments s
 Yes and No.  We used a HUGE amount of the code, but there are parts of the weblab that detract from the core-experience so we have removed them (such as user account management).  
 
 You have the ability to build the hardware and controllers to the same level we had them in the museum, and we improved the launch experience too.  Heck, we even added some features such as WebRTC to the orchestra just for this project.
+
+
+## Pre-commit hook
+
+We use [Git Hooks](http://git-scm.com/book/en/Customizing-Git-Git-Hooks) in this project to allow each contributor to run the exact same procedures before committing code.
+
+To install the Git Hooks used, just open your terminal, locate the folder of the project and run
+`ln -s ./pre-commit.sh .git/hooks/pre-commit`
