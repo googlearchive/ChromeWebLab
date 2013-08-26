@@ -142,7 +142,6 @@ exports.ConfigParams = {
         'turntableTravel':120
     },
 
-
     /**************************************************************************************
      **************************************************************************************
      * DRAW_MACHINE_TYPE
@@ -163,7 +162,7 @@ exports.ConfigParams = {
      * These are only used if for the "MindstormsNXT" draw machine type
      *
      */
-    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodem1421',  //'/dev/cu.usbmodemfd121',
+    MINDSTORMS_NXT__SERIAL_PORT: '/dev/tty.usbmodem1421',  //'/dev/cu.usbmodemfd121',
     MINDSTORMS_NXT__AXIS_CONFIG: [
         {
             'motorPort': 1,
