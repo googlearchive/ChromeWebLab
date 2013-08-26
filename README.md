@@ -31,4 +31,4 @@ You have the ability to build the hardware and controllers to the same level we 
 We use [Git Hooks](http://git-scm.com/book/en/Customizing-Git-Git-Hooks) in this project to allow each contributor to run the exact same procedures before committing code.
 
 To install the Git Hooks used, just open your terminal, locate the folder of the project and run
-`ln -s ../../pre-commit.sh .git/hooks/pre-commit`
+`ln -s ./pre-commit.sh .git/hooks/pre-commit`
