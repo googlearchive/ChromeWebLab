@@ -162,25 +162,28 @@ exports.ConfigParams = {
      * These are only used if for the "MindstormsNXT" draw machine type
      *
      */
-    MINDSTORMS_NXT__SERIAL_PORT: '/dev/tty.usbmodem1421',  //'/dev/cu.usbmodemfd121',
+    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodem1421',  //'/dev/cu.usbmodemfd121',
     MINDSTORMS_NXT__AXIS_CONFIG: [
-        {
+        {   //base gearbox
             'motorPort': 1,
             'zeroingDirection': 1,
             'zeroingSpeed': 15,
-            'limitSwitchPort': 1
+            'limitSwitchPort': 1,
+            'gearBoxConfig': [8, 56] //base gearbox config
         },
-        {
+        {   //lower arm
             'motorPort': 2,
             'zeroingDirection': 1,
             'zeroingSpeed': 20,
-            'limitSwitchPort': null
+            'limitSwitchPort': null,
+            'gearBoxConfig': [8, 40]
         },
-        {
+        {   //upper arm
             'motorPort': 3,
             'zeroingDirection': 1,
             'zeroingSpeed': 50,
-            'limitSwitchPort': null
+            'limitSwitchPort': null,
+            'gearBoxConfig': null
         },
     ],
     
