@@ -18,7 +18,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 if (exports == null){
-	var exports = {};
+    var exports = {};
 }
 var os = require('os');
 //var process = require('process');
@@ -135,14 +135,16 @@ exports.ConfigParams = {
     
     //When the robot zeroes, these are the real world angles the arms rest in
     //See the README to see how to adjust these
-    GEAR0ZEROANGLE : 16.187,
-    GEAR1ZEROANGLE : 45.584,
-    GEAR2ZEROANGLE : -134.5,
+    GEAR0ZEROANGLE: 16.187,
+    GEAR1ZEROANGLE: 45.584,
+    GEAR2ZEROANGLE: -134.5,
 
     //The 'slop' in the Mindstorm gears. Essentially, the motor control 'thinks' the zero angle is different than it actually is, so we compensate in the IK function
-    GEAR0OFFSET : 6,
-    GEAR1OFFSET : 8.5,
-    GEAR2OFFSET : 12.5,
+    GEAR0OFFSET: 6,
+    GEAR1OFFSET: 8.5,
+    GEAR2OFFSET: 12.5,
+
+    DRAWING_SPEED: 20,
 
     /* controls rate and geometry of drawing */
 
