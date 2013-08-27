@@ -122,10 +122,10 @@ exports.ConfigParams = {
     LINK_B: 13.75, //distance, in cm, from center of lower large gear to center of upper large gear
     LINK_C: 0.0, //distance, in cm, from axis of upper large gear, along its radius, to its intersection with midline of the forearm
     LINK_D: 18.4, //distance, in cm, from aforementioned intersection to tool tip
-    BASEROFFSET = 2.5, // radial distance from center of base gear to center of gear1
-    BASEZOFFSET = 3.44, // vertical distance from top of base gear to center of gear1
-    GEAR1GEOMOFFSET = 5.593, // degrees, angle of rt triangle with l1 as hyp and 1.34 as opp leg, 1.34 is the offset of gear2 from the plane of l1
-    BASEHEIGHT = 6.43, // from top of drawing surface to the top of the base gear
+    BASEROFFSET : 2.5, // radial distance from center of base gear to center of gear1
+    BASEZOFFSET : 3.44, // vertical distance from top of base gear to center of gear1
+    GEAR1GEOMOFFSET : 5.593, // degrees, angle of rt triangle with l1 as hyp and 1.34 as opp leg, 1.34 is the offset of gear2 from the plane of l1
+    BASEHEIGHT : 6.43, // from top of drawing surface to the top of the base gear
 
     //Gear ratios
     BASE_GEAR_RATIO: 56/8,
@@ -135,14 +135,14 @@ exports.ConfigParams = {
     
     //When the robot zeroes, these are the real world angles the arms rest in
     //See the README to see how to adjust these
-    GEAR0ZEROANGLE = 16.187,
-    GEAR1ZEROANGLE = 45.584,
-    GEAR2ZEROANGLE = -134.5,
+    GEAR0ZEROANGLE : 16.187,
+    GEAR1ZEROANGLE : 45.584,
+    GEAR2ZEROANGLE : -134.5,
 
     //The 'slop' in the Mindstorm gears. Essentially, the motor control 'thinks' the zero angle is different than it actually is, so we compensate in the IK function
-    GEAR0OFFSET = 6,
-    GEAR1OFFSET = 8.5,
-    GEAR2OFFSET = 12.5,
+    GEAR0OFFSET : 6,
+    GEAR1OFFSET : 8.5,
+    GEAR2OFFSET : 12.5,
 
     /* controls rate and geometry of drawing */
 

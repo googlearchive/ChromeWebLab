@@ -252,54 +252,6 @@ exports.DrawMachine = new Class({
      *
      */
     _doIk: function(x, y, z) {
-<<<<<<< HEAD
-    	var theta0, theta1,	// base angle, gear angle 1
-		    	theta2,	// gear 2 angle
-		    	l1,l2,	// leg lengths
-					l1sq, l2sq,
-					k1, k2,
-					d, r,
-					dsq,
-					xsq, ysq,
-					zprime, zprimesq,
-					theta2calc,
-					sinTheta2,
-					cosTheta2,
-					theta0deg, theta1deg, theta2deg,
-					angsrad, angsdeg,
-					nxttheta0, nxttheta1, nxttheta2,
-					nxtangs;
-
-			x = this._map(x, 0, 600, 6, 23);
-			y = this._map(y, 0, 600, 6, 23);
-
-			console.log("GCODE COORDS => " + x + ' : ' + y + ' : ' + z);
-
-			var GEAR0ZEROANGLE = 16.187;
-			var GEAR1ZEROANGLE = 45.584;
-			var GEAR2ZEROANGLE = -134.5;
-
-			var GEAR0OFFSET = 6;
-			var GEAR1OFFSET = 8.5;
-			var GEAR2OFFSET = 12.5;
-    
-    	var BASEROFFSET = 2.5; // radial distance from center of base gear to center of gear1
-    	var BASEZOFFSET = 3.44; // vertical distance from top of base gear to center of gear1
-    	var GEAR1GEOMOFFSET = 5.593; // degrees, angle of rt triangle with l1 as hyp and 1.34 as opp leg, 1.34 is the offset of gear2 from the plane of l1
-
-			var baseheight     = 6.43;
-
-			l1 = 13.75; // Link B from ConfigParams.js
-			l2 = 18.4;  // Link D from ConfigParams.js
-    
-			// base angle
-			theta0 = Math.atan2(y, x);
-    	//console.log('theta0: ' + theta0);
-    	var xadj = x - BASEROFFSET*Math.cos(theta0);
-    	var yadj = y - BASEROFFSET*Math.sin(theta0);
-    	var zadj = z - BASEZOFFSET;
-    
-=======
     	var xadj, yadj, zadj, // adjust x, y, z from center of base gear to center of gear 1 because of turntable
     		theta0, theta1,	theta2, // base angle, gear angle 1, gear 2 angle
 	    	l1,l2,	// leg lengths
@@ -327,7 +279,6 @@ exports.DrawMachine = new Class({
     	zadj = z - ConfigParams.BASEZOFFSET;
     	l1 = ConfigParams.LINK_B;
 		l2 = ConfigParams.LINK_D;
->>>>>>> 44bcf4f1193f2eae7c7d03f900a51864faf71cbb
     	xsq = xadj*xadj;
 		ysq = yadj*yadj;
 		d = Math.sqrt(xsq + ysq);
