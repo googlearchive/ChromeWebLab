@@ -86,11 +86,7 @@ exports.DrawMachine = new Class({
 	  *
 	  */
 	 initialize: function(options) {
-	 	console.log("------------------------------------------------------>>>>>>>>>>>>>");
-	 	console.log("INITIALIZING MINDSTORM-NXT DRAWMACHINE");
-
 		this.setOptions(options);
-
 		this.BUFFER_SIZE = 3000;
 		this.maxBufferIndex = 0;
 		this.currentBufferIndex = 0;
@@ -107,13 +103,6 @@ exports.DrawMachine = new Class({
 		this.buff_control[2] = new Array(this.BUFFER_SIZE);
 		this.buff_control[3] = new Array(this.BUFFER_SIZE);
 		this.buff_type = new Array(this.BUFFER_SIZE);
-
-		//Do NOT initialize communication with the machine here
-		//instead do that in createRobot()
-
-		//TODO - other initialization
-
-		this.zero(); //always call this at the end of initialize()
 	},
 
 	/**
@@ -122,8 +111,7 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	zero: function() {
-		console.log("ZEROING????");
-		//TODO - zero the machine state
+		this._robot.moveToZero();
 	},
 
 	/**
@@ -133,31 +121,11 @@ exports.DrawMachine = new Class({
 	 */
 	createRobot: function() {
 		//set up a connection to the machine via the serial port specified in our config
-		this._robot = new Robot3Axis(ConfigParams.MINDSTORMS_NXT__SERIAL_PORT,
-		[
-			{
-				'motorPort': 1,
-				'zeroingDirection': Robot3Axis.CLOCKWISE,
-				'zeroingSpeed': 15,
-				'limitSwitchPort': 1
-			},
-			{
-				'motorPort': 2,
-				'zeroingDirection': Robot3Axis.CLOCKWISE,
-				'zeroingSpeed': 20,
-				'limitSwitchPort': null
-			},
-			{
-				'motorPort': 3,
-				'zeroingDirection': Robot3Axis.CLOCKWISE,
-				'zeroingSpeed': 50,
-				'limitSwitchPort': null
-			},
-		]);
+		this._robot = new Robot3Axis(ConfigParams.MINDSTORMS_NXT__SERIAL_PORT, ConfigParams.MINDSTORMS_NXT__AXIS_CONFIG);
 
-		this._robot.on('connected', function() {
-			//connected to the robot, let our listeners know
-			console.log('********************** Connected to MindstormsNXT drawing machine **********************');
+		this._robot.on('connected', function() { //connected to the robot, let our listeners know
+			console.log('*********** Connected to MindstormsNXT drawing machine ***********');
+			this.doInitialCalibration();
 			this.emit('robotConnectedToMotionController');
 		}.bind(this));
 		this._robot.connect();
@@ -203,7 +171,6 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	calibrate: function() {
-		console.log(this._robot);
 		this._robot.once('moveToZeroDone', function() {
 			this.emit('robotCalibrated');
 		}.bind(this));
@@ -217,7 +184,7 @@ exports.DrawMachine = new Class({
 	 * Eventually should cause a 'robotCalibrated' event
 	 *
 	 */
-	doInitialCalibration: function(){
+	doInitialCalibration: function() {
 		this.calibrate();
 	},
 
@@ -238,17 +205,14 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	start: function() {
+		console.log("STARTING DRAWING");
 		this._calculateDrawingAngles();
-
-		//TODO - start drawing
 		this._drawingServoAnglesCursor = 0;
 		this._drawNextPart();
 		this._simulateMachineEvent('timeEstimate', 1000, (new Date().getTime()/1000) + 60); //simulate 60 second drawings
 		//this._simulateMachineEvent('drawingComplete', 2000);
 		//this._simulateMachineEvent('readyForPicture', 3000);
 	},
-
-
 
     /*
      * private functions
@@ -263,23 +227,18 @@ exports.DrawMachine = new Class({
     	}
     	this._robot.removeAllListeners();
     	this._robot.once('synchronizedMoveDone', this._drawNextPart.bind(this));
-    	this._robot.synchronizedMove(this.DRAWING_SPEED, this._drawingServoAnglesCursor[this._drawingServoAnglesCursor]);
+    	this._robot.synchronizedMove(this.DRAWING_SPEED, this._drawingServoAngles[this._drawingServoAnglesCursor]);
     	this._drawingServoAnglesCursor++;
     },
 
     _calculateDrawingAngles: function() {
     	this._drawingServoAngles = new Array(this.buff_cart.length);
 
-    	console.log("===============================================================================================");
-    	console.log("************************************ START IK CALCULATIONS ************************************");
-    	console.log("===============================================================================================");
-
     	for (var i = 0, il = this._drawingServoAngles.length; i < il; i++) {
     		this._drawingServoAngles[i] = this._doIk(this.buff_cart[0][i], this.buff_cart[1][i], this.buff_cart[2][i]);
     	}
-    	    	
-    	    	console.log(this._drawingServoAngles);
-
+    	console.log("----------------------------------------------------");
+    	console.log(this._drawingServoAngles);
     },
 
     /**
@@ -306,6 +265,11 @@ exports.DrawMachine = new Class({
 					angsrad, angsdeg,
 					nxttheta0, nxttheta1, nxttheta2,
 					nxtangs;
+
+			x = this._map(x, 0, 600, 6, 23);
+			y = this._map(y, 0, 600, 6, 23);
+
+			console.log("GCODE COORDS => " + x + ' : ' + y + ' : ' + z);
 
 			var GEAR0ZEROANGLE = 16.187;
 			var GEAR1ZEROANGLE = 45.584;
@@ -390,6 +354,10 @@ exports.DrawMachine = new Class({
 			console.log('angles for nxt offset for slop: ' + nxtangs);
 
 			return(nxtangs);
+    },
+
+    _map: function(val, inMin, inMax, outMin, outMax) {
+    	return (val - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     },
 
     _simulateMachineEvent: function(eventName, delay, obj) {

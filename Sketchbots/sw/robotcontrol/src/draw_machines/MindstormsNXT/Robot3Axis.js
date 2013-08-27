@@ -163,6 +163,7 @@ exports.Robot3Axis = new Class({
 	 *
 	 */
 	synchronizedMove: function(speed, targetDegrees) {
+		console.log("------------------------------------");
 		console.log(speed);
 		console.log(targetDegrees);
 

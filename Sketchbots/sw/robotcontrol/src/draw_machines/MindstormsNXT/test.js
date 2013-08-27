@@ -22,7 +22,7 @@ var LOWER_ARM_GEARBOX_CONFIG = [8, 40]; //list of gear sizes starting with the o
 var UPPER_ARM_GEARBOX_CONFIG = null; //no gears on the upper arm axis
 var GLOBAL_SPEED = 20;
 
-var robot = new Robot3Axis('/dev/cu.usbmodem411', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
+var robot = new Robot3Axis('/dev/cu.usbmodem1421', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,

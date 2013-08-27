@@ -122,7 +122,7 @@ exports.ConfigParams = {
     LINK_B: 13.75, //distance, in cm, from center of lower large gear to center of upper large gear
     LINK_C: 0.0, //distance, in cm, from axis of upper large gear, along its radius, to its intersection with midline of the forearm
     LINK_D: 19.0, //distance, in cm, from aforementioned intersection to tool tip
-    BASE_GEAR_RATIO: 50/8,
+    BASE_GEAR_RATIO: 56/8,
     LOWER_ARM_GEAR_RATIO: 40/8,
     UPPER_ARM_GEAR_RATIO: 1,
     PAN_GEAR_RATIO: 1,
