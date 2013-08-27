@@ -247,8 +247,12 @@ exports.DrawMachine = new Class({
      *
      * Returns a 3-dimensional array, [baseMotorDegrees, lowerMotorDegrees, upperMotorDegrees]
      *
+     * Calculations based on this paper by Dr. Rainer Hessmer, October 2009
+     * http://www.hessmer.org/uploads/RobotArm/Inverse%20Kinematics%20for%20Robot%20Arm.pdf
+     *
      */
     _doIk: function(x, y, z) {
+<<<<<<< HEAD
     	var theta0, theta1,	// base angle, gear angle 1
 		    	theta2,	// gear 2 angle
 		    	l1,l2,	// leg lengths
@@ -295,65 +299,96 @@ exports.DrawMachine = new Class({
     	var yadj = y - BASEROFFSET*Math.sin(theta0);
     	var zadj = z - BASEZOFFSET;
     
+=======
+    	var xadj, yadj, zadj, // adjust x, y, z from center of base gear to center of gear 1 because of turntable
+    		theta0, theta1,	theta2, // base angle, gear angle 1, gear 2 angle
+	    	l1,l2,	// leg lengths
+			l1sq, l2sq, // leg lengths squared
+			k1, k2,
+			d, r,
+			dsq,
+			xsq, ysq,
+			zprime, zprimesq, // z prime 
+			theta2calc,
+			sinTheta2,
+			cosTheta2,
+			theta0deg, theta1deg, theta2deg,
+			angsrad, angsdeg,
+			nxttheta0, nxttheta1, nxttheta2,
+			nxtangs,
+			radianToDegree;
+
+		// first get the base angle so we can offset the x,y,z for the turntable
+		theta0 = Math.atan2(y, x);
+
+		// now go ahead and set the variables and square them for easier reference
+    	xadj = x - ConfigParams.BASEROFFSET*Math.cos(theta0);
+    	yadj = y - ConfigParams.BASEROFFSET*Math.sin(theta0);
+    	zadj = z - ConfigParams.BASEZOFFSET;
+    	l1 = ConfigParams.LINK_B;
+		l2 = ConfigParams.LINK_D;
+>>>>>>> 44bcf4f1193f2eae7c7d03f900a51864faf71cbb
     	xsq = xadj*xadj;
-			ysq = yadj*yadj;
-			d = Math.sqrt(xsq + ysq);
-			dsq = d*d;
-			zprime = zadj - baseheight;
-			zprimesq = zprime*zprime;
-			l1sq = l1*l1;
-			l2sq = l2*l2;
+		ysq = yadj*yadj;
+		d = Math.sqrt(xsq + ysq);
+		dsq = d*d;
+		zprime = zadj - baseheight;
+		zprimesq = zprime*zprime;
+		l1sq = l1*l1;
+		l2sq = l2*l2;
+		radianToDegree = 180 / Math.PI;
 
-			theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
-			//console.log('theta2calc: ' + theta2calc);
-			sinTheta2 = Math.sqrt( 1 - Math.pow( theta2calc, 2 ) );
-			cosTheta2 = theta2calc;
-			//console.log('sinTheta2: ' + sinTheta2 + ', cosTheta2: ' + cosTheta2);
-			theta2 = Math.atan2(-sinTheta2, cosTheta2);
-			//console.log('theta2: ' + theta2);
+		// calculate theta2, the gear 2 angle
+		theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
+		sinTheta2 = Math.sqrt( 1 - Math.pow( theta2calc, 2 ) );
+		cosTheta2 = theta2calc;
+		theta2 = Math.atan2(-sinTheta2, cosTheta2);
 
-			k1 = l1 + l2*Math.cos(theta2);
-			k2 = l2*Math.sin(theta2);
-			theta1 = Math.atan2(zprime,d) - Math.atan2(k2,k1);
-			//console.log('theta1: ' + theta1);
+		// use theta2 to calculate theta1, the gear 1 angle
+		k1 = l1 + l2*Math.cos(theta2);
+		k2 = l2*Math.sin(theta2);
+		theta1 = Math.atan2(zprime,d) - Math.atan2(k2,k1);
 
-			theta0deg = theta0 * 180 / Math.PI;
-			theta1deg = theta1 * 180 / Math.PI;
-			theta2deg = theta2 * 180 / Math.PI;
-		    
-		  //theta2deg = -(180 - Math.abs(theta2deg));
-		  //theta1deg = 90 - theta1deg;
-		    
-		  angsrad = [theta0, theta1, theta2];
-			angsdeg = [theta0deg, theta1deg, theta2deg];
-		  console.log('thetas in radians: ' + angsrad);
-			console.log('thetas in degrees: ' + angsdeg);
+		// convert from radians to degrees
+		theta0deg = theta0 * radianToDegree;
+		theta1deg = theta1 * radianToDegree;
+		theta2deg = theta2 * radianToDegree;
+	    
+	    // don't really need this step, but good for debugging
+	    // log out the raw angles to check arm positions
+	  	angsrad = [theta0, theta1, theta2];
+		angsdeg = [theta0deg, theta1deg, theta2deg];
+	  	console.log('thetas in radians: ' + angsrad);
+		console.log('thetas in degrees: ' + angsdeg);
 
-			if (theta0deg < GEAR0ZEROANGLE){
-				console.log("Coordinate is outside of arm bounds. Gear 0 is the culprit.")
-			}
-			if (theta1deg > GEAR1ZEROANGLE){
-				console.log("Coordinate is outside of arm bounds. Gear 1 is the culprit.")
-			}
-			if (theta2deg < GEAR2ZEROANGLE){
-				console.log("Coordinate is outside of arm bounds. Gear 2 is the culprit.")
-			}
-    
-    	theta1deg -= GEAR1GEOMOFFSET; // account for offset of gear2
-			// convert angles into mindstorm space
-			nxttheta0 = theta0deg - GEAR0ZEROANGLE;
-			nxttheta1 = GEAR1ZEROANGLE - theta1deg;
-			nxttheta2 = GEAR2ZEROANGLE - theta2deg;
-	
-			nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
-			console.log('angles for nxt in degrees: ' + nxtangs);
-	
-			nxtangs[0] += GEAR0OFFSET;
-			nxtangs[1] += GEAR1OFFSET;
-			nxtangs[2] -= GEAR2OFFSET;
-			console.log('angles for nxt offset for slop: ' + nxtangs);
+		// if angles are outside of arm bounds, warn the user, but don't stop the drawing
+		if (theta0deg < ConfigParams.GEAR0ZEROANGLE){
+			console.log("Coordinate is outside of arm bounds. Gear 0 is the culprit.")
+		}
+		if (theta1deg > ConfigParams.GEAR1ZEROANGLE){
+			console.log("Coordinate is outside of arm bounds. Gear 1 is the culprit.")
+		}
+		if (theta2deg < ConfigParams.GEAR2ZEROANGLE){
+			console.log("Coordinate is outside of arm bounds. Gear 2 is the culprit.")
+		}
 
-			return(nxtangs);
+		// convert angles into mindstorm space
+		theta1deg -= ConfigParams.GEAR1GEOMOFFSET; // account for offset of gear2
+		nxttheta0 = theta0deg - ConfigParams.GEAR0ZEROANGLE;
+		nxttheta1 = ConfigParams.GEAR1ZEROANGLE - theta1deg;
+		nxttheta2 = ConfigParams.GEAR2ZEROANGLE - theta2deg;
+
+		// log out nxt angles to check arm positions
+		nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
+		console.log('angles for nxt in degrees: ' + nxtangs);
+
+		// add in the 'slop' of the mindstorm gears
+		nxtangs[0] += ConfigParams.GEAR0OFFSET;
+		nxtangs[1] += ConfigParams.GEAR1OFFSET;
+		nxtangs[2] -= ConfigParams.GEAR2OFFSET;
+		console.log('angles for nxt offset for slop: ' + nxtangs);
+
+		return(nxtangs);
     },
 
     _map: function(val, inMin, inMax, outMin, outMax) {
