@@ -145,6 +145,21 @@ exports.ConfigParams = {
     GEAR2OFFSET = 12.5,
 
     /* controls rate and geometry of drawing */
+
+    DRAW_PARAMETERS: {
+        'chunkSize':3000,
+        'velocity':100,
+        'acceleration':200,
+        'robotXMin':6, // in cms, might should be in mms
+        'robotXMax':22, //
+        'robotYMin':6, // 
+        'robotYMax':22, //
+        'drawPlaneHeight':-9.5,
+        'liftDistance':2,
+        'turntableTravel':120
+    },
+
+    /* // ORIGINAL SETTINGS, KEEPING IN CASE I SCREW SOMETHING UP
     DRAW_PARAMETERS: {
         'chunkSize':3000,
         'velocity':100,
@@ -157,6 +172,7 @@ exports.ConfigParams = {
         'liftDistance':2,
         'turntableTravel':120
     },
+    */
 
     /**************************************************************************************
      **************************************************************************************
