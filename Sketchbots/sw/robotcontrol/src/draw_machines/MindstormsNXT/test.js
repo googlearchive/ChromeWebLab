@@ -89,10 +89,10 @@ var coords = [];
 if(useIk) {
 
 	coords = [
-		//calcAngles(20, 10, 0),
-		//calcAngles(20, 15, 0),
+		calcAngles(20, 10, 0),
+		calcAngles(20, 15, 0),
 		calcAngles(15, 15, 0),
-		//calcAngles(15, 10, 0),
+		calcAngles(15, 10, 0),
 		//[null, null, null]
 		//calcAngles(15, 10, 0),
 		[null, null, null]

@@ -35,7 +35,7 @@ exports.MasterDataParser = new Class({
         if (larger_cam_dim == ConfigParams.CAM_X){
             var offset = (larger_cam_dim - ConfigParams.CAM_Y)/2;
             this.CAM_IMG_DIM = { xmin: 0, xmax: ConfigParams.CAM_X, ymin: -1*offset, ymax: ConfigParams.CAM_Y+offset };
-        }else{
+        } else {
             var offset = (larger_cam_dim - ConfigParams.CAM_X)/2;
             this.CAM_IMG_DIM = { xmin: -1*offset, xmax: ConfigParams.CAM_X+offset, ymin: 0, ymax: ConfigParams.CAM_Y };
         }
@@ -49,16 +49,24 @@ exports.MasterDataParser = new Class({
         var lines = raw.split(";");
         var line_count = lines.length;
         this.MASTER_DATA = [];
+
         for (var i=0; i<line_count; i++) {
             var line_args = lines[i].split(",");
             var x_num = (parseFloat(line_args[0]) - this.CAM_IMG_DIM.xmin)/(this.CAM_IMG_DIM.xmax - this.CAM_IMG_DIM.xmin);
             var y_num = (parseFloat(line_args[1]) - this.CAM_IMG_DIM.ymin)/(this.CAM_IMG_DIM.ymax - this.CAM_IMG_DIM.ymin);
             var z_num = parseFloat(line_args[2]);
+
+            // console.log("NORMALIZED XY:");
+            // console.log("x_num " + x_num);
+            // console.log("y_num " + y_num);
+            // console.log("--------------");
+
             if (line_args.length == 3) {
                 this.MASTER_DATA.push({ x:x_num, y:y_num, z:z_num, type:0});
             } else if (line_args.length == 5) {
                 var c0x_num = (parseFloat(line_args[3]) - this.CAM_IMG_DIM.xmin)/(this.CAM_IMG_DIM.xmax - this.CAM_IMG_DIM.xmin);
                 var c0y_num = (parseFloat(line_args[4]) - this.CAM_IMG_DIM.ymin)/(this.CAM_IMG_DIM.ymax - this.CAM_IMG_DIM.ymin);
+                
                 this.MASTER_DATA.push({ x:x_num, y:y_num, z:z_num, c0x:c0x_num, c0y:c0y_num, type:1 });
             } else if (line_args.length == 7) {
                 var c0x_num = (parseFloat(line_args[3]) - this.CAM_IMG_DIM.xmin)/(this.CAM_IMG_DIM.xmax - this.CAM_IMG_DIM.xmin);
@@ -119,8 +127,21 @@ exports.MasterDataParser = new Class({
         var a_num = this.DRAW_PARAMETERS['acceleration'];
         var line_count = this.MASTER_DATA.length;
         var tempLine = "";
+
+        console.log("COMPUTED MASTER MACHINE CODE");
+        console.log('X Min = ' + rxmin);
+        console.log('X Max = ' + rxmax);
+        console.log("Y MIN = " + rymin);
+        console.log("Y MAX = " + rymax);
+        console.log(v_num);
+        console.log(a_num);
+        console.log(line_count);
+        console.log(tempLine);
+        console.log("----------------------------");
         
-        
+        if(ConfigParams.DRAW_MACHINE_TYPE === 'MindstormsNXT') {
+            console.log("USING MindstormsNXT");
+        }
         // make the arm go to a safe point just above the center first to avoid hitting the
         // plastic barrier with the back of the arm on the way down to the drawing
         tempLine = this.DRAW_PARAMETERS['velocity']/4.0 + "," + this.DRAW_PARAMETERS['acceleration'] + "," + Math.abs(rxmax - rxmin)*this.MASTER_DATA[0].dist + "," + ((rxmin+rxmax)/2) + "," + ((rymin+rymax)/2) + "," + 1;
@@ -131,6 +152,8 @@ exports.MasterDataParser = new Class({
             var d_num = Math.abs(rxmax - rxmin)*this.MASTER_DATA[i].dist;
             var x_num = (rxmax - rxmin)*this.MASTER_DATA[i].x + rxmin;
             var y_num = (rymax - rymin)*this.MASTER_DATA[i].y + rymin;
+
+            //console.log(this.MASTER_DATA[i].type);
             
             //this will be replaced by the robot with its calibrated value 
             var z_num = this.MASTER_DATA[i].z;

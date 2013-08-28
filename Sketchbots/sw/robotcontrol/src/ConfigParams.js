@@ -45,8 +45,8 @@ exports.ConfigParams = {
     TASK_STOP_DELAY: 1000,
 
     /* target drawing dimensions, in px */
-    DRAWING_WIDTH_PX: 260,
-    DRAWING_HEIGHT_PX: 364,
+    DRAWING_WIDTH_PX: 600,
+    DRAWING_HEIGHT_PX: 450,
 
     /* when enabled, this tracks the number of failed serial connections since last boot */
     VIDEO_STOP_DELAY: 5000,
@@ -97,7 +97,7 @@ exports.ConfigParams = {
 
     /* image dimension, used to scale the drawing */
     CAM_X: 200,
-    CAM_Y: Math.floor((200/3.0)*4.0),
+    CAM_Y: 150,
     /* max draw time determines the size of the buffer used for commands */
     MAX_DRAW_TIME: 10,
     /*

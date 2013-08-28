@@ -164,8 +164,7 @@ exports.Robot3Axis = new Class({
 	 */
 	synchronizedMove: function(speed, targetDegrees) {
 		console.log("------------------------------------");
-		console.log(speed);
-		console.log(targetDegrees);
+		console.log("going to " + targetDegrees);
 
 		if (!this._allZeroed) throw new Error('Robot not yet zeroed. synchronizedMove() can only be used after calling moveToZero() and waiting for a "moveToZeroDone" event.')
 		if (!targetDegrees || targetDegrees.length < this._axis.length) throw new Error('targetDegrees must have exactly '+this._axis.length+' elements');
