@@ -20,9 +20,9 @@ var Robot3Axis = require('./Robot3Axis').Robot3Axis;
 var BASE_GEARBOX_CONFIG = [8, 56]; //list of gear sizes starting with the one mounted on the motor's axle
 var LOWER_ARM_GEARBOX_CONFIG = [8, 40]; //list of gear sizes starting with the one mounted on the motor's axle
 var UPPER_ARM_GEARBOX_CONFIG = null; //no gears on the upper arm axis
-var GLOBAL_SPEED = 20;
+var GLOBAL_SPEED = 10;
 
-var robot = new Robot3Axis('/dev/cu.usbmodem1421', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
+var robot = new Robot3Axis('/dev/cu.usbmodem621', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,

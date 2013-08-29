@@ -217,10 +217,14 @@ exports.Robot3Axis = new Class({
 			//console.log('realspeed ' + a + ': ' + realSpeeds[a]);
 
 			//set up a handler to wait for all axes to finish their moves
-			if (targetDegrees[a] != null)
+			if (targetDegrees[a] != null) {
+				//console.log("is axis " + a + " done?");
+				//console.log("Axis " + a + " current position: " + this._axis[a].getCurrentPosition());
 				this._axis[a].once('moveDone', function() {
+					
+					//console.log(this._allAxisEval);
 					if (this._allAxisEval(function(axis) {
-						////console.log('Inside synchmove, checking axis '+axis+' this._synchMoving='+this._synchMoving);
+						//console.log('Inside synchmove, checking axis '+axis+' this._synchMoving='+this._synchMoving);
 						return !axis.isMoving() && this._synchMoving;
 					}.bind(this))) {
 						//all axes have finished their moves
@@ -228,13 +232,16 @@ exports.Robot3Axis = new Class({
 						console.log("MOVE IS DONE!");
 						this.emit('synchronizedMoveDone');
 					}
+
 				}.bind(this));
+			}
 		}
 
 		// command all axes
 		// IMPORTANT: we don't want to do much (any?) processing inside this loop
 		for (a = 0; a < al; a++) {
 			//actually command the move:
+			//console.log("actually moving axis " + a + " to " + realPositions[a]);
 			if (targetDegrees[a] != null) {
 				this._axis[a].move(realSpeeds[a], realPositions[a]);
 			}
@@ -278,8 +285,11 @@ exports.Robot3Axis = new Class({
 	 *
 	 */
 	_allAxisEval: function(fcn) {
-		for (var trueCt = 0, a = 0, al = this._axis.length; a < al; a++)
+		for (var trueCt = 0, a = 0, al = this._axis.length; a < al; a++){
+			//console.log("inside _allAxisEval " + trueCt + "this.axis[a]" + this._axis[a]);
+			//console.log("typeof: " + typeof(fcn));
 			if (fcn(this._axis[a])) trueCt++;
+		}
 		return trueCt == al;
 	},
 
@@ -641,7 +651,7 @@ var _Axis = new Class({
 			//safety
 			var start_tacho = this._currentTacho;
 			////console.log('targetDegrees pre: ' + targetDegrees);
-			////console.log('start_tacho: ' + start_tacho);
+			//console.log('start_tacho: ' + start_tacho);
 			////console.log('targetdeg - start_tacho: ' + (targetDegrees - start_tacho));
 			//targetDegrees = Math.min(0, targetDegrees - this._currentTacho);
 			targetDegrees = targetDegrees - this._currentTacho;
@@ -656,9 +666,10 @@ var _Axis = new Class({
 					this._currentTacho = cur_tacho;
 
 					//debugging:
-					////console.log(arguments);
+					//console.log("current tacho: " + this._currentTacho);
 
 					var n = Math.abs(this._currentTacho - (start_tacho + targetDegrees));
+					//console.log("n in move: " + n + " : " + this._motorPort);
 					if (4 > n) { //what is this number 4 doing in this case?
 						//we're there!
 						clearInterval(hInterval);

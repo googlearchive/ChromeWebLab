@@ -110,12 +110,13 @@ exports.DrawMachineCommandLoader = new Class({
             this.machine.currentBufferIndex = 0;
             this.motorTimerCounter = 0;
             this.debugTimerCounter = 0;
-            this.emit('readyForVideoStart');
-            this.machine.once('timeEstimate',function(timeEstimate){this.emit('timeEstimate',timeEstimate);}.bind(this));
+            //this.emit('readyForVideoStart');
+            //this.machine.once('timeEstimate',function(timeEstimate){this.emit('timeEstimate',timeEstimate);}.bind(this));
+            console.log("++ starting machine from dmcl ++");
             this.machine.start();
             // prepare event chain for when the drawing completes
             // zero out and go home
-            //this.machine.removeAllListeners(); //avoid multiple event listeners
+            this.machine.removeAllListeners(); //avoid multiple event listeners
             this.machine.once('drawingComplete', function(movement){
                 this.emit('drawingComplete');
                 this.prepareRobotForNextDrawing();

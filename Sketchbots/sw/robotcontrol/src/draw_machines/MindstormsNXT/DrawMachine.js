@@ -264,17 +264,50 @@ exports.DrawMachine = new Class({
     		this.emit('readyForPicture');
     		return;
     	}
-    	console.log("removing all listeners");
-    	this._robot.removeAllListeners();
-
-    	console.log("DRAWING NEXT PART");
-    	this._robot.once('synchronizedMoveDone', this._drawNextPart.bind(this));
-    	//this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this._drawingServoAnglesCursor]);
-
-    	this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
     	
+    	//console.log("removing all listeners");
+    	//this._robot.removeAllListeners();
+
+    	console.log("DRAWING NEXT PART: " + this.currentBufferIndex);
+    	/*
+    	setTimeout(function() {
+    		this._robot.once('synchronizedMoveDone', function(){
+    			console.log("move " + this.currentBufferIndex + " claims to be done");
+    			this._drawNextPart();
+    		}.bind(this));
+    		//this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this._drawingServoAnglesCursor]);
+    		console.log("going to move to coords " + this.currentBufferIndex);
+    		this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
+    	}.bind(this), 2000);
+    	*/
+
+    	if(this.currentBufferIndex <= this._drawingServoAngles.length) { //if remaining coords, go to next
+
+			console.log('Going to next coord at:  ' + this._drawingServoAngles[this.currentBufferIndex] + ' in 1 second');
+
+			setTimeout(function() {
+				this._robot.once('synchronizedMoveDone', function() {
+					this._drawNextPart(); //recursion
+				}.bind(this));
+				console.log("a: " + this._drawingServoAngles[this.currentBufferIndex]);
+				this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
+				
+				//this._drawingServoAngles.shift();
+				console.log("remaining coords => " + (this._drawingServoAngles.length - this.currentBufferIndex));
+			}.bind(this), 1000);
+
+		} else {
+			console.log("finished drawing coords, zeroing and exiting");
+			this._robot.moveToZero(true);
+			this._robot.once('moveToZeroDone', function() {
+				console.log("EXITING");
+				process.exit(0);
+			}.bind(this));
+		}
+
     	///this._drawingServoAnglesCursor++;
-    	this.currentBufferIndex++
+    	this.currentBufferIndex++;
+    	
     },
 
     _calculateDrawingAngles: function() {
@@ -367,18 +400,18 @@ exports.DrawMachine = new Class({
 	    // log out the raw angles to check arm positions
 	  	angsrad = [theta0, theta1, theta2];
 			angsdeg = [theta0deg, theta1deg, theta2deg];
-	  	console.log('thetas in radians: ' + angsrad);
+	  	//console.log('thetas in radians: ' + angsrad);
 			console.log('thetas in degrees: ' + angsdeg);
 
 			// if angles are outside of arm bounds, warn the user, but don't stop the drawing
 			if (theta0deg < ConfigParams.GEAR0ZEROANGLE){
-				console.log("Coordinate is outside of arm bounds. Gear 0 is the culprit.")
+				console.log("******** Coordinate is outside of arm bounds. Gear 0 ********")
 			}
 			if (theta1deg > ConfigParams.GEAR1ZEROANGLE){
-				console.log("Coordinate is outside of arm bounds. Gear 1 is the culprit.")
+				console.log("******** Coordinate is outside of arm bounds. Gear 1 ********")
 			}
 			if (theta2deg < ConfigParams.GEAR2ZEROANGLE){
-				console.log("Coordinate is outside of arm bounds. Gear 2 is the culprit.")
+				console.log("******** Coordinate is outside of arm bounds. Gear 2 ********")
 			}
 
 			// convert angles into mindstorm space
@@ -389,7 +422,7 @@ exports.DrawMachine = new Class({
 
 			// log out nxt angles to check arm positions
 			nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
-			console.log('angles for nxt in degrees: ' + nxtangs);
+			//console.log('angles for nxt in degrees: ' + nxtangs);
 
 			// add in the 'slop' of the mindstorm gears
 			nxtangs[0] += ConfigParams.GEAR0OFFSET;
@@ -398,7 +431,7 @@ exports.DrawMachine = new Class({
 			//nxtangs[1] = 0;
 			nxtangs[2] -= ConfigParams.GEAR2OFFSET;
 			//nxtangs[2] = 0;
-			console.log('angles for nxt offset for slop: ' + nxtangs);
+			//console.log('angles for nxt offset for slop: ' + nxtangs);
 
 			return(nxtangs);
     },

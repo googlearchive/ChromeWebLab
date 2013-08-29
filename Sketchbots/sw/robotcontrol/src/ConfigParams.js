@@ -196,7 +196,7 @@ exports.ConfigParams = {
      * These are only used if for the "MindstormsNXT" draw machine type
      *
      */
-    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodem1421',  //'/dev/cu.usbmodemfd121',
+    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodem621',  // '/dev/cu.usbmodem1421',  //'/dev/cu.usbmodemfd121',
     MINDSTORMS_NXT__AXIS_CONFIG: [
         {   //base gearbox
             'motorPort': 1,
