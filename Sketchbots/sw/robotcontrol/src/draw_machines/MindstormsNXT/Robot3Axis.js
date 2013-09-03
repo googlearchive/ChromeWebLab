@@ -163,7 +163,6 @@ exports.Robot3Axis = new Class({
 	 *
 	 */
 	synchronizedMove: function(speed, targetDegrees) {
-		console.log("------------------------------------");
 		console.log("going to " + targetDegrees);
 
 		if (!this._allZeroed) throw new Error('Robot not yet zeroed. synchronizedMove() can only be used after calling moveToZero() and waiting for a "moveToZeroDone" event.')
@@ -172,13 +171,13 @@ exports.Robot3Axis = new Class({
 		if (this._synchMoving) throw new Error('Robot is already moving');
 
 		var a = 0,
-			al = this._axis.length,
-			realSpeeds = new Array(al),
-			realPositions = new Array(al),
-			realDeltas = new Array(al),
-			maxDelta = 0,
-			minDelta = 100000000000,
-			delta = 0;
+				al = this._axis.length,
+				realSpeeds = new Array(al),
+				realPositions = new Array(al),
+				realDeltas = new Array(al),
+				maxDelta = 0,
+				minDelta = 100000000000,
+				delta = 0;
 
 		//figure the farthest distance to be moved
 		for (delta = 0, a = 0; a < al; a++) {
@@ -190,8 +189,7 @@ exports.Robot3Axis = new Class({
 			minDelta = Math.min(minDelta, realDeltas[a]);
 
 		}
-		////console.log('maxD: ' + maxDelta);
-		////console.log('minD: ' + minDelta);
+
 
 			// console.log('al => ' + al);
 			// console.log('realSpeeds => ' + realSpeeds);
@@ -204,6 +202,7 @@ exports.Robot3Axis = new Class({
 
 		//figure out speeds for each axis and set up listeners
 		for (a = 0; a < al; a++) {
+
 			// figure out the right speed for this axis,
 			// such that all axes will reach their destinations at
 			// the same time.
@@ -212,24 +211,28 @@ exports.Robot3Axis = new Class({
 			// and do this simply by divvying up the
 			// speed proprtional to the distance over which
 			// each axis must travel
-			//
+			
 			realSpeeds[a] = speed; // * (realDeltas[a] / maxDelta);
 			//console.log('realspeed ' + a + ': ' + realSpeeds[a]);
 
 			//set up a handler to wait for all axes to finish their moves
 			if (targetDegrees[a] != null) {
+
 				//console.log("is axis " + a + " done?");
 				//console.log("Axis " + a + " current position: " + this._axis[a].getCurrentPosition());
+
+
 				this._axis[a].once('moveDone', function() {
 					
-					//console.log(this._allAxisEval);
 					if (this._allAxisEval(function(axis) {
-						//console.log('Inside synchmove, checking axis '+axis+' this._synchMoving='+this._synchMoving);
+						
 						return !axis.isMoving() && this._synchMoving;
+
 					}.bind(this))) {
 						//all axes have finished their moves
 						this._synchMoving = false;
-						console.log("MOVE IS DONE!");
+						console.log("ALL AXIS HAVE FINISHED THEIR MOVE!");
+						console.log("------------------------------------------------------");
 						this.emit('synchronizedMoveDone');
 					}
 
@@ -243,7 +246,8 @@ exports.Robot3Axis = new Class({
 			//actually command the move:
 			//console.log("actually moving axis " + a + " to " + realPositions[a]);
 			if (targetDegrees[a] != null) {
-				this._axis[a].move(realSpeeds[a], realPositions[a]);
+				console.log("MOVING AXIS => " + a);
+				this._axis[a].move(realSpeeds[a], realPositions[a], a);
 			}
 			
 		}
@@ -285,6 +289,9 @@ exports.Robot3Axis = new Class({
 	 *
 	 */
 	_allAxisEval: function(fcn) {
+
+		console.log("CALLING ALL AXIS EVAL");
+
 		for (var trueCt = 0, a = 0, al = this._axis.length; a < al; a++){
 			//console.log("inside _allAxisEval " + trueCt + "this.axis[a]" + this._axis[a]);
 			//console.log("typeof: " + typeof(fcn));
@@ -407,6 +414,8 @@ var _Axis = new Class({
 	_zeroingDirection: null,
 	_limitSwitchPort: null,
 	_currentTacho: null,
+
+	//_axisCheckIntervals
 
 	_minSpeed: 4, // the minimum actual speed at which this axis can truly move (Mindstorms motors cannot push their own weight below a certain speed)
 	_speedQuantize: 1, // if > 1, then the actual speed value sent to the motor controller will be divided into steps of this number (e.g. for _speedQuantize of 5, input speed will be mapped to speeds 5, 10, 15, 20 but nothing in between etc.)
@@ -622,7 +631,7 @@ var _Axis = new Class({
 	 *		This axis is already moving
 	 *
 	 */
-	move: function(speed, targetDegrees) {
+	move: function(speed, targetDegrees, axisNo) {
 		if (!this._zeroed) throw new Error('Axis not yet zeroed. move() can only be used after calling moveToZeroAndResetCounter() and waiting for a "moveToZeroDone" event.')
 		if (this._moving) throw new Error('Axis is already moving. Wait for "moveDone", call stopAndIdleNow() or stopAndHoldNow() before calling move() again');
 		if (speed < 0) throw new Error('Speed is negative');
@@ -637,9 +646,6 @@ var _Axis = new Class({
 		targetDegrees = Math.floor(targetDegrees);
 
 		//console.log("TARGET DEG => " + targetDegrees);
-
-		// turn on output regulation -- http://hempeldesigngroup.com/lego/pblua/nxtfunctiondefs/#OutputAPI
-		//this._nxt.OutputSetRegulation(this._motorPort, 1, 1); // redundant because we turned it on in moveToZeroAndResetCounter()
 
 		// find the starting tacho value
 		//this._nxt.OutputGetStatus(this._motorPort, function(start_speed, start_tacho, start_blocktacho, start_runstate, start_overload, start_rotcount, start_torun) {
@@ -658,7 +664,11 @@ var _Axis = new Class({
 			////console.log('targetDegrees post: ' + targetDegrees);
 
 			// set up a periodic check to see if we have reached our destination
+			var intervalCleared = false; //safety flag since interval still fires a couple times after clearing
 			var hInterval = setInterval(function() {
+
+				console.log("checking nxt status");
+
 				// where are we now? use OutputGetStatus to find out...
 				this._nxt.OutputGetStatus(this._motorPort, function(cur_speed, cur_tacho, cur_blocktacho, cur_runstate, cur_overload, cur_rotcount, cur_torun) {
 
@@ -669,17 +679,23 @@ var _Axis = new Class({
 					//console.log("current tacho: " + this._currentTacho);
 
 					var n = Math.abs(this._currentTacho - (start_tacho + targetDegrees));
+
+					console.log(n);
 					//console.log("n in move: " + n + " : " + this._motorPort);
 					if (4 > n) { //what is this number 4 doing in this case?
 						//we're there!
 						clearInterval(hInterval);
-						this.stopAndHoldNow(); //is this necessary?
-						this._moving = false;
-						//console.log('Move done: '+this+': _currentTacho='+this._currentTacho);
-						this.emit('moveDone');
+						if(!intervalCleared) { //we want to bar this area from not happening more than once per axis
+							intervalCleared = true;
+							this.stopAndHoldNow(); //is this necessary?
+							this._moving = false;
+							console.log('Move done for axis => ' + axisNo);
+							this.emit('moveDone');
+						}
 					}
 				}.bind(this));
-			}.bind(this), 10); //check every 10ms
+
+			}.bind(this), 100); //check every 10ms
 
 			// and, finally, command the motor to move
 			//console.log(this+' moving: speed='+speed+' targetDegrees='+targetDegrees);

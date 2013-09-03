@@ -85,8 +85,9 @@ exports.DrawMachine = new Class({
 	  */
 	 initialize: function(options) {
 
-	 	console.log("------------------------------------------------------>>>>>>>>>>>>>");
-	 	console.log("INITIALIZING MINDSTORM-NXT DRAWMACHINE");
+    console.log("------------------------------------------------------");
+    console.log("INITIALIZING MINDSTORM-NXT DRAWMACHINE");
+	 	console.log("------------------------------------------------------");
 
 		this.setOptions(options);
 
@@ -106,6 +107,8 @@ exports.DrawMachine = new Class({
 		this.buff_control[2] = new Array(this.BUFFER_SIZE);
 		this.buff_control[3] = new Array(this.BUFFER_SIZE);
 		this.buff_type = new Array(this.BUFFER_SIZE);
+
+    this.DRAW_TIMEOUT_DELAY = 500;
 
 		//Do NOT initialize communication with the machine here
 		//instead do that in createRobot()
@@ -131,27 +134,7 @@ exports.DrawMachine = new Class({
 	 */
 	createRobot: function() {
 		//set up a connection to the machine via the serial port specified in our config
-		this._robot = new Robot3Axis(ConfigParams.MINDSTORMS_NXT__SERIAL_PORT,
-		[
-			{
-				'motorPort': 1,
-				'zeroingDirection': Robot3Axis.CLOCKWISE,
-				'zeroingSpeed': 15,
-				'limitSwitchPort': 1
-			},
-			{
-				'motorPort': 2,
-				'zeroingDirection': Robot3Axis.CLOCKWISE,
-				'zeroingSpeed': 20,
-				'limitSwitchPort': null
-			},
-			{
-				'motorPort': 3,
-				'zeroingDirection': Robot3Axis.CLOCKWISE,
-				'zeroingSpeed': 50,
-				'limitSwitchPort': null
-			},
-		]);
+		this._robot = new Robot3Axis(ConfigParams.MINDSTORMS_NXT__SERIAL_PORT, ConfigParams.MINDSTORMS_NXT__AXIS_CONFIG);
 
 		this._robot.on('connected', function() {
 			//connected to the robot, let our listeners know
@@ -235,12 +218,15 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	start: function() {
+		this._calculateDrawingAngles(); //calculates all drawing angles
 
-		this._calculateDrawingAngles(); //calculate all drawing angles
+    console.log("------------------------------------------------------");
+    console.log("BEGINNING TO DRAW");
+    console.log("------------------------------------------------------");
 
-		//TODO - start drawing
-		//this._drawingServoAnglesCursor = 0;
+		//this._drawingServoAnglesCursor = 0; //using currentBufferIndex instead
 		this._drawNextPart();
+
 		//this._simulateMachineEvent('timeEstimate', 1000, (new Date().getTime()/1000) + 60); //simulate 60 second drawings
 		//this._simulateMachineEvent('drawingComplete', 2000);
 		//this._simulateMachineEvent('readyForPicture', 3000);
@@ -252,11 +238,6 @@ exports.DrawMachine = new Class({
      */
 
     _drawNextPart: function() {
-    	// if (this._drawingServoAnglesCursor >= this._drawingServoAngles.length) {
-    	// 	this.emit('drawingComplete');
-    	// 	this.emit('readyForPicture');
-    	// 	return;
-    	// }
     	
     	if (this.currentBufferIndex >= this.maxBufferIndex) {
     		console.log("DRAWING COMPLETE / READY FOR NEXT PICTURE");
@@ -266,47 +247,44 @@ exports.DrawMachine = new Class({
     	}
     	
     	//console.log("removing all listeners");
-    	//this._robot.removeAllListeners();
+    	this._robot.removeAllListeners();
 
-    	console.log("DRAWING NEXT PART: " + this.currentBufferIndex);
-    	/*
-    	setTimeout(function() {
-    		this._robot.once('synchronizedMoveDone', function(){
-    			console.log("move " + this.currentBufferIndex + " claims to be done");
-    			this._drawNextPart();
-    		}.bind(this));
-    		//this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this._drawingServoAnglesCursor]);
-    		console.log("going to move to coords " + this.currentBufferIndex);
-    		this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
-    	}.bind(this), 2000);
-    	*/
+    	console.log("DRAWING NEXT PART: Index #" + this.currentBufferIndex);
 
-    	if(this.currentBufferIndex <= this._drawingServoAngles.length) { //if remaining coords, go to next
+      if(this.currentBufferIndex <= this.maxBufferIndex) {
 
-			console.log('Going to next coord at:  ' + this._drawingServoAngles[this.currentBufferIndex] + ' in 1 second');
+  			console.log('Going to next coord at:  ' + this._drawingServoAngles[this.currentBufferIndex] + ' in 1 second');
+        console.log('X = ' + this.buff_cart[0][this.currentBufferIndex] + ' Y = ' + this.buff_cart[1][this.currentBufferIndex] + ' Z = ' + this.buff_cart[2][this.currentBufferIndex]);
 
-			setTimeout(function() {
-				this._robot.once('synchronizedMoveDone', function() {
-					this._drawNextPart(); //recursion
-				}.bind(this));
-				console.log("a: " + this._drawingServoAngles[this.currentBufferIndex]);
-				this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
-				
-				//this._drawingServoAngles.shift();
-				console.log("remaining coords => " + (this._drawingServoAngles.length - this.currentBufferIndex));
-			}.bind(this), 1000);
+  			setTimeout(function() {
 
-		} else {
-			console.log("finished drawing coords, zeroing and exiting");
-			this._robot.moveToZero(true);
-			this._robot.once('moveToZeroDone', function() {
-				console.log("EXITING");
-				process.exit(0);
-			}.bind(this));
-		}
+  				this._robot.once('synchronizedMoveDone', function() {
+  				  
+            this.currentBufferIndex++;
 
-    	///this._drawingServoAnglesCursor++;
-    	this.currentBufferIndex++;
+            console.log("remaining coords => " + (this.maxBufferIndex - this.currentBufferIndex));
+
+          	this._drawNextPart(); //recursion
+
+  				}.bind(this));
+
+  				console.log("a: " + this._drawingServoAngles[this.currentBufferIndex]);
+  				this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
+  					
+
+  			}.bind(this), this.DRAW_TIMEOUT_DELAY);
+
+  		} else {
+
+  			console.log("finished drawing coords, zeroing and exiting");
+  			this._robot.moveToZero(true);
+  			
+        this._robot.once('moveToZeroDone', function() {
+  				console.log("EXITING");
+  				process.exit(0);
+  			}.bind(this));
+
+  		}
     	
     },
 

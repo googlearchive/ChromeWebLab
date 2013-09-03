@@ -96,8 +96,8 @@ exports.ConfigParams = {
      */
 
     /* image dimension, used to scale the drawing */
-    CAM_X: 200,
-    CAM_Y: 150,
+    CAM_X: 100,
+    CAM_Y: 175,
     /* max draw time determines the size of the buffer used for commands */
     MAX_DRAW_TIME: 10,
     /*
@@ -121,11 +121,11 @@ exports.ConfigParams = {
     LINK_A: 2.25, //LINK_A: 2.46, //distance, in cm, plate from the center of the base axis, along the surface of the base, to the axis of the lower large gear
     LINK_B: 13.75, //distance, in cm, from center of lower large gear to center of upper large gear
     LINK_C: 0.0, //distance, in cm, from axis of upper large gear, along its radius, to its intersection with midline of the forearm
-    LINK_D: 18.4, //distance, in cm, from aforementioned intersection to tool tip
+    LINK_D: 22.5, //distance, in cm, from aforementioned intersection to tool tip
     BASEROFFSET : 2.5, // radial distance from center of base gear to center of gear1
     BASEZOFFSET : 3.44, // vertical distance from top of base gear to center of gear1
     GEAR1GEOMOFFSET : 5.593, // degrees, angle of rt triangle with l1 as hyp and 1.34 as opp leg, 1.34 is the offset of gear2 from the plane of l1
-    BASEHEIGHT : 6.43, // from top of drawing surface to the top of the base gear
+    BASEHEIGHT : 10.2, // from top of drawing surface to the top of the base gear
 
     //Gear ratios
     BASE_GEAR_RATIO: 56/8,
@@ -144,7 +144,7 @@ exports.ConfigParams = {
     GEAR1OFFSET: 8.5,
     GEAR2OFFSET: 12.5,
 
-    DRAWING_SPEED: 20,
+    DRAWING_SPEED: 5,
 
     /* controls rate and geometry of drawing */
 
@@ -196,7 +196,7 @@ exports.ConfigParams = {
      * These are only used if for the "MindstormsNXT" draw machine type
      *
      */
-    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodem621',  // '/dev/cu.usbmodem1421',  //'/dev/cu.usbmodemfd121',
+    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodem1421',  // '/dev/cu.usbmodem1421',  //'/dev/cu.usbmodemfd121',
     MINDSTORMS_NXT__AXIS_CONFIG: [
         {   //base gearbox
             'motorPort': 1,
