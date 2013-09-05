@@ -17,7 +17,7 @@ All trademarks are the property of their respective owners.
 
 In this tutorial you will learn to use the Chrome Web Lab's Sketchbot open source Sketchbot library in order to build your very own web-controlled drawing machine!
 
-Since building robots can be an expensive endeavor, we will try to minimize cost (and complexity) by making a drawing robot using [Lego Mindstorms NXT](http://mindstorms.lego.com/).
+Since building robots can be an expensive endeavor we will try to minimize cost (and complexity) by making a drawing robot using [Lego Mindstorms NXT](http://mindstorms.lego.com/).
 
 Like its bigger brother, the Mindstorms Sketchbot will use a 3-axis arm to manipulate a physical 'stylus' in order to tranposes a vector-based image onto a two-dimensional surface like paper.
 
@@ -31,12 +31,9 @@ Here's an example video of what you can expect after getting everything setup!
 
 ---
 
-*NOTES:*
+*NOTE:*
 
-*The Lego Mindstorms NXT sketchbot is NOT a high-precision drawing robot by any means. This is primarily due to its physical motor limitations and loose tolerances. However, it does demonstrate how a complete drawing system works, by going from web interface to physical sketch and providing a great jumping off point for anyone interested in building more advanced drawing machines using the Chrome Web Lab's Sketchbot library.*
-
-
-*Also note that this tutorial assumes some basic knowledge about programming in JavaScript, using the terminal and assembling mechanical (albeit simplified lego-based) parts.*
+*The Lego Mindstorms NXT sketchbot is NOT a high-precision drawing robot--far from it. This is primarily due to its physical motor limitations and loose tolerances. However, it does demonstrate how a complete drawing system works, by going from web interface to physical sketch and providing a great jumping off point for anyone interested in building more advanced drawing machines using the Chrome Web Lab's Sketchbot library.*
 
 ---
 
@@ -49,7 +46,7 @@ Here's an example video of what you can expect after getting everything setup!
 
 ---
 
-### Gather Materials
+###STEP 1: Gather Materials
 
 The first step is to acquire all of the parts we will need to build this project. 
 
@@ -59,21 +56,50 @@ The first step is to acquire all of the parts we will need to build this project
 
 ---
 
-### Downloading the Library
+###STEP 2: Download the Libary and Install Dependencies
+
+To get up and running with the code you can head over the [Getting Started Guide](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots#getting-started-basic-setup) for the main Sketchbot Library and follow the procedures there. Once you can verify the application works, head back here for instructions on building the hardware components.
+
 
 --
 
-### Installing Dependencies
+###STEP 3: Assemble the Lego Sketchbot
 
 --
 
-### Assembling the Sketchbot
-
+###STEP 4: Test
 --
 
-### Testing the System
---
+### Troubleshooting 
 
-## Troubleshooting 
+The Videos:
+
+Limit Switch Construction:
+http://www.youtube.com/watch?v=JPnMxgQ9hYE
+
+Stylus Construction:
+http://www.youtube.com/watch?v=naYiju-byI0
+
+Middle Arm Construction (5 parts):
+http://www.youtube.com/watch?v=oXg4AtbPvps
+http://www.youtube.com/watch?v=3XTaGui2jnM
+http://www.youtube.com/watch?v=9fZ-UtHjJJk
+http://www.youtube.com/watch?v=cgvkJ4SA5oA
+http://www.youtube.com/watch?v=VrQFO2uMBqI
+
+Connecting Middle Arm to Base
+http://www.youtube.com/watch?v=P2TK4dvqAxU
+
+Connecting Limit Switch to Base
+http://www.youtube.com/watch?v=-udeuvL_3iU
+
+Connecting Stylus to Middle Arm
+http://www.youtube.com/watch?v=Ie9yU_NviAk
+
+Connecting the Cables
+http://www.youtube.com/watch?v=aOploTPSCBQ
+
+Testing Middle Arm Connection
+http://www.youtube.com/watch?v=qYW05iyw0Yk
 
 
