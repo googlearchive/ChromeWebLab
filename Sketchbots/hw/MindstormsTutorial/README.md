@@ -65,41 +65,69 @@ To get up and running with the code you can head over the [Getting Started Guide
 
 ###STEP 3: Assemble the Lego Sketchbot
 
+####Build the Base
+
+####Build the Middle Arm
+
+Middle Arm Construction (5 parts):
+http://www.youtube.com/watch?v=oXg4AtbPvps
+
+http://www.youtube.com/watch?v=3XTaGui2jnM
+
+http://www.youtube.com/watch?v=9fZ-UtHjJJk
+
+http://www.youtube.com/watch?v=cgvkJ4SA5oA
+
+http://www.youtube.com/watch?v=VrQFO2uMBqI
+
+####Connect the Middle Arm to the Base
+http://www.youtube.com/watch?v=P2TK4dvqAxU
+
+####Test the Middle Arm Connection
+http://www.youtube.com/watch?v=qYW05iyw0Yk
+
+
+####Build the Limit Switch
+http://www.youtube.com/watch?v=JPnMxgQ9hYE
+
+####Connect the Limit Switch to the Base
+http://www.youtube.com/watch?v=-udeuvL_3iU
+
+
+####Build the Stylus
+http://www.youtube.com/watch?v=naYiju-byI0
+
+####Connect the Stylus to the Middle Arm
+http://www.youtube.com/watch?v=Ie9yU_NviAk
+
+
+####Connect the Cables
+http://www.youtube.com/watch?v=aOploTPSCBQ
+
 --
 
-###STEP 4: Test
+###STEP 4: Test the Sketchbot
 --
 
 ### Troubleshooting 
 
-The Videos:
 
-Limit Switch Construction:
-http://www.youtube.com/watch?v=JPnMxgQ9hYE
 
-Stylus Construction:
-http://www.youtube.com/watch?v=naYiju-byI0
 
-Middle Arm Construction (5 parts):
-http://www.youtube.com/watch?v=oXg4AtbPvps
-http://www.youtube.com/watch?v=3XTaGui2jnM
-http://www.youtube.com/watch?v=9fZ-UtHjJJk
-http://www.youtube.com/watch?v=cgvkJ4SA5oA
-http://www.youtube.com/watch?v=VrQFO2uMBqI
 
-Connecting Middle Arm to Base
-http://www.youtube.com/watch?v=P2TK4dvqAxU
 
-Connecting Limit Switch to Base
-http://www.youtube.com/watch?v=-udeuvL_3iU
 
-Connecting Stylus to Middle Arm
-http://www.youtube.com/watch?v=Ie9yU_NviAk
 
-Connecting the Cables
-http://www.youtube.com/watch?v=aOploTPSCBQ
 
-Testing Middle Arm Connection
-http://www.youtube.com/watch?v=qYW05iyw0Yk
+
+
+
+
+
+
+
+
+
+
 
 
