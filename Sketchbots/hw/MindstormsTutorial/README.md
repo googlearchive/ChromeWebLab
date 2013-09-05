@@ -133,6 +133,10 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 
 ####Build the Middle Arm Segment - Part 2
 #####Parts
+![Technic 9M Beam][lego-4297202] ![Technic 9M Beam][lego-4297202]
+![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033]
+![connector peg w. friction 3m][lego-655826]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=3XTaGui2jnM" target="_blank"><img src="images/middle_arm_part_2_thumg.png" /></a>
