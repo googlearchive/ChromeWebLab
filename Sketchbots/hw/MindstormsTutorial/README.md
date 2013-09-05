@@ -46,24 +46,38 @@ Here's an example video of what you can expect after getting everything setup!
 
 ---
 
-###STEP 1: Gather Materials
+###PART 1: Gather Materials
 
 The first step is to acquire all of the parts we will need to build this project. 
 
-* LEGO® MINDSTORMS® NXT 2.0 Kit
+
+* LEGO® MINDSTORMS® NXT Kit (such as [LEGO kit number 8527](http://www.brickset.com/detail/?Set=8527-1))
 * Pen, Pencil or Brush to attach to the stylus
-* Paper
+* Paper or other drawing surface--try sand if you like
+* A good metric ruler or, better still, a good metric [dial caliper](http://en.wikipedia.org/wiki/Caliper#Dial_caliper). Yes, you should use metric units.
 
 ---
 
-###STEP 2: Download the Libary and Install Dependencies
+###PART 2: Software Configuration
 
-To get up and running with the code you can head over the [Getting Started Guide](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots#getting-started-basic-setup) for the main Sketchbot Library and follow the procedures there. Once you can verify the application works, head back here for instructions on building the hardware components.
+First, we will set up the software needed for this project. This will be done on a computer, as well as on the "NXT brick" from the LEGO kit.
 
+The NXT brick is the motion controller for LEGO's robotics system and handles taking higher level motion commands and moving the motors appropriately. The NXT Brick comes from LEGO with a stock firmware installed. Happily, LEGO freely allows builders to install their own new firmware. We will use the community-developed [pbLua firmware](http://hempeldesigngroup.com/lego/pblua) rather than the stock LEGO firmware.
+
+1. Follow the instructions in the [Getting Started Guide, Basic Setup section](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots#getting-started-basic-setup) for the main Sketchbot Library and follow the procedures there. Once you can verify the system works without any LEGOs attached head back.
+2. If you haven't done so already, make sure that the basic LEGO Mindstorms NXT software is installed and running properly on your computer. Instructions are included in the Mindstorms NXT box and on [LEGO's web site](http://mindstorms.lego.com/en-us/support/buildinginstructions/8547/8547%20user%20guide%20english.aspx).
+3. Follow [these instructions](http://hempeldesigngroup.com/lego/pblua/tutorial/pbluainstall/) to install the pbLua firmware on the NXT brick.
+4. Open the [ConfigParams.js](sw/robotcontrol/src/ConfigParams.js) file from the [robotcontrol/src](sw/robotcontrol/src/) folder.
+6. Locate the `DRAW_MACHINE_TYPE` setting. Make sure it is set as follows: ```DRAW_MACHINE_TYPE: "MindstormsNXT",``` 
+7. If you built your drawing machine according to the instructions referenced in step 1, above, then the robot geometry settings included in ConfigParams.js can be used as-is. If you modified the machine or want to understand these settings in more detail, please see the [DrawMachine Geometry Configuration section](#drawmachine-geometry-configuration).
+8. Connect the NXT brick to the computer via USB or Bluetooth. See your computer operating system's documentation for details on how to create a Bluetooth connection.
+9. Determine the name of the serial port by looking in the **/dev** directory in a shell or Mac OS X terminal. For Bluetooth devices on Mac OS X, the port is usually called **/dev/cu.NXT-DevB**.
+10. Back in ConfigParams.js, set the `MINDSTORMS_NXT__SERIAL_PORT` to the name of the serial port from step 9.
+11. Save changes to ConfigParams.js.
 
 --
 
-###STEP 3: Assemble the Lego Sketchbot
+###PART 3: Assemble the Lego Sketchbot
 
 ####Build the Base
 
@@ -106,7 +120,7 @@ http://www.youtube.com/watch?v=aOploTPSCBQ
 
 --
 
-###STEP 4: Test the Sketchbot
+###PART 4: Test the Sketchbot
 --
 
 ### Troubleshooting 
