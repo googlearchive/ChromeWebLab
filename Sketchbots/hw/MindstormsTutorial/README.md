@@ -1,5 +1,5 @@
 <!-- ------------ Begin LEGO part image references ------------------ -->
-[lego-4297008]: http://cache.lego.com/media/bricks/5/2/4297008.jpg
+[lego-4297008]: http://cache.lego.com/media/bricks/5/1/4297008.jpg
 [lego-4206482]: http://cache.lego.com/media/bricks/5/1/4206482.jpg
 [lego-4210751]: http://cache.lego.com/media/bricks/5/1/4210751.jpg
 [lego-4210667]: http://cache.lego.com/media/bricks/5/1/4210667.jpg
@@ -118,7 +118,7 @@ We will start with the base from a robot arm designed by [Dave Parker](http://ww
 
 To build the base, [follow Dave's instructions through step 9 for Dave Parker's robot arm](http://www.nxtprograms.com/robot_arm/steps.html) (cached copy [here](http://webcache.googleusercontent.com/search?q=cache:4DkidHRrL44J:www.nxtprograms.com/robot_arm/steps.html+&cd=1&hl=en&ct=clnk&gl=us)) then **return here**. Don't do steps 10 or later.
 
-####Build the Middle Arm Segment
+####Build the Middle Arm Segment - Part 1
 #####Parts
 ![Tacho Motor Assambled][lego-4297008] 
 ![Technic 3M Beam][lego-4210751] ![Technic 3M Beam][lego-4210751]
@@ -130,10 +130,34 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=oXg4AtbPvps" target="_blank"><img src="images/middle_arm_part_1_thumg.png" /></a>
 
-2. http://www.youtube.com/watch?v=3XTaGui2jnM
-3. http://www.youtube.com/watch?v=9fZ-UtHjJJk
-4. http://www.youtube.com/watch?v=cgvkJ4SA5oA
-5. http://www.youtube.com/watch?v=VrQFO2uMBqI
+
+####Build the Middle Arm Segment - Part 2
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=3XTaGui2jnM" target="_blank"><img src="images/middle_arm_part_2_thumg.png" /></a>
+
+
+####Build the Middle Arm Segment - Part 3
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=9fZ-UtHjJJk" target="_blank"><img src="images/middle_arm_part_3_thumg.png" /></a>
+
+
+####Build the Middle Arm Segment - Part 4
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=cgvkJ4SA5oA" target="_blank"><img src="images/middle_arm_part_4_thumg.png" /></a>
+
+
+####Build the Middle Arm Segment - Part 5
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=VrQFO2uMBqI" target="_blank"><img src="images/middle_arm_part_5_thumg.png" /></a>
+
 
 ####Connect the Middle Arm to the Base
 http://www.youtube.com/watch?v=P2TK4dvqAxU
