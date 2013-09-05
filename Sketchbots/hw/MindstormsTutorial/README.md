@@ -5,6 +5,8 @@
 [lego-4210667]: http://cache.lego.com/media/bricks/5/1/4210667.jpg
 [lego-655826]: http://cache.lego.com/media/bricks/5/1/655826.jpg
 [lego-4121715]: http://cache.lego.com/media/bricks/5/1/4121715.jpg
+[lego-4297202]: http://cache.lego.com/media/bricks/5/1/4297202.jpg
+[lego-4225033]: http://cache.lego.com/media/bricks/5/1/4225033.jpg
 
 <!-- ------------ End LEGO part image references ------------------ -->
 
