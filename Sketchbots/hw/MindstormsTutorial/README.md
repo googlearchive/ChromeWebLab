@@ -1,6 +1,5 @@
 # Sketchbot Tutorial with Lego Mindstorms  NXT
 
----
 
 **WARNING** **WARNING** **WARNING** **WARNING**
 
@@ -14,7 +13,7 @@ All trademarks are the property of their respective owners.
 
 ---
 
-## Introduction
+### Introduction
 
 In this tutorial you will learn to use the Chrome Web Lab's Sketchbot open source Sketchbot library in order to build your very own web-controlled drawing machine!
 
@@ -41,7 +40,7 @@ Here's an example video of what you can expect after getting everything setup!
 
 ---
 
-##References
+###References
 
 * [Lego Mindstorms NXT](http://mindstorms.lego.com/)
 * [Inverse Kinematics](http://en.wikipedia.org/wiki/Inverse_kinematics)
@@ -50,7 +49,7 @@ Here's an example video of what you can expect after getting everything setup!
 
 ---
 
-## Gather Materials
+### Gather Materials
 
 The first step is to acquire all of the parts we will need to build this project. 
 
@@ -60,19 +59,19 @@ The first step is to acquire all of the parts we will need to build this project
 
 ---
 
-## Downloading the Library
+### Downloading the Library
 
 --
 
-## Installing Dependencies
+### Installing Dependencies
 
 --
 
-## Assembling the Sketchbot
+### Assembling the Sketchbot
 
 --
 
-## Testing the System
+### Testing the System
 --
 
 ## Troubleshooting 
