@@ -51,6 +51,7 @@ For a full description of the history and concept of the project see [this page]
 
 It looks something like this after setup:
 <a href="http://www.youtube.com/watch?v=fzv4VVIIXUs" target="_blank"><img src="images/sketching_overview.png" /></a>
+[(click for video)](http://www.youtube.com/watch?v=fzv4VVIIXUs)
 
 ---
 
