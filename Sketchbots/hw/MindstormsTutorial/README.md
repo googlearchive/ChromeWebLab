@@ -236,7 +236,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 
 ###PART 4: Running
 
-At this point you should be able to run the Sketchbot system on the computer and, as long as the
+At this point you should be able to run the Sketchbot system on the computer and use the system as described [here](https://github.com/GoogleChrome/ChromeWebLab/blob/hardware-tutorials-dev/Sketchbots/README.md#putting-it-all-together).
 
 ###Troubleshooting Tips
 
