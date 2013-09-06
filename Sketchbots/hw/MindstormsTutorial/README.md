@@ -50,7 +50,7 @@ After assembling Lego Mindstorms NXT drawing robot, getting the dependencies ins
 For a full description of the history and concept of the project see [this page](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbot).
 
 It looks something like this after setup:
-<a href="http://www.youtube.com/watch?v=" target="_blank"><img src="images/sketching_overview.png" /></a>
+<a href="http://www.youtube.com/watch?v=fzv4VVIIXUs" target="_blank"><img src="images/sketching_overview.png" /></a>
 
 ---
 
