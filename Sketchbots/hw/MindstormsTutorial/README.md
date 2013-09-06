@@ -142,7 +142,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=oXg4AtbPvps" target="_blank"><img src="images/middle_arm_part_1_thumg.png" /></a>
+<a href="http://www.youtube.com/watch?v=oXg4AtbPvps" target="_blank"><img src="images/middle_arm_part_1.png" /></a>
 
 
 ####Build the Middle Arm Segment - Part 2
@@ -153,7 +153,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=3XTaGui2jnM" target="_blank"><img src="images/middle_arm_part_2_thumg.png" /></a>
+<a href="http://www.youtube.com/watch?v=3XTaGui2jnM" target="_blank"><img src="images/middle_arm_part_2.png" /></a>
 
 
 ####Build the Middle Arm Segment - Part 3
@@ -167,7 +167,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Gear Wheel 40T][lego-4285634]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=9fZ-UtHjJJk" target="_blank"><img src="images/middle_arm_part_3_thumg.png" /></a>
+<a href="http://www.youtube.com/watch?v=9fZ-UtHjJJk" target="_blank"><img src="images/middle_arm_part_3.png" /></a>
 
 
 ####Build the Middle Arm Segment - Part 4
@@ -181,7 +181,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Cross Axle 10M][lego-373726]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=cgvkJ4SA5oA" target="_blank"><img src="images/middle_arm_part_4_thumg.png" /></a>
+<a href="http://www.youtube.com/watch?v=cgvkJ4SA5oA" target="_blank"><img src="images/middle_arm_part_4.png" /></a>
 
 
 ####Build the Middle Arm Segment - Part 5
@@ -189,54 +189,57 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Module Bush][lego-4119589] ![Module Bush][lego-4119589] ![Module Bush][lego-4119589]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=VrQFO2uMBqI" target="_blank"><img src="images/middle_arm_part_5_thumg.png" /></a>
+<a href="http://www.youtube.com/watch?v=VrQFO2uMBqI" target="_blank"><img src="images/middle_arm_part_5.png" /></a>
 
 
 ####Connect the Middle Arm to the Base
-http://www.youtube.com/watch?v=P2TK4dvqAxU
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=P2TK4dvqAxU" target="_blank"><img src="images/middle_arm_to_base.png" /></a>
 
 ####Test the Middle Arm Connection
-http://www.youtube.com/watch?v=qYW05iyw0Yk
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=qYW05iyw0Yk" target="_blank"><img src="images/test_middle_arm_connection.png" /></a>
 
 ####Build the Limit Switch
-http://www.youtube.com/watch?v=JPnMxgQ9hYE
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=JPnMxgQ9hYE" target="_blank"><img src="images/limit_switch.png" /></a>
 
 ####Connect the Limit Switch to the Base
-http://www.youtube.com/watch?v=-udeuvL_3iU
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=-udeuvL_3iU" target="_blank"><img src="images/limit_switch_to_base.png" /></a>
 
 ####Build the Stylus
-http://www.youtube.com/watch?v=naYiju-byI0
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=naYiju-byI0" target="_blank"><img src="images/stylus.png" /></a>
 
 ####Connect the Stylus to the Middle Arm
-http://www.youtube.com/watch?v=Ie9yU_NviAk
+#####Parts
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=Ie9yU_NviAk" target="_blank"><img src="images/stylus_to_middle_arm.png" /></a>
 
 ####Connect the Cables
-http://www.youtube.com/watch?v=aOploTPSCBQ
+#####Parts
 
---
+#####Assembly
+<a href="http://www.youtube.com/watch?v=aOploTPSCBQ" target="_blank"><img src="images/cables.png" /></a>
 
-###PART 4: Test the Sketchbot
---
+###PART 4: Running
 
-### Troubleshooting 
+At this point you should be able to run the Sketchbot system on the computer and, as long as the
 
+###Troubleshooting Tips
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* The Mindstorms system is battery hungry. If things are acting strangely, try using fresh batteries.
+* If you are having communication problems between the computer and the NXT brick, try using USB instead of Bluetooth.
 
