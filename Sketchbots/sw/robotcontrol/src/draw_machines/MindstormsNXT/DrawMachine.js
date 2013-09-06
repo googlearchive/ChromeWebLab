@@ -24,7 +24,8 @@ var Robot3Axis = require('./Robot3Axis').Robot3Axis;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.DrawMachine = new Class({
-    Implements: [Events, Options],
+    Implements: [Events, Options, process.EventEmitter],
+    //Implements: [Events, Options],
 
     /**
      * This class is required to emit only these events:
@@ -79,12 +80,16 @@ exports.DrawMachine = new Class({
      *
      */
 
-
     /**
      * initialize the DrawMachine class. Do not set up machine communication here. This is for state initialization.
      *
      */
     initialize: function(options) {
+
+        console.log("------------------------------------------------------");
+        console.log("INITIALIZING MINDSTORM-NXT DRAWMACHINE");
+        console.log("------------------------------------------------------");
+
         this.setOptions(options);
 
         this.BUFFER_SIZE = 3000;
@@ -103,6 +108,8 @@ exports.DrawMachine = new Class({
         this.buff_control[2] = new Array(this.BUFFER_SIZE);
         this.buff_control[3] = new Array(this.BUFFER_SIZE);
         this.buff_type = new Array(this.BUFFER_SIZE);
+
+        this.DRAW_TIMEOUT_DELAY = 500;
 
         //Do NOT initialize communication with the machine here
         //instead do that in createRobot()
@@ -128,22 +135,8 @@ exports.DrawMachine = new Class({
      */
     createRobot: function() {
         //set up a connection to the machine via the serial port specified in our config
-        this._robot = new Robot3Axis(ConfigParams.MINDSTORMS_NXT__SERIAL_PORT, [{
-            'motorPort': 1,
-            'zeroingDirection': Robot3Axis.CLOCKWISE,
-            'zeroingSpeed': 15,
-            'limitSwitchPort': 1
-        }, {
-            'motorPort': 2,
-            'zeroingDirection': Robot3Axis.CLOCKWISE,
-            'zeroingSpeed': 20,
-            'limitSwitchPort': null
-        }, {
-            'motorPort': 3,
-            'zeroingDirection': Robot3Axis.CLOCKWISE,
-            'zeroingSpeed': 50,
-            'limitSwitchPort': null
-        }, ]);
+        this._robot = new Robot3Axis(ConfigParams.MINDSTORMS_NXT__SERIAL_PORT, ConfigParams.MINDSTORMS_NXT__AXIS_CONFIG);
+
         this._robot.on('connected', function() {
             //connected to the robot, let our listeners know
             console.log('********************** Connected to MindstormsNXT drawing machine **********************');
@@ -192,10 +185,11 @@ exports.DrawMachine = new Class({
      *
      */
     calibrate: function() {
-        this.robot.once('moveToZeroDone', function() {
+        console.log(this._robot);
+        this._robot.once('moveToZeroDone', function() {
             this.emit('robotCalibrated');
         }.bind(this));
-        this.robot.moveToZero();
+        this._robot.moveToZero();
     },
 
     /**
@@ -219,23 +213,25 @@ exports.DrawMachine = new Class({
         this._simulateMachineEvent('turntableMotionComplete');
     },
 
-
     /**
      * Causes the machine to start drawing.
      * Should eventually cause 'timeEstimate', and 'drawingComplete' events, in that order
      *
      */
     start: function() {
-        this._calculateDrawingAngles();
-        //TODO - start drawing
-        this._drawingServoAnglesCursor = 0;
+        this._calculateDrawingAngles(); //calculates all drawing angles
+
+        console.log("------------------------------------------------------");
+        console.log("BEGINNING TO DRAW");
+        console.log("------------------------------------------------------");
+
+        //this._drawingServoAnglesCursor = 0; //using currentBufferIndex instead
         this._drawNextPart();
-        this._simulateMachineEvent('timeEstimate', 1000, (new Date().getTime() / 1000) + 60); //simulate 60 second drawings
+
+        //this._simulateMachineEvent('timeEstimate', 1000, (new Date().getTime()/1000) + 60); //simulate 60 second drawings
         //this._simulateMachineEvent('drawingComplete', 2000);
         //this._simulateMachineEvent('readyForPicture', 3000);
     },
-
-
 
     /*
      * private functions
@@ -243,21 +239,65 @@ exports.DrawMachine = new Class({
      */
 
     _drawNextPart: function() {
-        if (this._drawingServoAnglesCursor >= this._drawingServoAngles.length) {
+
+        if (this.currentBufferIndex >= this.maxBufferIndex) {
+            console.log("DRAWING COMPLETE / READY FOR NEXT PICTURE");
             this.emit('drawingComplete');
             this.emit('readyForPicture');
             return;
         }
-        this.robot.removeAllListeners();
-        this.robot.once('synchronizedMoveDone', this._drawNextPart.bind(this));
-        this.robot.synchronizedMove(this.DRAWING_SPEED, this._drawingServoAnglesCursor[this._drawingServoAnglesCursor]);
-        this._drawingServoAnglesCursor++;
+
+        //console.log("removing all listeners");
+        this._robot.removeAllListeners();
+
+        console.log("DRAWING NEXT PART: Index #" + this.currentBufferIndex);
+
+        if (this.currentBufferIndex <= this.maxBufferIndex) {
+
+            console.log('Going to next coord at:  ' + this._drawingServoAngles[this.currentBufferIndex] + ' in 1 second');
+            console.log('X = ' + this.buff_cart[0][this.currentBufferIndex] + ' Y = ' + this.buff_cart[1][this.currentBufferIndex] + ' Z = ' + this.buff_cart[2][this.currentBufferIndex]);
+
+            setTimeout(function() {
+
+                this._robot.once('synchronizedMoveDone', function() {
+
+                    this.currentBufferIndex++;
+
+                    console.log("remaining coords => " + (this.maxBufferIndex - this.currentBufferIndex));
+
+                    this._drawNextPart(); //recursion
+
+                }.bind(this));
+
+                console.log("a: " + this._drawingServoAngles[this.currentBufferIndex]);
+                this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
+
+
+            }.bind(this), this.DRAW_TIMEOUT_DELAY);
+
+        } else {
+
+            console.log("finished drawing coords, zeroing and exiting");
+            this._robot.moveToZero(true);
+
+            this._robot.once('moveToZeroDone', function() {
+                console.log("EXITING");
+                process.exit(0);
+            }.bind(this));
+
+        }
+
     },
 
     _calculateDrawingAngles: function() {
-        this._drawingServoAngles = new Array(this.buff_cart.length);
-        for (var i = 0, il = this._drawingServoAngles.length; i < il; i++)
+        //this._drawingServoAngles = new Array(this.buff_cart.length);
+        this._drawingServoAngles = new Array(this.maxBufferIndex);
+
+        for (var i = 0, il = this._drawingServoAngles.length; i < il; i++) {
             this._drawingServoAngles[i] = this._doIk(this.buff_cart[0][i], this.buff_cart[1][i], this.buff_cart[2][i]);
+            console.log("ANGLES: " + this._drawingServoAngles[i]);
+        }
+
     },
 
     /**
@@ -266,9 +306,113 @@ exports.DrawMachine = new Class({
      *
      * Returns a 3-dimensional array, [baseMotorDegrees, lowerMotorDegrees, upperMotorDegrees]
      *
+     * Calculations based on this paper by Dr. Rainer Hessmer, October 2009
+     * http://www.hessmer.org/uploads/RobotArm/Inverse%20Kinematics%20for%20Robot%20Arm.pdf
+     *
      */
     _doIk: function(x, y, z) {
-        //TODO
+
+        console.log("X: " + x + " Y: " + y + " : " + z);
+
+        if (x < ConfigParams.DRAW_PARAMETERS.robotXMin || x > ConfigParams.DRAW_PARAMETERS.robotXMax) {
+            console.log("X IS OUT OF RANGE => " + x);
+        }
+
+        if (y < ConfigParams.DRAW_PARAMETERS.robotYMin || x > ConfigParams.DRAW_PARAMETERS.robotYMax) {
+            console.log("Y IS OUT OF RANGE => " + y);
+        }
+
+        var xadj, yadj, zadj, // adjust x, y, z from center of base gear to center of gear 1 because of turntable
+            theta0, theta1, theta2, // base angle, gear angle 1, gear 2 angle
+            l1, l2, // leg lengths
+            l1sq, l2sq, // leg lengths squared
+            k1, k2,
+            d, r,
+            dsq,
+            xsq, ysq,
+            zprime, zprimesq, // z prime 
+            theta2calc,
+            sinTheta2,
+            cosTheta2,
+            theta0deg, theta1deg, theta2deg,
+            angsrad, angsdeg,
+            nxttheta0, nxttheta1, nxttheta2,
+            nxtangs,
+            radianToDegree;
+
+        // first get the base angle so we can offset the x,y,z for the turntable
+        theta0 = Math.atan2(y, x);
+
+        // now go ahead and set the variables and square them for easier reference
+        xadj = x - ConfigParams.BASEROFFSET * Math.cos(theta0);
+        yadj = y - ConfigParams.BASEROFFSET * Math.sin(theta0);
+        zadj = z - ConfigParams.BASEZOFFSET;
+        l1 = ConfigParams.LINK_B;
+        l2 = ConfigParams.LINK_D;
+        xsq = xadj * xadj;
+        ysq = yadj * yadj;
+        d = Math.sqrt(xsq + ysq);
+        dsq = d * d;
+        zprime = zadj - ConfigParams.BASEHEIGHT;
+        zprimesq = zprime * zprime;
+        l1sq = l1 * l1;
+        l2sq = l2 * l2;
+        radianToDegree = 180 / Math.PI;
+
+        // calculate theta2, the gear 2 angle
+        theta2calc = (dsq + zprimesq - l1sq - l2sq) / (2 * l1 * l2);
+        sinTheta2 = Math.sqrt(1 - Math.pow(theta2calc, 2));
+        cosTheta2 = theta2calc;
+        theta2 = Math.atan2(-sinTheta2, cosTheta2);
+
+        // use theta2 to calculate theta1, the gear 1 angle
+        k1 = l1 + l2 * Math.cos(theta2);
+        k2 = l2 * Math.sin(theta2);
+        theta1 = Math.atan2(zprime, d) - Math.atan2(k2, k1);
+
+        // convert from radians to degrees
+        theta0deg = theta0 * radianToDegree;
+        theta1deg = theta1 * radianToDegree;
+        theta2deg = theta2 * radianToDegree;
+
+        // don't really need this step, but good for debugging
+        // log out the raw angles to check arm positions
+        angsrad = [theta0, theta1, theta2];
+        angsdeg = [theta0deg, theta1deg, theta2deg];
+        //console.log('thetas in radians: ' + angsrad);
+        console.log('thetas in degrees: ' + angsdeg);
+
+        // if angles are outside of arm bounds, warn the user, but don't stop the drawing
+        if (theta0deg < ConfigParams.GEAR0ZEROANGLE) {
+            console.log("******** Coordinate is outside of arm bounds. Gear 0 ********")
+        }
+        if (theta1deg > ConfigParams.GEAR1ZEROANGLE) {
+            console.log("******** Coordinate is outside of arm bounds. Gear 1 ********")
+        }
+        if (theta2deg < ConfigParams.GEAR2ZEROANGLE) {
+            console.log("******** Coordinate is outside of arm bounds. Gear 2 ********")
+        }
+
+        // convert angles into mindstorm space
+        theta1deg -= ConfigParams.GEAR1GEOMOFFSET; // account for offset of gear2
+        nxttheta0 = theta0deg - ConfigParams.GEAR0ZEROANGLE;
+        nxttheta1 = ConfigParams.GEAR1ZEROANGLE - theta1deg;
+        nxttheta2 = ConfigParams.GEAR2ZEROANGLE - theta2deg;
+
+        // log out nxt angles to check arm positions
+        nxtangs = [nxttheta0, nxttheta1, nxttheta2];
+        //console.log('angles for nxt in degrees: ' + nxtangs);
+
+        // add in the 'slop' of the mindstorm gears
+        nxtangs[0] += ConfigParams.GEAR0OFFSET;
+        //nxtangs[0] = 0;
+        nxtangs[1] += ConfigParams.GEAR1OFFSET;
+        //nxtangs[1] = 0;
+        nxtangs[2] -= ConfigParams.GEAR2OFFSET;
+        //nxtangs[2] = 0;
+        //console.log('angles for nxt offset for slop: ' + nxtangs);
+
+        return (nxtangs);
     },
 
     _simulateMachineEvent: function(eventName, delay, obj) {
@@ -277,7 +421,6 @@ exports.DrawMachine = new Class({
         setTimeout(function() {
             this.emit(eventName, obj);
         }.bind(this), delay);
-    },
-
+    }
 
 });

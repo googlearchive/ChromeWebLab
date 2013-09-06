@@ -119,7 +119,7 @@ exports.DrawMachineCommandLoader = new Class({
             this.machine.start();
             // prepare event chain for when the drawing completes
             // zero out and go home
-            //this.machine.removeAllListeners(); //avoid multiple event listeners
+            this.machine.removeAllListeners(); //avoid multiple event listeners
             this.machine.once('drawingComplete', function(movement) {
                 this.emit('drawingComplete');
                 this.prepareRobotForNextDrawing();
