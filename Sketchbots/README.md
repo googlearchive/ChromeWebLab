@@ -180,47 +180,7 @@ If you saw everything as described, then the system should be basically working.
 
 ## Getting Started: Using a Drawing Machine
 
-These instructions build upon the [Basic Setup](#getting-started-basic-setup) by adding a simple LEGO Mindstorms NXT drawing machine. For more information on this type of drawing machine see [MindstormsNXT DrawMachine](#mindstormsnxt-drawmachine) in the reference section.
-
-We will use the community-developed [pbLua firmware](http://hempeldesigngroup.com/lego/pblua) for the NXT "brick", rather than the stock LEGO firmware.
-
-You will need the following materials to complete this setup:
-* A LEGO Mindstorms NXT building kit. LEGO Mindstorms NXT kits are readily available online.
-* Other miscellaneous LEGO bricks are handy, such as from the Technic sets
-* A good metric ruler or, better still, a good metric [dial caliper](http://en.wikipedia.org/wiki/Caliper#Dial_caliper). Yes, you should use metric units.
-
-1. Build a 3-axis drawing machine as described the [LEGO Mindstorms NXT drawing machine build instructions](hw/MindstormsNXT/README.md). Also review the description of the [MindstormsNXT drawing machine software module](#mindstormsnxt-drawmachine) in the reference section.
-2. If you haven't done so already, make sure that the basic LEGO Mindstorms NXT software is installed and running properly on your computer. Instructions are included in the Mindstorms NXT box and on [LEGO's web site](http://mindstorms.lego.com/en-us/support/buildinginstructions/8547/8547%20user%20guide%20english.aspx).
-3. Follow [these instructions](http://hempeldesigngroup.com/lego/pblua/tutorial/pbluainstall/) to install the pbLua firmware on the NXT brick.
-4. Open the [ConfigParams.js](sw/robotcontrol/src/ConfigParams.js) file from the [robotcontrol/src](sw/robotcontrol/src/) folder.
-6. Locate the `DRAW_MACHINE_TYPE` setting. Make sure it is set as follows: ```DRAW_MACHINE_TYPE: "MindstormsNXT",``` 
-7. If you built your drawing machine according to the instructions referenced in step 1, above, then the robot geometry settings included in ConfigParams.js can be used as-is. If you modified the machine or want to understand these settings in more detail, please see the [DrawMachine Geometry Configuration section](#drawmachine-geometry-configuration).
-8. Connect the NXT brick to the computer via USB or Bluetooth. See your computer operating system's documentation for details on how to create a Bluetooth connection.
-9. Determine the name of the serial port by looking in the **/dev** directory in a shell or Mac OS X terminal. For Bluetooth devices, the port is usually called **/dev/cu.NXT-DevB**.
-10. Back in ConfigParams.js, set the `MINDSTORMS_NXT__SERIAL_PORT` to the name of the serial port from step 10.
-11. Save changes to ConfigParams.js.
-
-> #### Stop and test
->
-> Now we should re-test the entire system to make sure that it still works.
-> 
-> 1. In the shell, change to the [**robotcontrol/** folder](sw/robotcontrol) (one level up from the **src** folder).
-> 2. Run `./start_robot_control`
-> 3. You should see the following message in the console: `********************** Connected to MindstormsNXT drawing machine **********************`
-> 4. You should also see "Sketchbot OK" on the Mindstorms NXT brick LCD display. **Troubleshooting**: If you do not see *both* the message in the console on the computer and on the LCD, then you may have the wrong serial port configured in ConfigParams.js. Review Step 9 above and try again.
-
-> 5. Switch to the UI running in your browser. If the UI is not running, switch to App Engine Launcher, select *labqueue* and press the *Run* button. Click the *Browse* button to display the UI in your browser.
-> 6. Click the *New from File* button
-> 7. Select the [testpattern.png](sw/test/testpattern.png) file which is part of this repository. You can find it in the [sw/test](sw/test) folder.
-> 8. Click the *Save* button
-> 9. A few seconds later **robotcontrol** should pick up the new drawing task and begin commanding the drawing machine.
-> 
-> **Troubleshooting**: 
-> 	* If **robotcontrol** does not detect the new drawing task then there may be a fundamental misconfiguration in **robotcontrol** itself. Review the [Getting Started: Basic Setup](#getting-started-basic-setup) instructions.
-> 	* If **robotcontrol** detects the new task but the robot does not start drawing then review the troubleshooting tips for step 3 in this test procedure.
-> 	* If the drawing machine starts drawing but does not draw correctly, you may need to check the physical build of the machine. Review the [build instructions here](hw/MindstormsNXT/README.md). You should also re-check the dimensional and gear ratio settings as shown in step 7, above.
-> 
-
+For more on using an physical Sketchbot, check out [how to use a BergCloud Little Printer](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots/hw/Littleprinter) or build a [LEGO Mindstorms sketchbot](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots/hw/MindstormsNXT).
 
 ----------------------------------------------------------------
 

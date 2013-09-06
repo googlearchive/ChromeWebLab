@@ -64,6 +64,12 @@ exports.MasterDataParser = new Class({
             var x_num = (parseFloat(line_args[0]) - this.CAM_IMG_DIM.xmin) / (this.CAM_IMG_DIM.xmax - this.CAM_IMG_DIM.xmin);
             var y_num = (parseFloat(line_args[1]) - this.CAM_IMG_DIM.ymin) / (this.CAM_IMG_DIM.ymax - this.CAM_IMG_DIM.ymin);
             var z_num = parseFloat(line_args[2]);
+
+            // console.log("NORMALIZED XY:");
+            // console.log("x_num " + x_num);
+            // console.log("y_num " + y_num);
+            // console.log("--------------");
+
             if (line_args.length == 3) {
                 this.MASTER_DATA.push({
                     x: x_num,
@@ -157,7 +163,20 @@ exports.MasterDataParser = new Class({
         var line_count = this.MASTER_DATA.length;
         var tempLine = "";
 
+        console.log("COMPUTED MASTER MACHINE CODE");
+        console.log('X Min = ' + rxmin);
+        console.log('X Max = ' + rxmax);
+        console.log("Y MIN = " + rymin);
+        console.log("Y MAX = " + rymax);
+        console.log(v_num);
+        console.log(a_num);
+        console.log(line_count);
+        console.log(tempLine);
+        console.log("----------------------------");
 
+        if (ConfigParams.DRAW_MACHINE_TYPE === 'MindstormsNXT') {
+            console.log("USING MindstormsNXT");
+        }
         // make the arm go to a safe point just above the center first to avoid hitting the
         // plastic barrier with the back of the arm on the way down to the drawing
         tempLine = this.DRAW_PARAMETERS['velocity'] / 4.0 + "," + this.DRAW_PARAMETERS['acceleration'] + "," + Math.abs(rxmax - rxmin) * this.MASTER_DATA[0].dist + "," + ((rxmin + rxmax) / 2) + "," + ((rymin + rymax) / 2) + "," + 1;

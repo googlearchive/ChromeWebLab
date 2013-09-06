@@ -45,8 +45,8 @@ exports.ConfigParams = {
     TASK_STOP_DELAY: 1000,
 
     /* target drawing dimensions, in px */
-    DRAWING_WIDTH_PX: 260,
-    DRAWING_HEIGHT_PX: 364,
+    DRAWING_WIDTH_PX: 600,
+    DRAWING_HEIGHT_PX: 450,
 
     /* when enabled, this tracks the number of failed serial connections since last boot */
     VIDEO_STOP_DELAY: 5000,
@@ -96,8 +96,8 @@ exports.ConfigParams = {
      */
 
     /* image dimension, used to scale the drawing */
-    CAM_X: 200,
-    CAM_Y: Math.floor((200 / 3.0) * 4.0),
+    CAM_X: 100,
+    CAM_Y: 175,
     /* max draw time determines the size of the buffer used for commands */
     MAX_DRAW_TIME: 10,
     /*
@@ -118,17 +118,50 @@ exports.ConfigParams = {
     PAN_GEAR_RATIO: 72,
     */
     //These values are applicable to the MindstormsNXT robots described in ../../../README.md
-    LINK_A: 2.25, //distance, in cm, plate from the center of the base axis, along the surface of the base, to the axis of the lower large gear
+    LINK_A: 2.25, //LINK_A: 2.46, //distance, in cm, plate from the center of the base axis, along the surface of the base, to the axis of the lower large gear
     LINK_B: 13.75, //distance, in cm, from center of lower large gear to center of upper large gear
     LINK_C: 0.0, //distance, in cm, from axis of upper large gear, along its radius, to its intersection with midline of the forearm
-    LINK_D: 19.0, //distance, in cm, from aforementioned intersection to tool tip
-    BASE_GEAR_RATIO: 50 / 8,
+    LINK_D: 22.5, //distance, in cm, from aforementioned intersection to tool tip
+    BASEROFFSET: 2.5, // radial distance from center of base gear to center of gear1
+    BASEZOFFSET: 3.44, // vertical distance from top of base gear to center of gear1
+    GEAR1GEOMOFFSET: 5.593, // degrees, angle of rt triangle with l1 as hyp and 1.34 as opp leg, 1.34 is the offset of gear2 from the plane of l1
+    BASEHEIGHT: 10.2, // from top of drawing surface to the top of the base gear
+
+    //Gear ratios
+    BASE_GEAR_RATIO: 56 / 8,
     LOWER_ARM_GEAR_RATIO: 40 / 8,
     UPPER_ARM_GEAR_RATIO: 1,
     PAN_GEAR_RATIO: 1,
 
+    //When the robot zeroes, these are the real world angles the arms rest in
+    //See the README to see how to adjust these
+    GEAR0ZEROANGLE: 16.187,
+    GEAR1ZEROANGLE: 45.584,
+    GEAR2ZEROANGLE: -134.5,
+
+    //The 'slop' in the Mindstorm gears. Essentially, the motor control 'thinks' the zero angle is different than it actually is, so we compensate in the IK function
+    GEAR0OFFSET: 6,
+    GEAR1OFFSET: 8.5,
+    GEAR2OFFSET: 12.5,
+
+    DRAWING_SPEED: 5,
 
     /* controls rate and geometry of drawing */
+
+    DRAW_PARAMETERS: {
+        'chunkSize': 3000,
+        'velocity': 100,
+        'acceleration': 200,
+        'robotXMin': 6, // in cms, might should be in mms
+        'robotXMax': 22, //
+        'robotYMin': 6, // 
+        'robotYMax': 22, //
+        'drawPlaneHeight': -9.5,
+        'liftDistance': 2,
+        'turntableTravel': 120
+    },
+
+    /* // ORIGINAL SETTINGS, KEEPING IN CASE I SCREW SOMETHING UP
     DRAW_PARAMETERS: {
         'chunkSize': 3000,
         'velocity': 100,
@@ -141,7 +174,7 @@ exports.ConfigParams = {
         'liftDistance': 2,
         'turntableTravel': 120
     },
-
+    */
 
     /**************************************************************************************
      **************************************************************************************
@@ -163,22 +196,25 @@ exports.ConfigParams = {
      * These are only used if for the "MindstormsNXT" draw machine type
      *
      */
-    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodemfd121',
-    MINDSTORMS_NXT__AXIS_CONFIG: [{
+    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodem1421', // '/dev/cu.usbmodem1421',  //'/dev/cu.usbmodemfd121',
+    MINDSTORMS_NXT__AXIS_CONFIG: [{ //base gearbox
         'motorPort': 1,
         'zeroingDirection': 1,
         'zeroingSpeed': 15,
-        'limitSwitchPort': 1
-    }, {
+        'limitSwitchPort': 1,
+        'gearBoxConfig': [8, 56] //base gearbox config
+    }, { //lower arm
         'motorPort': 2,
         'zeroingDirection': 1,
         'zeroingSpeed': 20,
-        'limitSwitchPort': null
-    }, {
+        'limitSwitchPort': null,
+        'gearBoxConfig': [8, 40]
+    }, { //upper arm
         'motorPort': 3,
         'zeroingDirection': 1,
         'zeroingSpeed': 50,
-        'limitSwitchPort': null
+        'limitSwitchPort': null,
+        'gearBoxConfig': null
     }, ],
 
     /*
