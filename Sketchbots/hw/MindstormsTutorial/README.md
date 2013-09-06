@@ -49,9 +49,8 @@ After assembling Lego Mindstorms NXT drawing robot, getting the dependencies ins
 
 For a full description of the history and concept of the project see [this page](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbot).
 
-Here's an example video of what you can expect after getting everything setup!
-
-/////////// **TODO: Add Video Here** ///////////
+It looks something like this after setup:
+<a href="http://www.youtube.com/watch?v=" target="_blank"><img src="images/sketching_overview.png" /></a>
 
 ---
 
@@ -123,7 +122,6 @@ The NXT brick is the motion controller for LEGO's robotics system and handles ta
 --
 
 ###PART 3: Assemble the Lego Sketchbot
-The robot arm we will build looks like this:
 ![Assembled Mindstorms NXT Sketchbot](images/assembled_arm.jpg)
 
 ####Build the Base
