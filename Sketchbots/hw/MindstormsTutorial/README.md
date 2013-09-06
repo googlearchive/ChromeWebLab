@@ -11,6 +11,14 @@
 [lego-4522939]: http://cache.lego.com/media/bricks/5/1/4522939.jpg
 [lego-4297200]: http://cache.lego.com/media/bricks/5/1/4297200.jpg
 [lego-4285634]: http://cache.lego.com/media/bricks/5/1/4285634.jpg
+[lego-4210753]: http://cache.lego.com/media/bricks/5/1/4210753.jpg
+[lego-4211709]: http://cache.lego.com/media/bricks/5/1/4211709.jpg
+[lego-4210686]: http://cache.lego.com/media/bricks/5/1/4210686.jpg
+[lego-4211432]: http://cache.lego.com/media/bricks/5/1/4211432.jpg
+[lego-4211622]: http://cache.lego.com/media/bricks/5/1/4211622.jpg
+[lego-370726]: http://cache.lego.com/media/bricks/5/1/370726.jpg
+[lego-373726]: http://cache.lego.com/media/bricks/5/1/373726.jpg
+[lego-4119589]: http://cache.lego.com/media/bricks/5/1/4119589.jpg
 
 <!-- ------------ End LEGO part image references ------------------ -->
 
@@ -164,6 +172,13 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 
 ####Build the Middle Arm Segment - Part 4
 #####Parts
+![Technic Ang. Beam 3X5 90 Deg.][lego-4210753]
+![3M Connector Peg][lego-4211709]
+![Technic 5M Beam][lego-4210686]
+![Gear Wheel T=8, M=1][lego-4211432]
+![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622]
+![Cross Axle 8M][lego-370726]
+![Cross Axle 10M][lego-373726]
 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=cgvkJ4SA5oA" target="_blank"><img src="images/middle_arm_part_4_thumg.png" /></a>
@@ -171,6 +186,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 
 ####Build the Middle Arm Segment - Part 5
 #####Parts
+![Module Bush][lego-4119589] ![Module Bush][lego-4119589] ![Module Bush][lego-4119589]
 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=VrQFO2uMBqI" target="_blank"><img src="images/middle_arm_part_5_thumg.png" /></a>
