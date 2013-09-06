@@ -7,6 +7,10 @@
 [lego-4121715]: http://cache.lego.com/media/bricks/5/1/4121715.jpg
 [lego-4297202]: http://cache.lego.com/media/bricks/5/1/4297202.jpg
 [lego-4225033]: http://cache.lego.com/media/bricks/5/1/4225033.jpg
+[lego-4548305]: http://cache.lego.com/media/bricks/4/1/4548305.jpg
+[lego-4522939]: http://cache.lego.com/media/bricks/5/1/4522939.jpg
+[lego-4297200]: http://cache.lego.com/media/bricks/5/1/4297200.jpg
+[lego-4285634]: http://cache.lego.com/media/bricks/5/1/4285634.jpg
 
 <!-- ------------ End LEGO part image references ------------------ -->
 
@@ -146,6 +150,13 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 
 ####Build the Middle Arm Segment - Part 3
 #####Parts
+![Technic 15M Beam][lego-4548305]
+![Technic 13M Beam][lego-4522939]
+![Technic 11M Beam][lego-4297200]
+![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
+![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482]
+![Gear Wheel 40T][lego-4285634]
 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=9fZ-UtHjJJk" target="_blank"><img src="images/middle_arm_part_3_thumg.png" /></a>
