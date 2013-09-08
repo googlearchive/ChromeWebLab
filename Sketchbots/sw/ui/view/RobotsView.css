@@ -363,3 +363,263 @@ img#filePickerPreview, div#filePickerPreviewScene {
 .Task .TaskTools button.ViewPreview {
 	width: 160px;
 }
+
+.GlobalNav {
+	display: none;
+	z-index: 1;
+}
+
+#GlobalNavTrigger {
+	display: none;
+	animation: fadein 2s;
+	-moz-animation: fadein 2s; /* Firefox */
+	-webkit-animation: fadein 2s; /* Safari and Chrome */
+	-o-animation: fadein 2s; /* Opera */
+}
+
+/*@media screen, handheld*/
+@media only screen
+and (min-width: 616px)
+and (max-width: 960px) {
+
+	#globalContainer {
+		width: 100%;
+	}
+
+	#grandWLWrapper {
+		width: 615px;
+		margin: 0 auto;
+		padding-top: 14px;
+	}
+	#uiContainer {
+		margin: 0;
+	}
+
+	.TaskListWrapper {
+		width: 190px;
+		padding: 5px;
+		margin: auto;
+	}
+
+	.TaskListWrapper .ListTools button {
+		width: 190px;
+	}
+
+	.Task {
+		display: block;
+		float: left;
+		width: 100%;
+
+		margin: auto;
+		padding: 0 2px;
+	}
+
+	.Task .TaskTools {
+		text-align: center;
+		width: 100%;
+	}
+
+	.Task .TaskTools button,
+	.Task .TaskTools button.ViewPreview {
+		width: 95%;
+	}
+}
+
+/*@media screen, handheld*/
+@media only screen
+and (min-width: 320px)
+and (max-width: 615px) {
+/*and (orientation: portrait) {*/
+
+	#globalContainer {
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+
+	#grandWLWrapper {
+		width: 100%;
+		overflow-x: hidden;
+		margin: 0 auto;
+		padding-top: 5px;
+	}
+
+	#uiContainer {
+		margin: 1px;
+	}
+
+	#header {
+		margin-left: 50px;
+	}
+
+
+	#GlobalNavTrigger {
+		display: block;
+		position: fixed;
+		top: 0;
+		left: 0;
+		line-height: 1.4em;
+		font-size: 4em;
+		opacity: 0.4;
+	}
+
+	.GlobalNav {
+		position: absolute;
+		left: -200px;
+		width: 200px;
+		height: 100%;
+		display: block;
+		float: left;
+
+		background-color: rgb(141, 141, 141);
+		transition: left 0.5s ease;
+		-webkit-transition: left 0.5s ease;
+	}
+
+	.GlobalNav h1 {
+		padding: 15px 0;
+		text-align: center;
+		color: white;
+	}
+
+	.GlobalNav ul {
+		display: block;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.GlobalNav li {
+		display: block;
+		padding-left: 20px;
+		font-size: large;
+		line-height: 5em;
+		color: lightgrey;
+		border: 1px solid grey;
+		border-collapse: collapse;
+	}
+
+	.GlobalNav.Active {
+		left: 0;
+		transition: left 0.5s ease;
+		webkit-transition: left 0.5s ease;
+	}
+
+	.topicQueuesContainer {
+		display: none;
+		width: 100%;
+		margin: 5px;
+	}
+
+	.TaskListWrapper {
+		display: none;
+		float: none;
+		border: none;
+		width: 96%;
+		padding: 0;
+		margin: 0 auto;
+	}
+
+	.Task {
+		display: block;
+		float: left;
+		width: 95%;
+
+		margin: auto;
+		padding: 0 4px;
+	}
+
+	.Task .TaskInfo .TaskImage {
+		width: 95%;
+		margin: 0 auto;
+	}
+
+	.Task .TaskInfo .TaskImage .Main {
+		width: 95%;
+		margin: 0 auto;
+	}
+
+	.Task .TaskTools {
+		width: 100%;
+	}
+
+	.Task .TaskTools button {
+		display: block;
+		float: none !important;
+		padding: 4px 8px;
+		margin: 2px auto;
+		text-align: left;
+		font-size: 1.4em;
+		line-height: 1.4em;
+		width: 10em !important;
+	}
+
+	.TaskListWrapper .ListTools button {
+		width: 95%;
+		font-size: 2em;
+		height: 4.5em;
+		margin-bottom: 1em;
+	}
+
+	.Active {
+		display: block;
+	}
+
+	.TopicQueue h3 {
+		visibility: hidden;
+	}
+
+	.AddBoxWrapper .Window {
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		/*overflow-x: hidden;*/
+	}
+
+	.Preview {
+		padding: 2px 0;
+		width: inherit;
+		height: auto !important;
+		text-align: left;
+		border: none;
+	}
+
+	.Preview video,
+	.Preview canvas,
+	.Preview img {
+		display: block;
+		width: 99%;
+		height: 100%;
+		margin: 0 auto;
+	}
+
+	#filePickerTools button,
+	#webCamTools button {
+		margin: 0.2em;
+		padding: 0.6em;
+		font-size: 1.5em;
+	}
+}
+
+@media only screen
+and (min-width: 320px)
+and (max-width: 615px)
+and (orientation: landscape) {
+	.Preview {
+		height: 55% !important;
+		overflow-y: hidden;
+	}
+}
+
+/*#GlobalNavTrigger {*/
+	/*display: block;*/
+	/*position: fixed;*/
+	/*bottom: 8px;*/
+	/*left: -15px;*/
+	/*line-height: 1.4em;*/
+	/*font-size: 4em;*/
+	/*opacity: 0.4;*/
+	/*border: 1px solid grey;*/
+	/*border-radius: 4px;*/
+	/*height: 1.1em;*/
+	/*background-color: lightgray;*/
+/*}*/
