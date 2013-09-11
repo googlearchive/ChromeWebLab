@@ -24,6 +24,9 @@
 [lego-370526]: http://cache.lego.com/media/bricks/5/1/370526.jpg
 [lego-4143466]: http://cache.lego.com/media/bricks/5/1/4143466.jpg
 [lego-370826]: http://cache.lego.com/media/bricks/5/1/370826.jpg
+[lego-4297185]: http://cache.lego.com/media/bricks/5/1/4297185.jpg
+[lego-4297188]: http://cache.lego.com/media/bricks/5/1/4297188.jpg
+[lego-4297187]: http://cache.lego.com/media/bricks/5/1/4297187.jpg
 
 <!-- ------------ End LEGO part image references ------------------ -->
 
@@ -222,7 +225,13 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 
 ####Connect the Limit Switch to the Base
 #####Assembly
+**IMPORTANT**: Rotate the base so that the limit switch will **not** be stuck between the NXT brick and the corner of the base. Looking from above with the "NXT" text reading left-to-right, rotate the base clockwise so that the limit switch is past the corner. This may be difficult to see in the video.
+<br>
 <a href="http://www.youtube.com/watch?v=-udeuvL_3iU" target="_blank"><img src="images/limit_switch_to_base.png" /></a>
+<br>
+When complete, the switch should be attached as shown below:<br>
+![Correct rotation](images/limit_switch_to_base_rotation.png)
+
 
 ####Build the Stylus
 #####Parts
@@ -239,13 +248,15 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 <a href="http://www.youtube.com/watch?v=naYiju-byI0" target="_blank"><img src="images/stylus.png" /></a>
 
 ####Connect the Stylus to the Middle Arm
-#####Parts
-
 #####Assembly
 <a href="http://www.youtube.com/watch?v=Ie9yU_NviAk" target="_blank"><img src="images/stylus_to_middle_arm.png" /></a>
 
 ####Connect the Cables
 #####Parts
+![Cable 0.5 M][lego-4297185]
+![Cable 0.35 M][lego-4297188]
+![Cable 0.35 M][lego-4297188]
+![Cable 0.20 M][lego-4297187]
 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=aOploTPSCBQ" target="_blank"><img src="images/cables.png" /></a>
