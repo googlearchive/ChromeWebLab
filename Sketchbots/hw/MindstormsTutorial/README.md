@@ -19,6 +19,11 @@
 [lego-370726]: http://cache.lego.com/media/bricks/5/1/370726.jpg
 [lego-373726]: http://cache.lego.com/media/bricks/5/1/373726.jpg
 [lego-4119589]: http://cache.lego.com/media/bricks/5/1/4119589.jpg
+[lego-4296929]: http://cache.lego.com/media/bricks/5/1/4296929.jpg
+[lego-4211565]: http://cache.lego.com/media/bricks/5/1/4211565.jpg
+[lego-370526]: http://cache.lego.com/media/bricks/5/1/370526.jpg
+[lego-4143466]: http://cache.lego.com/media/bricks/5/1/4143466.jpg
+[lego-370826]: http://cache.lego.com/media/bricks/5/1/370826.jpg
 
 <!-- ------------ End LEGO part image references ------------------ -->
 
@@ -49,8 +54,9 @@ After assembling Lego Mindstorms NXT drawing robot, getting the dependencies ins
 
 For a full description of the history and concept of the project see [this page](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbot).
 
-It looks something like this after setup:
-<a href="http://www.youtube.com/watch?v=fzv4VVIIXUs" target="_blank"><img src="images/sketching_overview.png" /></a>
+It looks something like this after setup:<br>
+<a href="http://www.youtube.com/watch?v=fzv4VVIIXUs" target="_blank"><img src="images/sketching_overview.png" /></a><br>
+[(click for video)](http://www.youtube.com/watch?v=fzv4VVIIXUs)
 
 ---
 
@@ -192,30 +198,42 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 
 ####Connect the Middle Arm to the Base
 #####Parts
+![Technic Ang. Beam 3X5 90 Deg.][lego-4210753]
 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=P2TK4dvqAxU" target="_blank"><img src="images/middle_arm_to_base.png" /></a>
 
 ####Test the Middle Arm Connection
-#####Parts
-
-#####Assembly
+#####Procedure
 <a href="http://www.youtube.com/watch?v=qYW05iyw0Yk" target="_blank"><img src="images/test_middle_arm_connection.png" /></a>
 
 ####Build the Limit Switch
 #####Parts
+![Technic 15M Beam][lego-4548305]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] 
+![Connector Peg W. Friction 3M][lego-655826]
+![Beam 3 M. W/4 Snaps][lego-4225033]
+![Push Sensor Assambled][lego-4296929]
+![Gear Wheel T=24][lego-4211565]
+![Cross Axle 4M][lego-370526]
 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=JPnMxgQ9hYE" target="_blank"><img src="images/limit_switch.png" /></a>
 
 ####Connect the Limit Switch to the Base
-#####Parts
-
 #####Assembly
 <a href="http://www.youtube.com/watch?v=-udeuvL_3iU" target="_blank"><img src="images/limit_switch_to_base.png" /></a>
 
 ####Build the Stylus
 #####Parts
+![Technic 15M Beam][lego-4548305] ![Technic 15M Beam][lego-4548305]
+![Beam 3 M. W/4 Snaps][lego-4225033]
+![Technic Ang. Beam 3X5 90 Deg.][lego-4210753]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
+![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826]
+![Technic Crossblock 2X3][lego-4143466]
+![Cross Axle 12M][lego-370826]
+![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622]
 
 #####Assembly
 <a href="http://www.youtube.com/watch?v=naYiju-byI0" target="_blank"><img src="images/stylus.png" /></a>
