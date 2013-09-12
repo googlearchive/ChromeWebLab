@@ -109,7 +109,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=oXg4AtbPvps" target="_blank"><img src="images/middle_arm_part_1.png" /></a>
+<a href="http://www.youtube.com/watch?v=mFw9B9R3Apw" target="_blank"><img src="images/middle_arm_part_1.png" /></a>
 
 
 ####Build the Middle Arm Segment - Part 2
@@ -120,7 +120,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=3XTaGui2jnM" target="_blank"><img src="images/middle_arm_part_2.png" /></a>
+<a href="http://www.youtube.com/watch?v=mJ4H4up0jKM" target="_blank"><img src="images/middle_arm_part_2.png" /></a>
 
 
 ####Build the Middle Arm Segment - Part 3
@@ -134,7 +134,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Gear Wheel 40T][lego-4285634]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=9fZ-UtHjJJk" target="_blank"><img src="images/middle_arm_part_3.png" /></a>
+<a href="http://www.youtube.com/watch?v=lTVb2Wbe69A" target="_blank"><img src="images/middle_arm_part_3.png" /></a>
 
 
 ####Build the Middle Arm Segment - Part 4
@@ -148,7 +148,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Cross Axle 10M][lego-373726]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=cgvkJ4SA5oA" target="_blank"><img src="images/middle_arm_part_4.png" /></a>
+<a href="http://www.youtube.com/watch?v=ukJONFtWDaA" target="_blank"><img src="images/middle_arm_part_4.png" /></a>
 
 
 ####Build the Middle Arm Segment - Part 5
@@ -156,7 +156,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Module Bush][lego-4119589] ![Module Bush][lego-4119589] ![Module Bush][lego-4119589]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=VrQFO2uMBqI" target="_blank"><img src="images/middle_arm_part_5.png" /></a>
+<a href="http://www.youtube.com/watch?v=onk2oDYuUS0" target="_blank"><img src="images/middle_arm_part_5.png" /></a>
 
 
 ####Connect the Middle Arm to the Base
@@ -164,11 +164,11 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Technic Ang. Beam 3X5 90 Deg.][lego-4210753]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=P2TK4dvqAxU" target="_blank"><img src="images/middle_arm_to_base.png" /></a>
+<a href="http://www.youtube.com/watch?v=296XqmZ4xUs" target="_blank"><img src="images/middle_arm_to_base.png" /></a>
 
 ####Test the Middle Arm Connection
 #####Procedure
-<a href="http://www.youtube.com/watch?v=qYW05iyw0Yk" target="_blank"><img src="images/test_middle_arm_connection.png" /></a>
+<a href="http://www.youtube.com/watch?v=R5fb5PFEJkE" target="_blank"><img src="images/test_middle_arm_connection.png" /></a>
 
 ####Build the Limit Switch
 #####Parts
@@ -181,13 +181,13 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 ![Cross Axle 4M][lego-370526]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=JPnMxgQ9hYE" target="_blank"><img src="images/limit_switch.png" /></a>
+<a href="http://www.youtube.com/watch?v=c0V167MeNR0" target="_blank"><img src="images/limit_switch.png" /></a>
 
 ####Connect the Limit Switch to the Base
 #####Assembly
 **IMPORTANT**: Rotate the base so that the limit switch will **not** be stuck between the NXT brick and the corner of the base. Looking from above with the "NXT" text reading left-to-right, rotate the base clockwise so that the limit switch is past the corner. This may be difficult to see in the video.
 <br>
-<a href="http://www.youtube.com/watch?v=-udeuvL_3iU" target="_blank"><img src="images/limit_switch_to_base.png" /></a>
+<a href="http://www.youtube.com/watch?v=ZX-FvOGmVHU" target="_blank"><img src="images/limit_switch_to_base.png" /></a>
 <br>
 When complete, the switch should be attached as shown below:<br>
 ![Correct rotation](images/limit_switch_to_base_rotation.png)
@@ -205,11 +205,11 @@ When complete, the switch should be attached as shown below:<br>
 ![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=naYiju-byI0" target="_blank"><img src="images/stylus.png" /></a>
+<a href="http://www.youtube.com/watch?v=2OvoSf6X67M" target="_blank"><img src="images/stylus.png" /></a>
 
 ####Connect the Stylus to the Middle Arm
 #####Assembly
-<a href="http://www.youtube.com/watch?v=Ie9yU_NviAk" target="_blank"><img src="images/stylus_to_middle_arm.png" /></a>
+<a href="http://www.youtube.com/watch?v=_Lbrwa0IyKQ" target="_blank"><img src="images/stylus_to_middle_arm.png" /></a>
 
 ####Connect the Cables
 #####Parts
@@ -219,7 +219,7 @@ When complete, the switch should be attached as shown below:<br>
 ![Cable 0.20 M][lego-4297187]
 
 #####Assembly
-<a href="http://www.youtube.com/watch?v=aOploTPSCBQ" target="_blank"><img src="images/cables.png" /></a>
+<a href="http://www.youtube.com/watch?v=WEBQxeSaKZs" target="_blank"><img src="images/cables.png" /></a>
 
 
 ###PART 3: Software Configuration
