@@ -208,7 +208,7 @@ To build the base, [follow Dave's instructions through step 9 for Dave Parker's 
 
 ####Test the Middle Arm Connection
 #####Procedure
-<a href="http://www.youtube.com/watch?v=c0V167MeNR0" target="_blank"><img src="images/test_middle_arm_connection.png" /></a>
+<a href="http://www.youtube.com/watch?v=R5fb5PFEJkE" target="_blank"><img src="images/test_middle_arm_connection.png" /></a>
 
 ####Build the Limit Switch
 #####Parts
