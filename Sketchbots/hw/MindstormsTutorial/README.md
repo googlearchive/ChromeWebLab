@@ -88,49 +88,9 @@ The first step is to acquire all of the parts we will need to build this project
 * Paper or other drawing surface--try sand if you like
 * A good metric ruler or, better still, a good metric [dial caliper](http://en.wikipedia.org/wiki/Caliper#Dial_caliper). Yes, you should use metric units.
 
----
-
-###PART 2: Software Configuration
-
-First, we will set up the software needed for this project. This will be done on a computer, as well as on the "NXT brick" from the LEGO kit.
-
-The NXT brick is the motion controller for LEGO's robotics system and handles taking higher level motion commands and moving the motors appropriately. The NXT Brick comes from LEGO with a stock firmware installed. Happily, LEGO freely allows builders to install their own new firmware. We will use the community-developed [pbLua firmware](http://hempeldesigngroup.com/lego/pblua) rather than the stock LEGO firmware.
-
-1. Follow the instructions in the [Getting Started Guide, Basic Setup section](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots#getting-started-basic-setup) for the main Sketchbot Library and follow the procedures there. Once you can verify the system works without any LEGOs attached head back.
-2. If you haven't done so already, make sure that the basic LEGO Mindstorms NXT software is installed and running properly on your computer. Instructions are included in the Mindstorms NXT box and on [LEGO's web site](http://mindstorms.lego.com/en-us/support/buildinginstructions/8547/8547%20user%20guide%20english.aspx).
-3. Follow [these instructions](http://hempeldesigngroup.com/lego/pblua/tutorial/pbluainstall/) to install the pbLua firmware on the NXT brick.
-4. Open the [ConfigParams.js](sw/robotcontrol/src/ConfigParams.js) file from the [robotcontrol/src](sw/robotcontrol/src/) folder.
-6. Locate the `DRAW_MACHINE_TYPE` setting. Make sure it is set as follows: ```DRAW_MACHINE_TYPE: "MindstormsNXT",``` 
-7. If you built your drawing machine according to the instructions referenced in step 1, above, then the robot geometry settings included in ConfigParams.js can be used as-is. If you modified the machine or want to understand these settings in more detail, please see the [DrawMachine Geometry Configuration section](#drawmachine-geometry-configuration).
-8. Connect the NXT brick to the computer via USB or Bluetooth. See your computer operating system's documentation for details on how to create a Bluetooth connection.
-9. Determine the name of the serial port by looking in the **/dev** directory in a shell or Mac OS X terminal. For Bluetooth devices on Mac OS X, the port is usually called **/dev/cu.NXT-DevB**.
-10. Back in ConfigParams.js, set the `MINDSTORMS_NXT__SERIAL_PORT` to the name of the serial port from step 9.
-11. Save changes to ConfigParams.js.
-
-> #### Stop and test
->
-> Now we should re-test the entire system to make sure that it still works.
-> 
-> 1. In the shell, change to the [**robotcontrol/** folder](sw/robotcontrol) (one level up from the **src** folder).
-> 2. Run `./start_robot_control`
-> 3. You should see the following message in the console: `********************** Connected to MindstormsNXT drawing machine **********************`
-> 4. You should also see "Sketchbot OK" on the Mindstorms NXT brick LCD display. **Troubleshooting**: If you do not see *both* the message in the console on the computer and on the LCD, then you may have the wrong serial port configured in ConfigParams.js. Review Step 9 above and try again.
-
-> 5. Switch to the UI running in your browser. If the UI is not running, switch to App Engine Launcher, select *labqueue* and press the *Run* button. Click the *Browse* button to display the UI in your browser.
-> 6. Click the *New from File* button
-> 7. Select the [testpattern.png](sw/test/testpattern.png) file which is part of this repository. You can find it in the [sw/test](sw/test) folder.
-> 8. Click the *Save* button
-> 9. A few seconds later **robotcontrol** should pick up the new drawing task and begin commanding the drawing machine.
-> 
-> **Troubleshooting**: 
-> 	* If **robotcontrol** does not detect the new drawing task then there may be a fundamental misconfiguration in **robotcontrol** itself. Review the [Getting Started: Basic Setup](#getting-started-basic-setup) instructions.
-> 	* If **robotcontrol** detects the new task but the robot does not start drawing then review the troubleshooting tips for step 3 in this test procedure.
-> 	* If the drawing machine starts drawing but does not draw correctly, you may need to check the physical build of the machine. Review the [build instructions here](hw/MindstormsNXT/README.md). You should also re-check the dimensional and gear ratio settings as shown in step 7, above.
-> 
-
 --
 
-###PART 3: Assemble the Lego Sketchbot
+###PART 2: Assemble the Lego Sketchbot
 ![Assembled Mindstorms NXT Sketchbot](images/assembled_arm.jpg)
 
 ####Build the Base
@@ -261,12 +221,45 @@ When complete, the switch should be attached as shown below:<br>
 #####Assembly
 <a href="http://www.youtube.com/watch?v=aOploTPSCBQ" target="_blank"><img src="images/cables.png" /></a>
 
-###PART 4: Running
 
-At this point you should be able to run the Sketchbot system on the computer and use the system as described [here](https://github.com/GoogleChrome/ChromeWebLab/blob/hardware-tutorials-dev/Sketchbots/README.md#putting-it-all-together).
+###PART 3: Software Configuration
 
-###Troubleshooting Tips
+Now we will set up the software needed for this project. This will be done on a computer, as well as on the "NXT brick" from the LEGO kit.
 
-* The Mindstorms system is battery hungry. If things are acting strangely, try using fresh batteries.
-* If you are having communication problems between the computer and the NXT brick, try using USB instead of Bluetooth.
+The NXT brick is the motion controller for LEGO's robotics system and handles taking higher level motion commands and moving the motors appropriately. The NXT Brick comes from LEGO with a stock firmware installed. Happily, LEGO freely allows builders to install their own new firmware. We will use the community-developed [pbLua firmware](http://hempeldesigngroup.com/lego/pblua) rather than the stock LEGO firmware.
+
+1. Follow the instructions in the [Getting Started Guide, Basic Setup section](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots#getting-started-basic-setup) for the main Sketchbot Library and follow the procedures there. Once you can verify the system works without any LEGOs attached head back.
+2. If you haven't done so already, make sure that the basic LEGO Mindstorms NXT software is installed and running properly on your computer. Instructions are included in the Mindstorms NXT box and on [LEGO's web site](http://mindstorms.lego.com/en-us/support/buildinginstructions/8547/8547%20user%20guide%20english.aspx).
+3. Follow [these instructions](http://hempeldesigngroup.com/lego/pblua/tutorial/pbluainstall/) to install the pbLua firmware on the NXT brick.
+4. Open the [ConfigParams.js](sw/robotcontrol/src/ConfigParams.js) file from the [robotcontrol/src](sw/robotcontrol/src/) folder.
+6. Locate the `DRAW_MACHINE_TYPE` setting. Make sure it is set as follows: ```DRAW_MACHINE_TYPE: "MindstormsNXT",``` 
+7. If you built your drawing machine according to the instructions referenced in step 1, above, then the robot geometry settings included in ConfigParams.js can be used as-is. If you modified the machine or want to understand these settings in more detail, please see the [DrawMachine Geometry Configuration section](#drawmachine-geometry-configuration).
+8. Connect the NXT brick to the computer via USB or Bluetooth. See your computer operating system's documentation for details on how to create a Bluetooth connection.
+9. Determine the name of the serial port by looking in the **/dev** directory in a shell or Mac OS X terminal. For Bluetooth devices on Mac OS X, the port is usually called **/dev/cu.NXT-DevB**.
+10. Back in ConfigParams.js, set the `MINDSTORMS_NXT__SERIAL_PORT` to the name of the serial port from step 9.
+11. Save changes to ConfigParams.js.
+
+> #### Stop and test
+>
+> Now we should re-test the entire system to make sure that it still works.
+> 
+> 1. In the shell, change to the [**robotcontrol/** folder](sw/robotcontrol) (one level up from the **src** folder).
+> 2. Run `./start_robot_control`
+> 3. You should see the following message in the console: `********************** Connected to MindstormsNXT drawing machine **********************`
+> 4. You should also see "Sketchbot OK" on the Mindstorms NXT brick LCD display. **Troubleshooting**: If you do not see *both* the message in the console on the computer and on the LCD, then you may have the wrong serial port configured in ConfigParams.js. Review Step 9 above and try again.
+
+> 5. Switch to the UI running in your browser. If the UI is not running, switch to App Engine Launcher, select *labqueue* and press the *Run* button. Click the *Browse* button to display the UI in your browser.
+> 6. Click the *New from File* button
+> 7. Select the [testpattern.png](sw/test/testpattern.png) file which is part of this repository. You can find it in the [sw/test](sw/test) folder.
+> 8. Click the *Save* button
+> 9. A few seconds later **robotcontrol** should pick up the new drawing task and begin commanding the drawing machine.
+> 
+> **Troubleshooting**: 
+> 	* If **robotcontrol** does not detect the new drawing task then there may be a fundamental misconfiguration in **robotcontrol** itself. Review the [Getting Started: Basic Setup](#getting-started-basic-setup) instructions.
+> 	* If **robotcontrol** detects the new task but the robot does not start drawing then review step 3 in this test procedure to make sure that the computer is actually connecting to the robot.
+>   * The Mindstorms system is battery hungry. If things are acting strangely, try using fresh batteries.
+>   * If you are having communication problems between the computer and the NXT brick, try using USB instead of Bluetooth.
+> 	* If the drawing machine starts drawing but does not draw correctly, you may need to check the physical build of the machine. Review the steps in Part 2 this file (above).
+> 
+
 

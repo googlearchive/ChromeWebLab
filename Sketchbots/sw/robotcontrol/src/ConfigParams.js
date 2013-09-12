@@ -128,6 +128,13 @@ exports.ConfigParams = {
     BASEHEIGHT : 10.2, // from top of drawing surface to the top of the base gear
 
     //Gear ratios
+    /* NOTE FOR MINDSTORMS USERS:
+    As of early 2013, the stock Mindstorms NXT servomotors contain internal gearboxes.
+    When using the MindstormsNXT DrawMachine module, the gear ratio settings should **not**
+    include these internal gearboxes. Just include the ratio between any gear mounted
+    directly on the servo's axel and any meshing gear. We can treat the geared servos
+    as "gearless" within the software.
+    */
     BASE_GEAR_RATIO: 56/8,
     LOWER_ARM_GEAR_RATIO: 40/8,
     UPPER_ARM_GEAR_RATIO: 1,
