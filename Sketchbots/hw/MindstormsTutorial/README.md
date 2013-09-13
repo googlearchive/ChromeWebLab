@@ -213,12 +213,13 @@ When complete, the switch should be attached as shown below:<br>
 
 ####Connect the Cables
 #####Parts
-![Cable 0.5 M][lego-4297185]
-![Cable 0.35 M][lego-4297188]
-![Cable 0.35 M][lego-4297188]
-![Cable 0.20 M][lego-4297187]
+Cable 0.2M: ![Cable 0.5 M][lego-4297185]<br>
+Cable 0.35M: ![Cable 0.35 M][lego-4297188]<br>
+Cable 0.35M: ![Cable 0.35 M][lego-4297188]<br>
+Cable 0.5M: ![Cable 0.20 M][lego-4297187]<br>
 
 #####Assembly
+![Cable Schematic](images/cable_schematic.png)<br>
 <a href="http://www.youtube.com/watch?v=WEBQxeSaKZs" target="_blank"><img src="images/cables.png" /></a>
 
 
@@ -234,7 +235,7 @@ The NXT brick is the motion controller for LEGO's robotics system and handles ta
 4. Open the [ConfigParams.js](sw/robotcontrol/src/ConfigParams.js) file from the [robotcontrol/src](sw/robotcontrol/src/) folder.
 6. Locate the `DRAW_MACHINE_TYPE` setting. Make sure it is set as follows: ```DRAW_MACHINE_TYPE: "MindstormsNXT",``` 
 7. If you built your drawing machine according to the instructions referenced in step 1, above, then the robot geometry settings included in ConfigParams.js can be used as-is. If you modified the machine or want to understand these settings in more detail, please see the [DrawMachine Geometry Configuration section](#drawmachine-geometry-configuration).
-8. Connect the NXT brick to the computer via USB or Bluetooth. See your computer operating system's documentation for details on how to create a Bluetooth connection.
+8. **Connect the NXT brick to the computer via USB or Bluetooth and make sure the NXT Brick is on (press the orange button).** See your computer operating system's documentation for details on how to create a Bluetooth connection.
 9. Determine the name of the serial port by looking in the **/dev** directory in a shell or Mac OS X terminal. For Bluetooth devices on Mac OS X, the port is usually called **/dev/cu.NXT-DevB**.
 10. Back in ConfigParams.js, set the `MINDSTORMS_NXT__SERIAL_PORT` to the name of the serial port from step 9.
 11. Save changes to ConfigParams.js.
