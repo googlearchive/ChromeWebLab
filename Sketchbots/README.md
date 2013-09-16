@@ -180,7 +180,7 @@ If you saw everything as described, then the system should be basically working.
 
 ## Getting Started: Using a Drawing Machine
 
-For more on using an physical Sketchbot, check out [how to use a BergCloud Little Printer](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots/hw/Littleprinter) or build a [LEGO Mindstorms sketchbot](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots/hw/MindstormsNXT).
+For more on using an physical Sketchbot, check out [how to use a BergCloud Little Printer](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots/hw/Littleprinter) or build a [LEGO Mindstorms sketchbot](https://github.com/GoogleChrome/ChromeWebLab/tree/master/Sketchbots/hw/MindstormsTutorial).
 
 ----------------------------------------------------------------
 
@@ -1069,15 +1069,14 @@ Set the gear ratio for any axis that uses no gears to 1. It is, however, unlikel
 
 ##### MindstormsNXT DrawMachine
 
-robotcontrol comes with a DrawMachine capable of commanding a LEGO Mindstorms NXT-based drawing machine. [Mindstorms](http://mindstorms.lego.com/) provides a capable, but relatively inexpensive and safe robotics building system. It also allows the drawing machine to be connected wirelessly via Bluetooth.
+robotcontrol comes with a DrawMachine capable of commanding a LEGO Mindstorms NXT-based drawing machine. [Mindstorms](http://mindstorms.lego.com/) provides a capable, but relatively inexpensive and safe robotics building system. It also allows the drawing machine to be connected wirelessly via Bluetooth. Instructions are included for building an example Mindstorms Sketchbot [here](hw/MindstormsTutorial/).
 
 The particulars of how you construct a Mindstorms drawing machine can vary as long the basic geometry of the machine is a 3-axis arm as shown [above](#drawing-machines).
 
 The included DrawMachine module also requires that the Mindstorms NXT "brick" use the pbLua firmware, rather than the stock LEGO firmware.
 
-The MindstormsNXT module requires that certain module-specific configuration parameters be set. See the `MindstormsNXT` section of [ConfigParams.js](sw/robotcontrol/src/ConfigParams.js) for details.
+The MindstormsNXT module requires that certain module-specific configuration parameters be set. See the `MindstormsNXT` section of [ConfigParams.js](sw/robotcontrol/src/ConfigParams.js) and the [Mindstorms NXT Sketchbot tutorial](hw/MindstormsTutorial/) for details.
 
-**Note**: As of early 2013, the stock Mindstorms NXT servomotors contain internal gearboxes. When using the MindstormsNXT DrawMachine module, the gear ratio settings should **not** include these internal gearboxes. Just include the ratio between any gear mounted directly on the servo's axel and any meshing gear. We can treat the geared servos as "gearless" within the software.
 
 ##### HomebrewGalil DrawMachine
 
