@@ -19,6 +19,14 @@
 [lego-370726]: http://cache.lego.com/media/bricks/5/1/370726.jpg
 [lego-373726]: http://cache.lego.com/media/bricks/5/1/373726.jpg
 [lego-4119589]: http://cache.lego.com/media/bricks/5/1/4119589.jpg
+[lego-4296929]: http://cache.lego.com/media/bricks/5/1/4296929.jpg
+[lego-4211565]: http://cache.lego.com/media/bricks/5/1/4211565.jpg
+[lego-370526]: http://cache.lego.com/media/bricks/5/1/370526.jpg
+[lego-4143466]: http://cache.lego.com/media/bricks/5/1/4143466.jpg
+[lego-370826]: http://cache.lego.com/media/bricks/5/1/370826.jpg
+[lego-4297185]: http://cache.lego.com/media/bricks/5/1/4297185.jpg
+[lego-4297188]: http://cache.lego.com/media/bricks/5/1/4297188.jpg
+[lego-4297187]: http://cache.lego.com/media/bricks/5/1/4297187.jpg
 
 <!-- ------------ End LEGO part image references ------------------ -->
 
@@ -80,11 +88,144 @@ The first step is to acquire all of the parts we will need to build this project
 * Paper or other drawing surface--try sand if you like
 * A good metric ruler or, better still, a good metric [dial caliper](http://en.wikipedia.org/wiki/Caliper#Dial_caliper). Yes, you should use metric units.
 
----
+--
 
-###PART 2: Software Configuration
+###PART 2: Assemble the Lego Sketchbot
+![Assembled Mindstorms NXT Sketchbot](images/assembled_arm.jpg)
 
-First, we will set up the software needed for this project. This will be done on a computer, as well as on the "NXT brick" from the LEGO kit.
+####Build the Base
+We will start with the base from a robot arm designed by [Dave Parker](http://www.nxtprograms.com), then add a new arm section on top.
+**Special thanks** to Dave for making such a great collection of Mindstorms projects available.
+
+To build the base, [follow Dave's instructions through step 9 for Dave Parker's robot arm](http://www.nxtprograms.com/robot_arm/steps.html) (cached copy [here](http://webcache.googleusercontent.com/search?q=cache:4DkidHRrL44J:www.nxtprograms.com/robot_arm/steps.html+&cd=1&hl=en&ct=clnk&gl=us)) then **return here**. Don't do steps 10 or later.
+
+####Build the Middle Arm Segment - Part 1
+#####Parts
+![Tacho Motor Assambled][lego-4297008] 
+![Technic 3M Beam][lego-4210751] ![Technic 3M Beam][lego-4210751]
+![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482] 
+![Technic Ang. Beam 4X2 90 Deg][lego-4210667] ![Technic Ang. Beam 4X2 90 Deg][lego-4210667]
+![connector peg w. friction 3m][lego-655826] ![connector peg w. friction 3m][lego-655826]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=mFw9B9R3Apw" target="_blank"><img src="images/middle_arm_part_1.png" /></a>
+
+
+####Build the Middle Arm Segment - Part 2
+#####Parts
+![Technic 9M Beam][lego-4297202] ![Technic 9M Beam][lego-4297202]
+![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033]
+![connector peg w. friction 3m][lego-655826]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=mJ4H4up0jKM" target="_blank"><img src="images/middle_arm_part_2.png" /></a>
+
+
+####Build the Middle Arm Segment - Part 3
+#####Parts
+![Technic 15M Beam][lego-4548305]
+![Technic 13M Beam][lego-4522939]
+![Technic 11M Beam][lego-4297200]
+![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
+![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482]
+![Gear Wheel 40T][lego-4285634]
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=lTVb2Wbe69A" target="_blank"><img src="images/middle_arm_part_3.png" /></a>
+
+
+####Build the Middle Arm Segment - Part 4
+#####Parts
+![Technic Ang. Beam 3X5 90 Deg.][lego-4210753]
+![3M Connector Peg][lego-4211709]
+![Technic 5M Beam][lego-4210686]
+![Gear Wheel T=8, M=1][lego-4211432]
+![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622]
+![Cross Axle 8M][lego-370726]
+![Cross Axle 10M][lego-373726]
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=ukJONFtWDaA" target="_blank"><img src="images/middle_arm_part_4.png" /></a>
+
+
+####Build the Middle Arm Segment - Part 5
+#####Parts
+![Module Bush][lego-4119589] ![Module Bush][lego-4119589] ![Module Bush][lego-4119589]
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=onk2oDYuUS0" target="_blank"><img src="images/middle_arm_part_5.png" /></a>
+
+
+####Connect the Middle Arm to the Base
+#####Parts
+![Technic Ang. Beam 3X5 90 Deg.][lego-4210753]
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=296XqmZ4xUs" target="_blank"><img src="images/middle_arm_to_base.png" /></a>
+
+####Test the Middle Arm Connection
+#####Procedure
+<a href="http://www.youtube.com/watch?v=R5fb5PFEJkE" target="_blank"><img src="images/test_middle_arm_connection.png" /></a>
+
+####Build the Limit Switch
+#####Parts
+![Technic 15M Beam][lego-4548305]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] 
+![Connector Peg W. Friction 3M][lego-655826]
+![Beam 3 M. W/4 Snaps][lego-4225033]
+![Push Sensor Assambled][lego-4296929]
+![Gear Wheel T=24][lego-4211565]
+![Cross Axle 4M][lego-370526]
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=c0V167MeNR0" target="_blank"><img src="images/limit_switch.png" /></a>
+
+####Connect the Limit Switch to the Base
+#####Assembly
+**IMPORTANT**: Rotate the base so that the limit switch will **not** be stuck between the NXT brick and the corner of the base. Looking from above with the "NXT" text reading left-to-right, rotate the base clockwise so that the limit switch is past the corner. This may be difficult to see in the video.
+<br>
+<a href="http://www.youtube.com/watch?v=ZX-FvOGmVHU" target="_blank"><img src="images/limit_switch_to_base.png" /></a>
+<br>
+When complete, the switch should be attached as shown below:<br>
+![Correct rotation](images/limit_switch_to_base_rotation.png)
+
+
+####Build the Stylus
+#####Parts
+![Technic 15M Beam][lego-4548305] ![Technic 15M Beam][lego-4548305]
+![Beam 3 M. W/4 Snaps][lego-4225033]
+![Technic Ang. Beam 3X5 90 Deg.][lego-4210753]
+![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
+![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826] ![Connector Peg W. Friction 3M][lego-655826]
+![Technic Crossblock 2X3][lego-4143466]
+![Cross Axle 12M][lego-370826]
+![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622]
+
+#####Assembly
+<a href="http://www.youtube.com/watch?v=2OvoSf6X67M" target="_blank"><img src="images/stylus.png" /></a>
+
+####Connect the Stylus to the Middle Arm
+#####Assembly
+<a href="http://www.youtube.com/watch?v=_Lbrwa0IyKQ" target="_blank"><img src="images/stylus_to_middle_arm.png" /></a>
+
+####Connect the Cables
+#####Parts
+Cable 0.2M: ![Cable 0.5 M][lego-4297185]<br>
+Cable 0.35M: ![Cable 0.35 M][lego-4297188]<br>
+Cable 0.35M: ![Cable 0.35 M][lego-4297188]<br>
+Cable 0.5M: ![Cable 0.20 M][lego-4297187]<br>
+
+#####Assembly
+![Cable Schematic](images/cable_schematic.png)<br>
+<a href="http://www.youtube.com/watch?v=WEBQxeSaKZs" target="_blank"><img src="images/cables.png" /></a>
+
+
+###PART 3: Software Configuration
+
+Now we will set up the software needed for this project. This will be done on a computer, as well as on the "NXT brick" from the LEGO kit.
 
 The NXT brick is the motion controller for LEGO's robotics system and handles taking higher level motion commands and moving the motors appropriately. The NXT Brick comes from LEGO with a stock firmware installed. Happily, LEGO freely allows builders to install their own new firmware. We will use the community-developed [pbLua firmware](http://hempeldesigngroup.com/lego/pblua) rather than the stock LEGO firmware.
 
@@ -94,7 +235,7 @@ The NXT brick is the motion controller for LEGO's robotics system and handles ta
 4. Open the [ConfigParams.js](sw/robotcontrol/src/ConfigParams.js) file from the [robotcontrol/src](sw/robotcontrol/src/) folder.
 6. Locate the `DRAW_MACHINE_TYPE` setting. Make sure it is set as follows: ```DRAW_MACHINE_TYPE: "MindstormsNXT",``` 
 7. If you built your drawing machine according to the instructions referenced in step 1, above, then the robot geometry settings included in ConfigParams.js can be used as-is. If you modified the machine or want to understand these settings in more detail, please see the [DrawMachine Geometry Configuration section](#drawmachine-geometry-configuration).
-8. Connect the NXT brick to the computer via USB or Bluetooth. See your computer operating system's documentation for details on how to create a Bluetooth connection.
+8. **Connect the NXT brick to the computer via USB or Bluetooth and make sure the NXT Brick is on (press the orange button).** See your computer operating system's documentation for details on how to create a Bluetooth connection.
 9. Determine the name of the serial port by looking in the **/dev** directory in a shell or Mac OS X terminal. For Bluetooth devices on Mac OS X, the port is usually called **/dev/cu.NXT-DevB**.
 10. Back in ConfigParams.js, set the `MINDSTORMS_NXT__SERIAL_PORT` to the name of the serial port from step 9.
 11. Save changes to ConfigParams.js.
@@ -116,129 +257,10 @@ The NXT brick is the motion controller for LEGO's robotics system and handles ta
 > 
 > **Troubleshooting**: 
 > 	* If **robotcontrol** does not detect the new drawing task then there may be a fundamental misconfiguration in **robotcontrol** itself. Review the [Getting Started: Basic Setup](#getting-started-basic-setup) instructions.
-> 	* If **robotcontrol** detects the new task but the robot does not start drawing then review the troubleshooting tips for step 3 in this test procedure.
-> 	* If the drawing machine starts drawing but does not draw correctly, you may need to check the physical build of the machine. Review the [build instructions here](hw/MindstormsNXT/README.md). You should also re-check the dimensional and gear ratio settings as shown in step 7, above.
+> 	* If **robotcontrol** detects the new task but the robot does not start drawing then review step 3 in this test procedure to make sure that the computer is actually connecting to the robot.
+>   * The Mindstorms system is battery hungry. If things are acting strangely, try using fresh batteries.
+>   * If you are having communication problems between the computer and the NXT brick, try using USB instead of Bluetooth.
+> 	* If the drawing machine starts drawing but does not draw correctly, you may need to check the physical build of the machine. Review the steps in Part 2 this file (above).
 > 
 
---
-
-###PART 3: Assemble the Lego Sketchbot
-![Assembled Mindstorms NXT Sketchbot](images/assembled_arm.jpg)
-
-####Build the Base
-We will start with the base from a robot arm designed by [Dave Parker](http://www.nxtprograms.com), then add a new arm section on top.
-**Special thanks** to Dave for making such a great collection of Mindstorms projects available.
-
-To build the base, [follow Dave's instructions through step 9 for Dave Parker's robot arm](http://www.nxtprograms.com/robot_arm/steps.html) (cached copy [here](http://webcache.googleusercontent.com/search?q=cache:4DkidHRrL44J:www.nxtprograms.com/robot_arm/steps.html+&cd=1&hl=en&ct=clnk&gl=us)) then **return here**. Don't do steps 10 or later.
-
-####Build the Middle Arm Segment - Part 1
-#####Parts
-![Tacho Motor Assambled][lego-4297008] 
-![Technic 3M Beam][lego-4210751] ![Technic 3M Beam][lego-4210751]
-![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482] 
-![Technic Ang. Beam 4X2 90 Deg][lego-4210667] ![Technic Ang. Beam 4X2 90 Deg][lego-4210667]
-![connector peg w. friction 3m][lego-655826] ![connector peg w. friction 3m][lego-655826]
-![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=oXg4AtbPvps" target="_blank"><img src="images/middle_arm_part_1.png" /></a>
-
-
-####Build the Middle Arm Segment - Part 2
-#####Parts
-![Technic 9M Beam][lego-4297202] ![Technic 9M Beam][lego-4297202]
-![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033]
-![connector peg w. friction 3m][lego-655826]
-![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=3XTaGui2jnM" target="_blank"><img src="images/middle_arm_part_2.png" /></a>
-
-
-####Build the Middle Arm Segment - Part 3
-#####Parts
-![Technic 15M Beam][lego-4548305]
-![Technic 13M Beam][lego-4522939]
-![Technic 11M Beam][lego-4297200]
-![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033] ![Beam 3 M. W/4 Snaps][lego-4225033]
-![Connector Peg W. Friction][lego-4121715] ![Connector Peg W. Friction][lego-4121715]
-![Conn.Bush W.Fric./Crossale][lego-4206482] ![Conn.Bush W.Fric./Crossale][lego-4206482]
-![Gear Wheel 40T][lego-4285634]
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=9fZ-UtHjJJk" target="_blank"><img src="images/middle_arm_part_3.png" /></a>
-
-
-####Build the Middle Arm Segment - Part 4
-#####Parts
-![Technic Ang. Beam 3X5 90 Deg.][lego-4210753]
-![3M Connector Peg][lego-4211709]
-![Technic 5M Beam][lego-4210686]
-![Gear Wheel T=8, M=1][lego-4211432]
-![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622] ![Bush For Cross Axle][lego-4211622]
-![Cross Axle 8M][lego-370726]
-![Cross Axle 10M][lego-373726]
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=cgvkJ4SA5oA" target="_blank"><img src="images/middle_arm_part_4.png" /></a>
-
-
-####Build the Middle Arm Segment - Part 5
-#####Parts
-![Module Bush][lego-4119589] ![Module Bush][lego-4119589] ![Module Bush][lego-4119589]
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=VrQFO2uMBqI" target="_blank"><img src="images/middle_arm_part_5.png" /></a>
-
-
-####Connect the Middle Arm to the Base
-#####Parts
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=P2TK4dvqAxU" target="_blank"><img src="images/middle_arm_to_base.png" /></a>
-
-####Test the Middle Arm Connection
-#####Parts
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=qYW05iyw0Yk" target="_blank"><img src="images/test_middle_arm_connection.png" /></a>
-
-####Build the Limit Switch
-#####Parts
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=JPnMxgQ9hYE" target="_blank"><img src="images/limit_switch.png" /></a>
-
-####Connect the Limit Switch to the Base
-#####Parts
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=-udeuvL_3iU" target="_blank"><img src="images/limit_switch_to_base.png" /></a>
-
-####Build the Stylus
-#####Parts
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=naYiju-byI0" target="_blank"><img src="images/stylus.png" /></a>
-
-####Connect the Stylus to the Middle Arm
-#####Parts
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=Ie9yU_NviAk" target="_blank"><img src="images/stylus_to_middle_arm.png" /></a>
-
-####Connect the Cables
-#####Parts
-
-#####Assembly
-<a href="http://www.youtube.com/watch?v=aOploTPSCBQ" target="_blank"><img src="images/cables.png" /></a>
-
-###PART 4: Running
-
-At this point you should be able to run the Sketchbot system on the computer and use the system as described [here](https://github.com/GoogleChrome/ChromeWebLab/blob/hardware-tutorials-dev/Sketchbots/README.md#putting-it-all-together).
-
-###Troubleshooting Tips
-
-* The Mindstorms system is battery hungry. If things are acting strangely, try using fresh batteries.
-* If you are having communication problems between the computer and the NXT brick, try using USB instead of Bluetooth.
 
