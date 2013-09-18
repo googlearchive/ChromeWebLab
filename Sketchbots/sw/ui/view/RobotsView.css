@@ -455,11 +455,15 @@ and (max-width: 615px) {
 	#GlobalNavTrigger {
 		display: block;
 		position: fixed;
-		top: 0;
-		left: 0;
+		bottom: 8px;
+		left: -15px;
 		line-height: 1.4em;
 		font-size: 4em;
 		opacity: 0.4;
+		border: 1px solid grey;
+		border-radius: 4px;
+		height: 1.1em;
+		background-color: lightgray;
 	}
 
 	.GlobalNav {
@@ -609,17 +613,3 @@ and (orientation: landscape) {
 		overflow-y: hidden;
 	}
 }
-
-/*#GlobalNavTrigger {*/
-	/*display: block;*/
-	/*position: fixed;*/
-	/*bottom: 8px;*/
-	/*left: -15px;*/
-	/*line-height: 1.4em;*/
-	/*font-size: 4em;*/
-	/*opacity: 0.4;*/
-	/*border: 1px solid grey;*/
-	/*border-radius: 4px;*/
-	/*height: 1.1em;*/
-	/*background-color: lightgray;*/
-/*}*/

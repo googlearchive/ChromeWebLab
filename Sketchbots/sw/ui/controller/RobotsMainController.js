@@ -56,10 +56,10 @@ var RobotsQueueManager = new Class({
             id: 'header'
         }).inject(globalContainer);
         new Element('h2', {
-            text: _('PAGE_SUBTITLE'),
+            'text': _('PAGE_SUBTITLE'),
         }).inject(header);
         new Element('h1', {
-            text: _('PAGE_TITLE'),
+            'text': _('PAGE_TITLE'),
         }).inject(header);
 
         // one container to rule them all
@@ -73,7 +73,7 @@ var RobotsQueueManager = new Class({
             'class': 'GlobalNav',
         }).inject(this._UIContainer);
 		new Element('h1', {
-			text: _('GLOBAL_NAV_HEADER'),
+			'text': _('GLOBAL_NAV_HEADER'),
 		}).inject(GlobalNavWrapper);
 
 		var GlobalNavTrigger = new Element('div', {
@@ -94,41 +94,26 @@ var RobotsQueueManager = new Class({
 
 		var GlobalNav = new Element('ul').inject(GlobalNavWrapper);
 		new Element('li', {
-			text: _('WAITING_DRAWINGS_TITLE'),
-			events: {
-				click: function(){
-					document.querySelector('.TaskListWrapper.Active').removeClass('Active');
-					document.querySelector('.TaskListWrapper.Waiting').addClass('Active');
-					document.getElementById('GlobalNav').removeClass('Active');
-					GlobalNavTrigger.style.display = "block";
-				},
-			}
+			'class': "Waiting",
+			'text': _('WAITING_DRAWINGS_TITLE'),
 		}).inject(GlobalNav);
 
 		new Element('li', {
-			text: _('WORKING_DRAWINGS_TITLE'),
-			events: {
-				click: function(){
-					document.querySelector('.TaskListWrapper.Active').removeClass('Active');
-					document.querySelector('.TaskListWrapper.Working').addClass('Active');
-					document.getElementById('GlobalNav').removeClass('Active');
-					document.getElementById('GlobalNav').removeClass('Active');
-					GlobalNavTrigger.style.display = "block";
-				},
-			}
+			'text': _('WORKING_DRAWINGS_TITLE'),
+			'class': "Working",
 		}).inject(GlobalNav);
 
 		new Element('li', {
-			text: _('COMPLETED_DRAWINGS_TITLE'),
-			events: {
-				click: function(){
-					document.querySelector('.TaskListWrapper.Active').removeClass('Active');
-					document.querySelector('.TaskListWrapper.Completed').addClass('Active');
-					document.getElementById('GlobalNav').removeClass('Active');
-					GlobalNavTrigger.style.display = "block";
-				}
-			}
+			'text': _('COMPLETED_DRAWINGS_TITLE'),
+			'class': "Completed",
 		}).inject(GlobalNav);
+
+		$(GlobalNav).addEvent('click', function(e){
+			document.querySelector('.TaskListWrapper.Active').removeClass('Active');
+			document.querySelector('.TaskListWrapper.' + e.target.className).addClass('Active');
+			document.getElementById('GlobalNav').removeClass('Active');
+			GlobalNavTrigger.style.display = "block";
+		});
 
         // a general element to hold messages to the user
         this._userMessageBox = new Element('div', {
