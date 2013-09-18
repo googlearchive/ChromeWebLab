@@ -69,4 +69,6 @@ var _ = function(key) {
     'VIEW_GCODE_PREVIEW_BUTTON_LABEL': 'View G-code',
 
     'VIEW_FINAL_BUTTON_LABEL': 'View Completed Drawing',
+
+	'GLOBAL_NAV_HEADER': 'Navigation',
 });
