@@ -17,8 +17,9 @@
 var Robot3Axis = require('./Robot3Axis').Robot3Axis;
 
 //CONFIG
-var DIRECT_DRIVE_SPEED = 20;
-var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
+var DIRECT_DRIVE_SPEED = 30;
+var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', [
+//var robot = new Robot3Axis('/dev/cu.NXT-DevB', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
@@ -30,7 +31,7 @@ var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', [     //'/dev/cu.NXT-DevB',
 	{
 		'motorPort': 2,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
-		'zeroingSpeed': 20,
+		'zeroingSpeed': 15,
 		'runningSpeed': DIRECT_DRIVE_SPEED,
 		'limitSwitchPort': null,
 		'gearBoxConfig': [8, 40], //5x list of gear sizes starting with the one mounted on the motor's axle
@@ -56,10 +57,10 @@ robot.once('connected', function() {
 }.bind(this));
 
 
-// process.on('exit', function() { //ensure node's process doesn't hang
-// 	console.log("Killing Process ID #" + process.pid);
-//   process.kill(process.pid, 'SIGTERM');
-// });
+process.on('exit', function() { //ensure node's process doesn't hang
+	console.log("Killing Process ID #" + process.pid);
+  process.kill(process.pid, 'SIGTERM');
+});
 
 /* DIRECT DEGREE TEST
    --------------------------------------------------- */
@@ -122,6 +123,16 @@ if(useIk) {
 	var slop = 6;
 	coords = [
 
+		[null,null,-30],
+		[null,null,-31],
+		[null,null,-32],
+		[null,null,-33],
+		[null,null,-34],
+		[null,null,-35],
+		[null,null,-36],
+		[null,null,-37],
+		[null,null,-38],
+		[null,null,-39],
 		[null,null,-40],
 		[null,null,-41],
 		[null,null,-42],
@@ -169,7 +180,7 @@ if(useIk) {
 	];
 }
 
-var delay = 10;
+var delay = 1000;
 
 robot.once('moveToZeroDone', function() {
 
