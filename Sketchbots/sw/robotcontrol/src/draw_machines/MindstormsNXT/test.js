@@ -17,13 +17,13 @@
 var Robot3Axis = require('./Robot3Axis').Robot3Axis;
 
 //CONFIG
-var DIRECT_DRIVE_SPEED = 12;
+var DIRECT_DRIVE_SPEED = 20;
 var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
 		'zeroingSpeed': 15,
-		'runningSpeed': DIRECT_DRIVE_SPEED * 7,
+		'runningSpeed': DIRECT_DRIVE_SPEED,
 		'limitSwitchPort': 1,
 		'gearBoxConfig': [8, 56], //7x list of gear sizes starting with the one mounted on the motor's axle
 	},
@@ -31,7 +31,7 @@ var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', [     //'/dev/cu.NXT-DevB',
 		'motorPort': 2,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
 		'zeroingSpeed': 20,
-		'runningSpeed': DIRECT_DRIVE_SPEED * 5,
+		'runningSpeed': DIRECT_DRIVE_SPEED,
 		'limitSwitchPort': null,
 		'gearBoxConfig': [8, 40], //5x list of gear sizes starting with the one mounted on the motor's axle
 		'speedFactor': 1.0,
