@@ -269,7 +269,7 @@ exports.DrawMachine = new Class({
   				}.bind(this));
 
   				console.log("a: " + this._drawingServoAngles[this.currentBufferIndex]);
-  				this._robot.synchronizedMove(ConfigParams.DRAWING_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
+  				this._robot.synchronizedMove(ConfigParams.MINDSTORMS_NXT__MOTOR_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
   					
 
   			}.bind(this), this.DRAW_TIMEOUT_DELAY);
@@ -314,11 +314,11 @@ exports.DrawMachine = new Class({
     	console.log("X: " + x + " Y: " + y + " : " + z);
 
     	if(x < ConfigParams.DRAW_PARAMETERS.robotXMin || x > ConfigParams.DRAW_PARAMETERS.robotXMax) {
-    		console.log("X IS OUT OF RANGE => " + x);
+    		console.log("DrawMachine: x == "+x+", which is outside the range set by ConfigParams.DRAW_PARAMETERS.robotXMin ("+ConfigParams.DRAW_PARAMETERS.robotXMin+") and robotXMax ("+ConfigParams.DRAW_PARAMETERS.robotXMax+")" );
     	}
 
-    	if(y < ConfigParams.DRAW_PARAMETERS.robotYMin || x > ConfigParams.DRAW_PARAMETERS.robotYMax) {
-    		console.log("Y IS OUT OF RANGE => " + y);
+    	if(y < ConfigParams.DRAW_PARAMETERS.robotYMin || y > ConfigParams.DRAW_PARAMETERS.robotYMax) {
+    		console.log("DrawMachine: y == "+y+", which is outside the range set by ConfigParams.DRAW_PARAMETERS.robotYMin ("+ConfigParams.DRAW_PARAMETERS.robotYMin+") and robotYMax ("+ConfigParams.DRAW_PARAMETERS.robotYMax+")" );
     	}
 
     	var xadj, yadj, zadj, // adjust x, y, z from center of base gear to center of gear 1 because of turntable
@@ -339,40 +339,40 @@ exports.DrawMachine = new Class({
 				nxtangs,
 				radianToDegree;
 
-			// first get the base angle so we can offset the x,y,z for the turntable
-			theta0 = Math.atan2(y, x);
+		// first get the base angle so we can offset the x,y,z for the turntable
+		theta0 = Math.atan2(y, x);
 
 			// now go ahead and set the variables and square them for easier reference
 	    xadj = x - ConfigParams.BASEROFFSET*Math.cos(theta0);
 	    yadj = y - ConfigParams.BASEROFFSET*Math.sin(theta0);
 	    zadj = z - ConfigParams.BASEZOFFSET;
 	    l1 = ConfigParams.LINK_B;
-			l2 = ConfigParams.LINK_D;
+		l2 = ConfigParams.LINK_D;
 	    xsq = xadj*xadj;
-			ysq = yadj*yadj;
-			d = Math.sqrt(xsq + ysq);
-			dsq = d*d;
-			zprime = zadj - ConfigParams.BASEHEIGHT;
-			zprimesq = zprime*zprime;
-			l1sq = l1*l1;
-			l2sq = l2*l2;
-			radianToDegree = 180 / Math.PI;
+		ysq = yadj*yadj;
+		d = Math.sqrt(xsq + ysq);
+		dsq = d*d;
+		zprime = zadj - ConfigParams.BASEHEIGHT;
+		zprimesq = zprime*zprime;
+		l1sq = l1*l1;
+		l2sq = l2*l2;
+		radianToDegree = 180 / Math.PI;
 
-			// calculate theta2, the gear 2 angle
-			theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
-			sinTheta2 = Math.sqrt( 1 - Math.pow( theta2calc, 2 ) );
-			cosTheta2 = theta2calc;
-			theta2 = Math.atan2(-sinTheta2, cosTheta2);
+		// calculate theta2, the gear 2 angle
+		theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
+		sinTheta2 = Math.sqrt( 1 - Math.pow( theta2calc, 2 ) );
+		cosTheta2 = theta2calc;
+		theta2 = Math.atan2(-sinTheta2, cosTheta2);
 
-			// use theta2 to calculate theta1, the gear 1 angle
-			k1 = l1 + l2*Math.cos(theta2);
-			k2 = l2*Math.sin(theta2);
-			theta1 = Math.atan2(zprime,d) - Math.atan2(k2,k1);
+		// use theta2 to calculate theta1, the gear 1 angle
+		k1 = l1 + l2*Math.cos(theta2);
+		k2 = l2*Math.sin(theta2);
+		theta1 = Math.atan2(zprime,d) - Math.atan2(k2,k1);
 
-			// convert from radians to degrees
-			theta0deg = theta0 * radianToDegree;
-			theta1deg = theta1 * radianToDegree;
-			theta2deg = theta2 * radianToDegree;
+		// convert from radians to degrees
+		theta0deg = theta0 * radianToDegree;
+		theta1deg = theta1 * radianToDegree;
+		theta2deg = theta2 * radianToDegree;
 	    
 	    // don't really need this step, but good for debugging
 	    // log out the raw angles to check arm positions
@@ -383,13 +383,13 @@ exports.DrawMachine = new Class({
 
 			// if angles are outside of arm bounds, warn the user, but don't stop the drawing
 			if (theta0deg < ConfigParams.GEAR0ZEROANGLE){
-				console.log("******** Coordinate is outside of arm bounds. Gear 0 ********")
+				console.log("******** Coordinate is outside of arm bounds because it would require Axis 0 to go beyond its rotation range ********")
 			}
 			if (theta1deg > ConfigParams.GEAR1ZEROANGLE){
-				console.log("******** Coordinate is outside of arm bounds. Gear 1 ********")
+				console.log("******** Coordinate is outside of arm bounds because it would require Axis 1 to go beyond its rotation range ********")
 			}
 			if (theta2deg < ConfigParams.GEAR2ZEROANGLE){
-				console.log("******** Coordinate is outside of arm bounds. Gear 2 ********")
+				console.log("******** Coordinate is outside of arm bounds because it would require Axis 2 to go beyond its rotation range ********")
 			}
 
 			// convert angles into mindstorm space

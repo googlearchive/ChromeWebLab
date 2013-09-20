@@ -43,15 +43,17 @@ exports.Robot3Axis = new Class({
 	 */
 	_serialPortName: null, //the name of the serial port to which the NXT is connected
 	_nxt: null, //holds a reference to the active nxt object from the callback to nodeNxt.connect()
+	_nxtSync: null, //holds a reference to an _NxtMotorSynchronizer instance
 	_allZeroed: false, //set to true after the robot's servo tachos have been zeroed
 	_axisConfig: null, //configuration structure for axes
 	_axis: null, //an array of Axis objects which represent the NXT's motors
 	_gearBoxes: null, //an array of GearBox objects which represent the gearing on each axis
 
-	_zeringOrder: [1, 2, 0], //see initialize()
+
+	_zeringOrder: [1, 1, 2, 0], //see initialize()
 	_zeroingOrderIndex: 0, //when in the process of running moveToZero(), this contains the index for an element in zeroingOrder, which in turn indicates the index of the axis currently being zeroed
 
-	_synchMoving: false,
+	_syncMoving: false,
 
 	/**
 	 * initialize the Mindstorms NXT Robot class. You must call connect() and wait for
@@ -88,19 +90,27 @@ exports.Robot3Axis = new Class({
 		nodeNxt.connect(this._serialPortName, function (nxt) {
 			//retain a reference to the nxt object
 			this._nxt = nxt;
+			this._nxtSync = new _NxtMotorSynchronizer(this._nxt);
 			//display a message on the NXT brick display
 			this._nxt.DisplayText('Sketchbot OK');
 			//construct our Axis objects
 			this._axis = new Array(this._axisConfig.length);
 			this._gearBoxes = new Array(this._axisConfig.length);
 			for (var a = 0, al = this._axisConfig.length; a < al; a++) {
+				//
+				// create the axis object
+				//
 				this._axis[a] = new _Axis(
 					this._nxt,
 					this._axisConfig[a].motorPort,
 					this._axisConfig[a].zeroingSpeed,
 					this._axisConfig[a].zeroingDirection,
-					this._axisConfig[a].limitSwitchPort
+					this._axisConfig[a].limitSwitchPort,
+					this._axisConfig[a].runningSpeed
 				);
+				//
+				// create the axis' gearbox config
+				//
 				if (this._axisConfig[a].gearBoxConfig != null)
 					this._gearBoxes[a] = new _SimpleGearBox(this._axisConfig[a].gearBoxConfig);
 				else
@@ -162,97 +172,40 @@ exports.Robot3Axis = new Class({
 	 *		speed is negative
 	 *
 	 */
-	synchronizedMove: function(speed, targetDegrees) {
-		console.log("going to " + targetDegrees);
+	synchronizedMove: function(targetDegrees) {
+		console.log('going to ' + targetDegrees);
 
 		if (!this._allZeroed) throw new Error('Robot not yet zeroed. synchronizedMove() can only be used after calling moveToZero() and waiting for a "moveToZeroDone" event.')
 		if (!targetDegrees || targetDegrees.length < this._axis.length) throw new Error('targetDegrees must have exactly '+this._axis.length+' elements');
-		if (speed < 0) throw new Error('Speed is negative');
-		if (this._synchMoving) throw new Error('Robot is already moving');
+		if (this._syncMoving) throw new Error('Robot is already moving');
 
-		var a = 0,
-				al = this._axis.length,
-				realSpeeds = new Array(al),
-				realPositions = new Array(al),
-				realDeltas = new Array(al),
-				maxDelta = 0,
-				minDelta = 100000000000,
-				delta = 0;
+		this._syncMoving = true; //set flag
+
+		var a = 0;
+		var al = this._axis.length;
+		var gearedPositions = new Array(al);
+		var speeds = new Array(al);
+		
 
 		//figure the farthest distance to be moved
-		for (delta = 0, a = 0; a < al; a++) {
-			realPositions[a] = this._gearBoxes[a].getInputFromOutput(targetDegrees[a]);
-			realDeltas[a] = Math.abs(this._axis[a].getCurrentPosition() - realPositions[a]);
-			////console.log('realpos ' + a + ': ' + realPositions[a]);
-			////console.log('realdel ' + a + ': ' + realDeltas[a]);
-			maxDelta = Math.max(maxDelta, realDeltas[a]);
-			minDelta = Math.min(minDelta, realDeltas[a]);
-
-		}
-
-
-			// console.log('al => ' + al);
-			// console.log('realSpeeds => ' + realSpeeds);
-			// console.log('realPositions => ' + realPositions);
-			// console.log('realDeltas => ' + realDeltas);
-			// console.log('maxDeltas => ' + maxDelta);
-			// console.log('minDelta => ' + minDelta);
-			// console.log('delta => ' + al);
-			// console.log("------------------------------------------");
-
-		//figure out speeds for each axis and set up listeners
+		console.log('-----------------------------------------------------');
+		var turns = 0;
+		var maxGearRatio = 0;
 		for (a = 0; a < al; a++) {
-
-			// figure out the right speed for this axis,
-			// such that all axes will reach their destinations at
-			// the same time.
-			//
-			// Currently, we assume ideal conditions
-			// and do this simply by divvying up the
-			// speed proprtional to the distance over which
-			// each axis must travel
-			
-			realSpeeds[a] = speed; // * (realDeltas[a] / maxDelta);
-			//console.log('realspeed ' + a + ': ' + realSpeeds[a]);
-
-			//set up a handler to wait for all axes to finish their moves
-			if (targetDegrees[a] != null) {
-
-				//console.log("is axis " + a + " done?");
-				//console.log("Axis " + a + " current position: " + this._axis[a].getCurrentPosition());
-
-
-				this._axis[a].once('moveDone', function() {
-					
-					if (this._allAxisEval(function(axis) {
-						
-						return !axis.isMoving() && this._synchMoving;
-
-					}.bind(this))) {
-						//all axes have finished their moves
-						this._synchMoving = false;
-						console.log("ALL AXIS HAVE FINISHED THEIR MOVE!");
-						console.log("------------------------------------------------------");
-						this.emit('synchronizedMoveDone');
-					}
-
-				}.bind(this));
-			}
+			gearedPositions[a] = targetDegrees[a] != null ? this._gearBoxes[a].getInputFromOutput(targetDegrees[a]) : null;
+			turns = Math.abs(this._gearBoxes[a].getInputFromOutput(1));
+			speeds[a] = this._axis[a].getNominalRunSpeed();
+			console.log('gearedPositions['+a+'] = '+gearedPositions[a]); 
 		}
 
-		// command all axes
-		// IMPORTANT: we don't want to do much (any?) processing inside this loop
-		for (a = 0; a < al; a++) {
-			//actually command the move:
-			//console.log("actually moving axis " + a + " to " + realPositions[a]);
-			if (targetDegrees[a] != null) {
-				console.log("MOVING AXIS => " + a);
-				this._axis[a].move(realSpeeds[a], realPositions[a], a);
-			}
-			
-		}
+		this._nxtSync.syncMoveAbs(this._axis, speeds, gearedPositions, function() {
+			//all axes have finished their moves
+			this._syncMoving = false;
+			console.log('ALL AXIS HAVE FINISHED THEIR MOVE');
+			console.log('------------------------------------------------------');
+			this.emit('synchronizedMoveDone');
+		}.bind(this));
 
-		this._synchMoving = true; //set flag
 	},
 
 	/*
@@ -261,7 +214,7 @@ exports.Robot3Axis = new Class({
 	 */
 
 	_moveNextAxisToZero: function() {
-		if (this._zeroingOrderIndex >= this._axis.length) return;
+		if (this._zeroingOrderIndex >= this._zeringOrder.length) return;
 		var axisIndex = this._zeringOrder[this._zeroingOrderIndex];
 		this._axis[axisIndex].once('moveToZeroDone', function() {
 			if (this._allAxisEval(function(axis) {
@@ -277,7 +230,7 @@ exports.Robot3Axis = new Class({
 			}
 
 		}.bind(this));
-		//console.log('Zeroing Axis #'+axisIndex);
+		console.log('Zeroing Axis #'+axisIndex);
 
 		this._axis[axisIndex].moveToZeroAndResetCounter();
 	},
@@ -380,6 +333,13 @@ var _SimpleGearBox = new Class({
 	 	return p;
 	 },
 
+	 /**
+	  * Returns the unsigned gear ratio, expressed as the number of input turns per full 360º output turn.
+	  */
+	 getRatio: function() {
+		return this._inputTurnsPerOutputTurn;
+	 }
+
 });
 
 /**
@@ -411,6 +371,7 @@ var _Axis = new Class({
 	_moving: false,
 
 	_zeroingSpeed: 0,
+	_runningSpeed: 0,
 	_zeroingDirection: null,
 	_limitSwitchPort: null,
 	_currentTacho: null,
@@ -429,17 +390,22 @@ var _Axis = new Class({
 	 * constructs an Axis
 	 *
 	 * Arguments:
+	 *      nxt a reference to the Nxt object
+	 *      motorPort a value, 1-3 which specifies the physical port on the NXT brick to which the motor is connected
+	 *      zeroingSpeed the speed at which the motor should be zeroed
 	 *		zeroingDirection  a value which is either Robot3Axis.COUNTER_CLOCKWISE or
 	 *						Robot3Axis.CLOCKWISE, indicating the direction for
 	 *						that motor to turn in order to find zero
 	 *		limitSwitchPort	 the port index for this axis' limit switch, or null if it has none
+	 *      runningSpeed the nominal speed at which the motor should run when drawing
 	 *
 	 */
-	initialize: function(nxt, motorPort, zeroingSpeed, zeroingDirection, limitSwitchPort) {
+	initialize: function(nxt, motorPort, zeroingSpeed, zeroingDirection, limitSwitchPort, runningSpeed) {
 		this._nxt = nxt;
 		this._motorPort = motorPort;
 		this._zeroingDirection = zeroingDirection;
 		this._zeroingSpeed = zeroingSpeed;
+		this._runningSpeed = runningSpeed;
 		this._limitSwitchPort = limitSwitchPort;
 		////console.log('Created new axis: '+this);
 		if (this._limitSwitchPort != null) {
@@ -472,12 +438,12 @@ var _Axis = new Class({
 		}.bind(this));
 
 		// reset the motor's tacho reading to zero
-		this._nxt.OutputResetTacho(this._motorPort, 1);
+		//this._nxt.OutputResetTacho(this._motorPort, 1);
 
 		// regulated brake outputs -- http://hempeldesigngroup.com/lego/pblua/nxtfunctiondefs/#OutputAPI
 		var factor = 20;
 		var divisor = 1;
-		var offset = 20;
+		var offset = 20; // minimum speed when regulated
 		this._nxt.OutputSetRegulation(this._motorPort, 1, 1, factor, divisor, offset);
 
 		// find the starting tacho values
@@ -519,26 +485,27 @@ var _Axis = new Class({
 				//
 				// limit switch mode
 				//
-				hInterval = setInterval(function() {
-					this._nxt.InputGetStatus(this._limitSwitchPort, function(rawAD, state0, state1, val) {
-						//debugging:
-						////console.log(arguments);
-						if (val <= 183) {
-							//switch closed!
-							clearInterval(hInterval);
-							//console.log(this+': Found zero with limit switch='+val);
-							__foundZero();
-						}
-					}.bind(this));
-				}.bind(this), 10); //check every 10ms
+				var __limitSwitchCheck = function(rawAD, state0, state1, val) {
+					//debugging:
+					////console.log(arguments);
+					if (val != null && val <= 183) {
+						//switch closed!
+						//console.log(this+': Found zero with limit switch='+val);
+						__foundZero();
+					} else {
+						setTimeout(function() {
+							this._nxt.InputGetStatus(this._limitSwitchPort, __limitSwitchCheck);
+						}.bind(this), 10); //recursion
+					}
+				}.bind(this);
+				__limitSwitchCheck(null, null, null, null); //start the limit switch check
 
 			} else {
 				//
 				// closed loop detection mode
 				//
-				hInterval = setInterval(function() {
-					// where are we now? use OutputGetStatus to find out...
-					this._nxt.OutputGetStatus(this._motorPort, function(cur_speed, cur_tacho, cur_blocktacho, cur_runstate, cur_overload, cur_rotcount, cur_torun) {
+				var __blockCheck = function(cur_speed, cur_tacho, cur_blocktacho, cur_runstate, cur_overload, cur_rotcount, cur_torun) {
+					if (cur_speed != null) {
 						//debugging:
 						////console.log(arguments);
 						//see if we have the same (or within sameBlocktachoThreshold counts) blocktacho as we did last time
@@ -547,16 +514,22 @@ var _Axis = new Class({
 						else
 							sameBlocktachoCount=0; //if blocktacho starts moving again then reset the counter
 						last_blocktacho = cur_blocktacho;
+					}
 
-						//if we are overloaded or have been sitting at the same position for a while, then we have a stall
-						if (cur_overload > 0 || (sameBlocktachoCount > 100)) {
-							//stop checking for stalls
-							clearInterval(hInterval);
-							//console.log(this+': Found zero at cur_tacho='+cur_tacho+' (cur_overload='+cur_overload+' sameBlocktachoCount='+sameBlocktachoCount+' cur_blocktacho='+cur_blocktacho+')');
-							__foundZero();
-						}
-					}.bind(this));
-				}.bind(this), 10); //check every 10ms
+					//if we are overloaded or have been sitting at the same position for a while, then we have a stall
+					if (cur_speed != null && cur_overload > 0 || (sameBlocktachoCount > 100)) {
+						//stop checking for stalls
+						clearInterval(hInterval);
+						//console.log(this+': Found zero at cur_tacho='+cur_tacho+' (cur_overload='+cur_overload+' sameBlocktachoCount='+sameBlocktachoCount+' cur_blocktacho='+cur_blocktacho+')');
+						__foundZero();
+					} else {
+						setTimeout(function() {
+							this._nxt.OutputGetStatus(this._motorPort, __blockCheck);
+						}.bind(this), 10); //recursion
+					}
+				}.bind(this);
+				__blockCheck(null, null, null, null, null, null, null); //start the block check
+
 			} //if in stall-detect mode
 
 			// and, finally, command the motor to move
@@ -564,6 +537,28 @@ var _Axis = new Class({
 
 		}.bind(this));
 
+	},
+
+	/**
+	 * Should be called whenever this axis is being moved by another class in conjunction with other axes,
+	 * to prevent concurrent move problems.
+	 *
+	 */
+	flagMultiAxisMoveStarting: function() {
+		this._moving = true;
+	},
+
+	/**
+	 * Should be called whenever this axis is done being moved by another class in conjunction with other axes,
+	 * to prevent concurrent move problems.
+	 *
+	 * @param newTacho The new current position of this axis' motor
+	 *
+	 */
+	flagMultiAxisMoveFinished: function(newTacho) {
+		this._currentTacho = newTacho;
+		this._moving = false;
+		console.log(this+" has finished a multi-motor move. New position is "+this.getCurrentPosition());
 	},
 
 
@@ -574,7 +569,8 @@ var _Axis = new Class({
 	 *		The axis has not yet been zeroed
 	 */
 	getCurrentPosition: function() {
-		if (!this._zeroed) throw new Error('Axis not yet zeroed. getCurrentPosition() can only be used after calling moveToZeroAndResetCounter() and waiting for a "moveToZeroDone" event.')
+		if (!this._zeroed) throw new Error('Axis not yet zeroed. getCurrentPosition() can only be used after calling moveToZeroAndResetCounter() and waiting for a "moveToZeroDone" event.');
+		if (this._moving) throw new Error('Axis is moving. getCurrentPosition() cannot be called because position is indeterminite until motion has stopped.');
 		return this._currentTacho;
 	},
 
@@ -667,7 +663,7 @@ var _Axis = new Class({
 			var intervalCleared = false; //safety flag since interval still fires a couple times after clearing
 			var hInterval = setInterval(function() {
 
-				console.log("checking nxt status");
+				//console.log("checking nxt status");
 
 				// where are we now? use OutputGetStatus to find out...
 				this._nxt.OutputGetStatus(this._motorPort, function(cur_speed, cur_tacho, cur_blocktacho, cur_runstate, cur_overload, cur_rotcount, cur_torun) {
@@ -680,9 +676,9 @@ var _Axis = new Class({
 
 					var n = Math.abs(this._currentTacho - (start_tacho + targetDegrees));
 
-					console.log(n);
+					//console.log(n);
 					//console.log("n in move: " + n + " : " + this._motorPort);
-					if (4 > n) { //what is this number 4 doing in this case?
+					if (4 > n) { //the number 4 is the number of tacho counts of tolerance within which we need to get before deciding we have arrived
 						//we're there!
 						clearInterval(hInterval);
 						if(!intervalCleared) { //we want to bar this area from not happening more than once per axis
@@ -705,8 +701,23 @@ var _Axis = new Class({
 		//}.bind(this));
 	},
 
+	/**
+	 * Returns the NXT motor port number for this axis.
+	 */
+	getPort: function() {
+		return this._motorPort;
+	},
+
 	toString: function() {
-		return '[Axis@Port'+this._motorPort+': zs='+this._zeroingSpeed+',zd='+this._zeroingDirection+',lp='+this._limitSwitchPort+',isMoving='+this.isMoving()+']';
+		return '[Axis@Port'+this._motorPort+': zs='+this._zeroingSpeed+',zd='+this._zeroingDirection+',lp='+this._limitSwitchPort+',rs='+this._runningSpeed+',isMoving='+this.isMoving()+']';
+	},
+
+	/**
+	 * Returns the nominal run speed for this axis.
+	 *
+	 */
+	getNominalRunSpeed: function() {
+		return this._runningSpeed;
 	},
 
 	/*
@@ -719,3 +730,164 @@ var _Axis = new Class({
 	},
 
 });
+
+/**
+ * _NxtMotorSynchronizer is a wrapper class for the Nxt class from node-nxt.
+ * It adds the ability to do synchronized motor moves with all synch logic running on the nxt.
+ *
+ */
+var _NxtMotorSynchronizer = new Class({
+	Implements: [Events, process.EventEmitter],
+
+	_nxt: null, //holds a reference to the active nxt object from the callback to nodeNxt.connect()
+	_moving: false,
+
+	initialize: function(nxt) {
+		this._nxt = nxt;
+
+		var lua = [
+			"function syncMoveAbs(speeds,degrees)",
+
+			"  tacho = {0, 0, 0}", //IMPORTANT: In Lua, it is conventional for the first element in an array to be index 1, not 0
+			"  motorsdone = {false, false, false}",
+			"  tachohistory = {0, 0, 0}", //used for dynamic position tolerance below
+			"  lasttacho = {0, 0, 0}", //used for dynamic position tolerance below
+			"  tolerance = {0, 0, 0}", //used for dynamic position tolerance below
+			"  delta = 0",
+			"  mindelta = 100000",
+
+			"  for i=1,3 do",
+			"    nxt.OutputSetRegulation(i, 1, 1)",
+			"    _,tacho[i] = nxt.OutputGetStatus(i)",
+			"    print(\"start tacho \"..i..\": \"..tacho[i])",
+			"    motorsdone[i] = (degrees[i] == nil) or (degrees[i] == tacho[i])", // don't more motors that are already done, or which aren't being commanded (degrees[i] == nil)
+			"    if not motorsdone[i] then",
+			"      delta = degrees[i] - tacho[i]",
+			"      if delta < mindelta then mindelta = delta end",
+			"    end",
+			"  end",
+
+			// compensate for differences in distance traveled by each motor
+			"  for i=1,3 do",
+			"    if not motorsdone[i] then",
+			"      speeds[i] = speeds[i] * (degrees[i] / mindelta)",
+			"    end",
+			"  end",
+
+			"  nxt.DisableNXT( 1 );",
+
+			"  for i=1,3 do",
+			"    if not motorsdone[i] then nxt.OutputSetSpeed(i,0x20,nxt.sign(degrees[i] - tacho[i])*speeds[i]) end", //,nxt.abs(degrees[i] - tacho[i]))",
+			"  end",
+
+			"  nxt.DisableNXT( 0 );",
+
+			// "  print(\"starting...\")",
+
+			"  repeat",
+			"    for i=1,3 do",
+			"      if not motorsdone[i] then",
+			//"        print(\"inner before \"..motorsdone)",
+			"        _,curtacho = nxt.OutputGetStatus(i)",
+
+			//
+			// dynamically adjust our motor precision tolerance based on how long we've been sitting at
+			// the same position. Don't try to move a mountain with a lego motor.
+			//
+			"        if curtacho - lasttacho[i] == 0 then",
+			"          tachohistory[i] = tachohistory[i] + 1",
+			"        else",
+			"          tachohistory[i] = 0",
+			"        end",
+			"        lasttacho[i] = curtacho",
+
+			"        if tachohistory[i] > 100 then tolerance[i] = tolerance[i] + 1 end",
+
+			// "        print(\"---------\")",
+			// "        print(\"tolerance \"..i..\" = \"..tolerance[i])",
+			// "        print(\"tachohistory \"..i..\" = \"..tachohistory[i])",
+			// "        print(\"curtacho \"..i..\" = \"..curtacho)",
+
+			"        if tolerance[i] >= nxt.abs( curtacho - degrees[i] ) then",
+			"          nxt.OutputSetSpeed(i,0x60,0)",
+			//"          print(\"-- stopped motor \"..i..\" curtacho=\"..curtacho)",
+			"          motorsdone[i] = true",
+			"        end",
+
+			"      end",
+			"    end",
+			"  until motorsdone[1] and motorsdone[2] and motorsdone[3]",
+
+			"  for i=1,3 do",
+			"    _,tacho[i] = nxt.OutputGetStatus(i)",
+			"    print(\"end tacho \"..i..\": \"..tacho[i])",
+			"  end",
+			"  return tacho[1], tacho[2], tacho[3]",
+			"end",
+			];
+
+		for (var n = 0; n < lua.length; n++)
+			this._nxt._send(lua[n]);
+	},
+
+	/**
+	 * Try to do a synchronized move on all three axes so that
+	 * they complete their moves at the same time.
+	 *
+	 * Will throw an Error if:
+	 *		the targetDegrees argument does not have the right number of elements
+	 *		any motor is already moving
+	 *		speed is negative
+	 *
+	 */
+	syncMoveAbs: function(axes, speeds, targetDegrees, callback) {
+		if (!targetDegrees || targetDegrees.length < axes.length) throw new Error('targetDegrees must have exactly '+axes.length+' elements');
+		if (!speeds || speeds.length < axes.length) throw new Error('speeds must have exactly '+axes.length+' elements');
+
+		//round targets and prepare axes
+		for (var a = 0; a < targetDegrees.length; a++) {
+			if (speeds[a] < 0) throw new Error('Speed for axis '+a+' is negative');
+			if (targetDegrees[a] != null) {
+				// check if this axis is already moving
+				if (axes[a].isMoving()) throw new Error('Robot axis '+a+' is already moving');
+
+				targetDegrees[a] = Math.round(targetDegrees[a]); // pbLua can't deal with floats yet
+				axes[a].flagMultiAxisMoveStarting();
+			}
+		}
+
+		// perform the move using the controller-side syncMoveAbs method
+		var cmd = "syncMoveAbs({"+
+			speeds[0]+","+
+			speeds[1]+","+
+			speeds[2]+
+			"},{"+
+			(targetDegrees[0] == null ? "nil" : targetDegrees[0] )+","+
+			(targetDegrees[1] == null ? "nil" : targetDegrees[1] )+","+
+			(targetDegrees[2] == null ? "nil" : targetDegrees[2] )+"})";
+		
+		this._nxt._send(cmd, function(tacho0, tacho1, tacho2) {
+			newTachos = [tacho0, tacho1, tacho2];
+			
+			// update new position on each axis
+			for (var a = 0; a < targetDegrees.length; a++)
+				if (targetDegrees[a])
+					axes[a].flagMultiAxisMoveFinished(new Number(newTachos[a]));
+
+			// repeat once
+			this._nxt._send(cmd, function(tacho0, tacho1, tacho2) {
+				newTachos = [tacho0, tacho1, tacho2];
+				
+				// update new position on each axis
+				for (var a = 0; a < targetDegrees.length; a++)
+					if (targetDegrees[a])
+						axes[a].flagMultiAxisMoveFinished(new Number(newTachos[a]));
+
+				// call the callback
+				callback();
+			}.bind(this));
+		}.bind(this));
+	}
+
+});
+

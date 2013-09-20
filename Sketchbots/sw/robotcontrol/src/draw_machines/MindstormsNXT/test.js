@@ -17,32 +17,32 @@
 var Robot3Axis = require('./Robot3Axis').Robot3Axis;
 
 //CONFIG
-var BASE_GEARBOX_CONFIG = [8, 56]; //list of gear sizes starting with the one mounted on the motor's axle
-var LOWER_ARM_GEARBOX_CONFIG = [8, 40]; //list of gear sizes starting with the one mounted on the motor's axle
-var UPPER_ARM_GEARBOX_CONFIG = null; //no gears on the upper arm axis
-var GLOBAL_SPEED = 10;
-
-var robot = new Robot3Axis('/dev/cu.usbmodem1421', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
+var DIRECT_DRIVE_SPEED = 12;
+var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', [     //'/dev/cu.NXT-DevB', [ //'/dev/cu.usbmodemfd121', [
 	{
 		'motorPort': 1,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
 		'zeroingSpeed': 15,
+		'runningSpeed': DIRECT_DRIVE_SPEED * 7,
 		'limitSwitchPort': 1,
-		'gearBoxConfig': BASE_GEARBOX_CONFIG,
+		'gearBoxConfig': [8, 56], //7x list of gear sizes starting with the one mounted on the motor's axle
 	},
 	{
 		'motorPort': 2,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
 		'zeroingSpeed': 20,
+		'runningSpeed': DIRECT_DRIVE_SPEED * 5,
 		'limitSwitchPort': null,
-		'gearBoxConfig': LOWER_ARM_GEARBOX_CONFIG,
+		'gearBoxConfig': [8, 40], //5x list of gear sizes starting with the one mounted on the motor's axle
+		'speedFactor': 1.0,
 	},
 	{
 		'motorPort': 3,
 		'zeroingDirection': Robot3Axis.CLOCKWISE,
 		'zeroingSpeed': 50,
+		'runningSpeed': DIRECT_DRIVE_SPEED,
 		'limitSwitchPort': null,
-		'gearBoxConfig': UPPER_ARM_GEARBOX_CONFIG,
+		'gearBoxConfig': null,
 	},
 ]);
 
@@ -56,32 +56,32 @@ robot.once('connected', function() {
 }.bind(this));
 
 
-process.on('exit', function() { //ensure node's process doesn't hang
-	console.log("Killing Process ID #" + process.pid);
-  process.kill(process.pid, 'SIGTERM');
-});
+// process.on('exit', function() { //ensure node's process doesn't hang
+// 	console.log("Killing Process ID #" + process.pid);
+//   process.kill(process.pid, 'SIGTERM');
+// });
 
 /* DIRECT DEGREE TEST
    --------------------------------------------------- */
 
-function goto(coords) {
+// function goto(coords) {
 
-	var _x = (coords.x)? coords.x: 0,
-			_y = (coords.y)? coords.y: 0,
-			_z = (coords.z)? coords.z: 0;
+// 	var _x = (coords.x)? coords.x: 0,
+// 			_y = (coords.y)? coords.y: 0,
+// 			_z = (coords.z)? coords.z: 0;
 
-	robot.once('synchronizedMoveDone', function() {
-		console.log("exiting");
-		process.exit(0);
-	}.bind(this));
+// 	robot.once('synchronizedMoveDone', function() {
+// 		console.log("exiting");
+// 		process.exit(0);
+// 	}.bind(this));
 
-	robot.synchronizedMove(GLOBAL_SPEED, [_x, _y, _z] );
-}
+// 	robot.synchronizedMove([_x, _y, _z] );
+// }
 
 /* COORD TESTS
   --------------------------------------------------- */
 
-var useIk = true; //when false uses direct coords
+var useIk = false; //when false uses direct coords
 
 var coords = [];
 
@@ -89,20 +89,51 @@ var coords = [];
 if(useIk) {
 
 	coords = [
-		calcAngles(12, 9, 0),
-		calcAngles(12, 22, 0),
-		calcAngles(12, 9, 0),
-		calcAngles(12, 22, 0),
+		// calcAngles(12, 10, 0),
+		// calcAngles(12, 12, 0),
+		// calcAngles(12, 14, 0),
+		// calcAngles(12, 16, 0),
+		// calcAngles(12, 18, 0),
+		// calcAngles(12, 22, 0),
+
+		calcAngles(9, 10, 0),
+		calcAngles(10, 10, 0),
+		calcAngles(11, 10, 0),
+		calcAngles(12, 10, 0),
+		calcAngles(13, 10, 0),
+		calcAngles(14, 10, 0),
+		calcAngles(15, 10, 0),
+		calcAngles(16, 10, 0),
+		calcAngles(17, 10, 0),
+		calcAngles(18, 10, 0),
+		calcAngles(19, 10, 0),
+
+		// calcAngles(12, 22, 0),
+		// calcAngles(9, 22, 0),
+		// calcAngles(9, 9, 0),
+		//calcAngles(12, 9, 0),
+		//calcAngles(12, 22, 0),
 		//[null, null, null]
 		//calcAngles(15, 10, 0),
-		[null, null, null]
+		// [null, null, null]
 	];
 
 } else {
 	var slop = 6;
 	coords = [
 
-		[0,0,0]
+		[null,null,-40],
+		[null,null,-41],
+		[null,null,-42],
+		[null,null,-43],
+		[null,null,-44],
+		[null,null,-45],
+		[null,null,-46],
+		[null,null,-47],
+		// [null,null,-40],
+		// [null,null,-40],
+		//[null,null,-40],
+		//[null,10,-45],
 
 		//base (gear 0)
 
@@ -138,7 +169,7 @@ if(useIk) {
 	];
 }
 
-var delay = 3000;
+var delay = 10;
 
 robot.once('moveToZeroDone', function() {
 
@@ -162,7 +193,7 @@ function drawCoords() {
 
 			}.bind(this));
 
-			robot.synchronizedMove(GLOBAL_SPEED, coords[0]);
+			robot.synchronizedMove(coords[0]);
 
 			coords.shift();
 
@@ -172,17 +203,18 @@ function drawCoords() {
 
 	} else {
 
-		console.log("finished drawing coords, zeroing and exiting");
+		console.log("finished drawing coords, exiting");
+		process.exit(0);
 
-		robot.moveToZero(true);
+		// robot.moveToZero(true);
 
-		robot.once('moveToZeroDone', function() {
+		// robot.once('moveToZeroDone', function() {
 
-			console.log("EXITING");
+		// 	console.log("EXITING");
 
-			process.exit(0);
+		// 	process.exit(0);
 
-		}.bind(this));
+		// }.bind(this));
 	}
 }
 
@@ -286,6 +318,7 @@ function calcAngles(x,y,z){
 	nxtangs[1] += GEAR1OFFSET;
 	nxtangs[2] -= GEAR2OFFSET;
 	console.log('angles for nxt offset for slop: ' + nxtangs);
+	console.log('------------------------------------------');
 
 	return(nxtangs);
 }
