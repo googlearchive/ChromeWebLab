@@ -770,7 +770,7 @@ var _NxtMotorSynchronizer = new Class({
 			// compensate for differences in distance traveled by each motor
 			"  for i=1,3 do",
 			"    if not motorsdone[i] then",
-			"      speeds[i] = speeds[i] * (degrees[i] / mindelta)",
+			"      speeds[i] = math.floor((speeds[i] * (degrees[i] / mindelta)) + 0.5)",
 			"    end",
 			"  end",
 
