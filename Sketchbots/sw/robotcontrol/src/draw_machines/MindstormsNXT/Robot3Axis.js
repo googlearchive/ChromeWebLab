@@ -1001,17 +1001,17 @@ var _NxtMotorSynchronizer = new Class({
 					axes[a].flagMultiAxisMoveFinished(new Number(newTachos[a]));
 
 			// repeat once
-			this._nxt._send(cmd, function(tacho0, tacho1, tacho2) {
-				newTachos = [tacho0, tacho1, tacho2];
+			// this._nxt._send(cmd, function(tacho0, tacho1, tacho2) {
+			// 	newTachos = [tacho0, tacho1, tacho2];
 				
-				// update new position on each axis
-				for (var a = 0; a < targetDegrees.length; a++)
-					if (targetDegrees[a])
-						axes[a].flagMultiAxisMoveFinished(new Number(newTachos[a]));
+			// 	// update new position on each axis
+			// 	for (var a = 0; a < targetDegrees.length; a++)
+			// 		if (targetDegrees[a])
+			// 			axes[a].flagMultiAxisMoveFinished(new Number(newTachos[a]));
 
-				// call the callback
+			// 	// call the callback
 				callback();
-			}.bind(this));
+			// }.bind(this));
 		}.bind(this));
 	}
 

@@ -85,8 +85,8 @@ exports.DrawMachine = new Class({
 	  */
 	 initialize: function(options) {
 
-    console.log("------------------------------------------------------");
-    console.log("INITIALIZING MINDSTORM-NXT DRAWMACHINE");
+	    console.log("------------------------------------------------------");
+	    console.log("INITIALIZING MINDSTORM-NXT DRAWMACHINE");
 	 	console.log("------------------------------------------------------");
 
 		this.setOptions(options);
@@ -108,7 +108,7 @@ exports.DrawMachine = new Class({
 		this.buff_control[3] = new Array(this.BUFFER_SIZE);
 		this.buff_type = new Array(this.BUFFER_SIZE);
 
-    this.DRAW_TIMEOUT_DELAY = 500;
+	    this.DRAW_TIMEOUT_DELAY = 500;
 
 		//Do NOT initialize communication with the machine here
 		//instead do that in createRobot()
@@ -124,7 +124,25 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	zero: function() {
-		//TODO - zero the machine state
+		this.buff_type = new Array();
+		this.buff_vel =  new Array();
+		this.buff_acc =  new Array();
+		this.buff_dist = new Array();
+		this.buff_cart = [
+			new Array(), //buf_cart[0] will contain an array of numbers, one element for each slot in the current command buffer;  each element contains the X coordinate for the target point of that command
+			new Array(), //buf_cart[1] will contain an array of numbers, one element for each slot in the current command buffer;  each element contains the Y coordinate for the target point of that command
+			new Array(), //buf_cart[2] will contain an array of numbers, one element for each slot in the current command buffer;  each element contains the Z coordinate ("lift" or position of the drawing machine's tool above the sand) for the target point of that command
+		];
+		this.buff_control = [
+			new Array(), //buff_control[0] will contain an array of numbers, one element for each slot in the current command buffer;  each element contains the X1 coordinate for the control point of that command (see buff_type)
+			new Array(), //buff_control[1] will contain an array of numbers, one element for each slot in the current command buffer;  each element contains the Y1 coordinate for the control point of that command (see buff_type)
+			new Array(), //buff_control[2] will contain an array of numbers, one element for each slot in the current command buffer;  each element contains the X2 coordinate for the control point of that command (see buff_type)
+			new Array(), //buff_control[3] will contain an array of numbers, one element for each slot in the current command buffer;  each element contains the Y2 coordinate for the control point of that command (see buff_type)
+		];
+		this.maxBufferIndex = 0; //an integer indicating the maximum populated index for all of the buff_* variables
+		this.currentBufferIndex = 0; //an integer indicating the read position in the command buffer (this should always be <= maxBufferIndex)
+		this._drawingServoAngles = new Array();
+		this._drawingServoAnglesCursor = 0;
 	},
 
 	/**
@@ -163,7 +181,7 @@ exports.DrawMachine = new Class({
 		this.zero();
 
 		//send the robot home
-		this.goHome();
+		//this.goHome();
 	},
 
 	/**
@@ -220,14 +238,15 @@ exports.DrawMachine = new Class({
 	start: function() {
 		this._calculateDrawingAngles(); //calculates all drawing angles
 
-    console.log("------------------------------------------------------");
-    console.log("BEGINNING TO DRAW");
-    console.log("------------------------------------------------------");
+	    console.log("------------------------------------------------------");
+	    console.log("BEGINNING TO DRAW");
+	    console.log("------------------------------------------------------");
+
+		this._simulateMachineEvent('timeEstimate', 1000, (new Date().getTime()/1000) + 60); //simulate 60 second drawings
 
 		//this._drawingServoAnglesCursor = 0; //using currentBufferIndex instead
 		this._drawNextPart();
 
-		//this._simulateMachineEvent('timeEstimate', 1000, (new Date().getTime()/1000) + 60); //simulate 60 second drawings
 		//this._simulateMachineEvent('drawingComplete', 2000);
 		//this._simulateMachineEvent('readyForPicture', 3000);
 	},
@@ -239,50 +258,35 @@ exports.DrawMachine = new Class({
 
     _drawNextPart: function() {
     	
-    	if (this.currentBufferIndex >= this.maxBufferIndex) {
-    		console.log("DRAWING COMPLETE / READY FOR NEXT PICTURE");
-    		this.emit('drawingComplete');
-    		this.emit('readyForPicture');
-    		return;
-    	}
-    	
     	//console.log("removing all listeners");
     	this._robot.removeAllListeners();
 
     	console.log("DRAWING NEXT PART: Index #" + this.currentBufferIndex);
 
-      if(this.currentBufferIndex <= this.maxBufferIndex) {
+    	
+    	if (this.currentBufferIndex >= this.maxBufferIndex) {
+    		console.log("DRAWING COMPLETE / READY FOR NEXT PICTURE");
+    		this.emit('drawingComplete');
+    		this.emit('readyForPicture');
+    		return;
+
+    	} else {
 
   			console.log('Going to next coord at:  ' + this._drawingServoAngles[this.currentBufferIndex] + ' in 1 second');
-        console.log('X = ' + this.buff_cart[0][this.currentBufferIndex] + ' Y = ' + this.buff_cart[1][this.currentBufferIndex] + ' Z = ' + this.buff_cart[2][this.currentBufferIndex]);
+	        console.log('X = ' + this.buff_cart[0][this.currentBufferIndex] + ' Y = ' + this.buff_cart[1][this.currentBufferIndex] + ' Z = ' + this.buff_cart[2][this.currentBufferIndex]);
 
   			setTimeout(function() {
 
   				this._robot.once('synchronizedMoveDone', function() {
-  				  
-            this.currentBufferIndex++;
-
-            console.log("remaining coords => " + (this.maxBufferIndex - this.currentBufferIndex));
-
-          	this._drawNextPart(); //recursion
-
+		            this.currentBufferIndex++;
+		            console.log("remaining coords => " + (this.maxBufferIndex - this.currentBufferIndex));
+		          	this._drawNextPart(); //recursion
   				}.bind(this));
 
   				console.log("a: " + this._drawingServoAngles[this.currentBufferIndex]);
-  				this._robot.synchronizedMove(ConfigParams.MINDSTORMS_NXT__MOTOR_SPEED, this._drawingServoAngles[this.currentBufferIndex]);
-  					
+  				this._robot.synchronizedMove(this._drawingServoAngles[this.currentBufferIndex]);
 
   			}.bind(this), this.DRAW_TIMEOUT_DELAY);
-
-  		} else {
-
-  			console.log("finished drawing coords, zeroing and exiting");
-  			this._robot.moveToZero(true);
-  			
-        this._robot.once('moveToZeroDone', function() {
-  				console.log("EXITING");
-  				process.exit(0);
-  			}.bind(this));
 
   		}
     	

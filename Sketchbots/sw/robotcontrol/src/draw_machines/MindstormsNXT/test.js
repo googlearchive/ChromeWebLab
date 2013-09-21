@@ -35,7 +35,6 @@ var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', [
 		'runningSpeed': DIRECT_DRIVE_SPEED,
 		'limitSwitchPort': null,
 		'gearBoxConfig': [8, 40], //5x list of gear sizes starting with the one mounted on the motor's axle
-		'speedFactor': 1.0,
 	},
 	{
 		'motorPort': 3,
@@ -82,7 +81,7 @@ process.on('exit', function() { //ensure node's process doesn't hang
 /* COORD TESTS
   --------------------------------------------------- */
 
-var useIk = false; //when false uses direct coords
+var useIk = true; //when false uses direct coords
 
 var coords = [];
 
@@ -97,20 +96,11 @@ if(useIk) {
 		// calcAngles(12, 18, 0),
 		// calcAngles(12, 22, 0),
 
-		calcAngles(9, 10, 0),
-		calcAngles(10, 10, 0),
-		calcAngles(11, 10, 0),
-		calcAngles(12, 10, 0),
-		calcAngles(13, 10, 0),
-		calcAngles(14, 10, 0),
-		calcAngles(15, 10, 0),
-		calcAngles(16, 10, 0),
-		calcAngles(17, 10, 0),
-		calcAngles(18, 10, 0),
-		calcAngles(19, 10, 0),
-
-		// calcAngles(12, 22, 0),
-		// calcAngles(9, 22, 0),
+		calcAngles(12, 22, 0),
+		calcAngles(9, 22, 0),
+		calcAngles(9, 12, 0),
+		calcAngles(12, 12, 0),
+		calcAngles(12, 22, 0),
 		// calcAngles(9, 9, 0),
 		//calcAngles(12, 9, 0),
 		//calcAngles(12, 22, 0),
@@ -123,59 +113,41 @@ if(useIk) {
 	var slop = 6;
 	coords = [
 
-		[null,null,-30],
-		[null,null,-31],
-		[null,null,-32],
-		[null,null,-33],
-		[null,null,-34],
-		[null,null,-35],
-		[null,null,-36],
-		[null,null,-37],
-		[null,null,-38],
-		[null,null,-39],
-		[null,null,-40],
-		[null,null,-41],
-		[null,null,-42],
-		[null,null,-43],
-		[null,null,-44],
-		[null,null,-45],
-		[null,null,-46],
-		[null,null,-47],
+		// [null,null,-30],
+		// [null,null,-31],
+		// [null,null,-32],
+		// [null,null,-33],
+		// [null,null,-34],
+		// [null,null,-35],
+		// [null,null,-36],
+		// [null,null,-37],
+		// [null,null,-38],
+		// [null,null,-39],
 		// [null,null,-40],
-		// [null,null,-40],
-		//[null,null,-40],
-		//[null,10,-45],
+		// [null,null,-41],
+		// [null,null,-42],
+		// [null,null,-43],
+		// [null,null,-44],
+		// [null,null,-45],
+		// [null,null,-46],
+		// [null,null,-47],
 
-		//base (gear 0)
+		// [null,10,null],
+		// [null,11,null],
+		// [null,12,null],
+		// [null,13,null],
+		// [null,14,null],
+		// [null,15,null],
 
-		// [0,0,-180],
-		// [10 + slop,0,null],
-		// [20 + slop,0,null],
-		// [30 + slop,0,null],
-		// [40 + slop,0,null],
-		// [50 + slop,0,null],
-		// [60 + slop,0,null],
-		// [70 + slop,0,null],
-		// [null,0,null]
+		// [null,10,-32],
+		// [null,11,-33],
+		// [null,12,-34],
+		// [null,13,-35],
+		// [null,14,-36],
+		// [null,30,-60],
+		// [null,15,-30],
+		// [null,0,0],
 
-		//leg 1 test (gear 1)
-
-	//	[0,0,-180],
-	//	[0,10 + slop,-180],
-	//	[0,20 + slop,-180],
-	//	[0,30 + slop,-180],
-	//	[0,40 + slop,-180],
-	//	[0,50 + slop,-180],
-	//	[0,60 + slop,-180],
-	//	[0,null,null]
-
-		//leg 2 (gear 2)
-
-	//	[0,0,-10 - slop],
-	//  [0,0,-20 - slop],
-	//  [0,0,-30 - slop],
-	//	[0,0,-20 - slop],
-	//	[0,null,null]
 	 
 	];
 }
