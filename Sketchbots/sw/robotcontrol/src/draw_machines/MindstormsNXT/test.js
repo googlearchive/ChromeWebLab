@@ -15,36 +15,13 @@
 */
 
 var Robot3Axis = require('./Robot3Axis').Robot3Axis;
+var ConfigParams = require('../../ConfigParams').ConfigParams;
+var IK = require('./DrawMachine').IK;
 
 //CONFIG
 var DIRECT_DRIVE_SPEED = 30;
-var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', [
-//var robot = new Robot3Axis('/dev/cu.NXT-DevB', [
-	{
-		'motorPort': 1,
-		'zeroingDirection': Robot3Axis.CLOCKWISE,
-		'zeroingSpeed': 15,
-		'runningSpeed': DIRECT_DRIVE_SPEED,
-		'limitSwitchPort': 1,
-		'gearBoxConfig': [8, 56], //7x list of gear sizes starting with the one mounted on the motor's axle
-	},
-	{
-		'motorPort': 2,
-		'zeroingDirection': Robot3Axis.CLOCKWISE,
-		'zeroingSpeed': 15,
-		'runningSpeed': DIRECT_DRIVE_SPEED,
-		'limitSwitchPort': null,
-		'gearBoxConfig': [8, 40], //5x list of gear sizes starting with the one mounted on the motor's axle
-	},
-	{
-		'motorPort': 3,
-		'zeroingDirection': Robot3Axis.CLOCKWISE,
-		'zeroingSpeed': 50,
-		'runningSpeed': DIRECT_DRIVE_SPEED,
-		'limitSwitchPort': null,
-		'gearBoxConfig': null,
-	},
-]);
+//var robot = new Robot3Axis('/dev/vcpa', [
+var robot = new Robot3Axis('/dev/cu.usbmodemfa131', ConfigParams.MINDSTORMS_NXT__AXIS_CONFIG);
 
 robot.once('connected', function() {
 
@@ -56,10 +33,10 @@ robot.once('connected', function() {
 }.bind(this));
 
 
-process.on('exit', function() { //ensure node's process doesn't hang
-	console.log("Killing Process ID #" + process.pid);
-  process.kill(process.pid, 'SIGTERM');
-});
+// process.on('exit', function() { //ensure node's process doesn't hang
+// 	console.log("Killing Process ID #" + process.pid);
+//   process.kill(process.pid, 'SIGTERM');
+// });
 
 /* DIRECT DEGREE TEST
    --------------------------------------------------- */
@@ -81,6 +58,7 @@ process.on('exit', function() { //ensure node's process doesn't hang
 /* COORD TESTS
   --------------------------------------------------- */
 
+var calibrate = false;
 var useIk = true; //when false uses direct coords
 
 var coords = [];
@@ -89,66 +67,50 @@ var coords = [];
 if(useIk) {
 
 	coords = [
-		// calcAngles(12, 10, 0),
-		// calcAngles(12, 12, 0),
-		// calcAngles(12, 14, 0),
-		// calcAngles(12, 16, 0),
-		// calcAngles(12, 18, 0),
-		// calcAngles(12, 22, 0),
+		// end position
+		IK._doIk(
+			ConfigParams.DRAW_PARAMETERS.robotXMin + ((ConfigParams.DRAW_PARAMETERS.robotXMax - ConfigParams.DRAW_PARAMETERS.robotXMin)/2),
+			ConfigParams.DRAW_PARAMETERS.robotYMin,
+			ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
 
-		calcAngles(12, 22, 0),
-		calcAngles(9, 22, 0),
-		calcAngles(9, 12, 0),
-		calcAngles(12, 12, 0),
-		calcAngles(12, 22, 0),
-		// calcAngles(9, 9, 0),
-		//calcAngles(12, 9, 0),
-		//calcAngles(12, 22, 0),
-		//[null, null, null]
-		//calcAngles(15, 10, 0),
-		// [null, null, null]
+		//line test
+		// IK._doIk(12, 12, 0),
+		// IK._doIk(12, 14, 0),
+		// IK._doIk(12, 16, 0),
+		// IK._doIk(12, 18, 0),
+		// IK._doIk(12, 20, 0),
+		// IK._doIk(12, 22, 0),
+
+		//rectangle test
+		//at drawing depth
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+
+		//an X from the corners of the rectangle, with travel move in middle
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
+
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+
+
+		// end position
+		IK._doIk(
+			ConfigParams.DRAW_PARAMETERS.robotXMin + ((ConfigParams.DRAW_PARAMETERS.robotXMax - ConfigParams.DRAW_PARAMETERS.robotXMin)/2),
+			ConfigParams.DRAW_PARAMETERS.robotYMin,
+			ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
 	];
 
 } else {
 	var slop = 6;
 	coords = [
-
-		// [null,null,-30],
-		// [null,null,-31],
-		// [null,null,-32],
-		// [null,null,-33],
-		// [null,null,-34],
-		// [null,null,-35],
-		// [null,null,-36],
-		// [null,null,-37],
-		// [null,null,-38],
-		// [null,null,-39],
-		// [null,null,-40],
-		// [null,null,-41],
-		// [null,null,-42],
-		// [null,null,-43],
-		// [null,null,-44],
-		// [null,null,-45],
-		// [null,null,-46],
-		// [null,null,-47],
-
-		// [null,10,null],
-		// [null,11,null],
-		// [null,12,null],
-		// [null,13,null],
-		// [null,14,null],
-		// [null,15,null],
-
-		// [null,10,-32],
-		// [null,11,-33],
-		// [null,12,-34],
-		// [null,13,-35],
-		// [null,14,-36],
-		// [null,30,-60],
-		// [null,15,-30],
-		// [null,0,0],
-
-	 
+		[null,75.34053189815609,null],
 	];
 }
 
@@ -158,7 +120,11 @@ robot.once('moveToZeroDone', function() {
 
 	console.log('Zeroed...');	
 
-	drawCoords();
+	if (calibrate) {
+		robot.calibrate();
+	} else {
+		drawCoords();
+	}
 
 }.bind(this));
 
@@ -186,8 +152,9 @@ function drawCoords() {
 
 	} else {
 
-		console.log("finished drawing coords, exiting");
-		process.exit(0);
+		console.log("finished drawing coords, entering calibrate mode -- PRESS ORANGE BUTTON ON NXT BRICK TO END");
+		robot.calibrate();
+		//process.exit(0);
 
 		// robot.moveToZero(true);
 
@@ -201,110 +168,6 @@ function drawCoords() {
 	}
 }
 
-function calcAngles(x,y,z){
-	var theta0,	// base angle
-			theta1,	// gear 1 angle
-		    theta2,	// gear 2 angle
-		    l1,l2,	// leg lengths
-			l1sq, l2sq,
-			k1, k2,
-			d, r,
-			dsq,
-			xsq, ysq,
-			zprime, zprimesq,
-			theta2calc,
-			sinTheta2,
-			cosTheta2,
-			theta0deg, theta1deg, theta2deg,
-			angsrad, angsdeg,
-			nxttheta0, nxttheta1, nxttheta2,
-			nxtangs;
-
-	var GEAR0ZEROANGLE = 16.187;
-	var GEAR1ZEROANGLE = 45.584;
-	var GEAR2ZEROANGLE = -134.5;
-
-	var GEAR0OFFSET = 6;
-	var GEAR1OFFSET = 8.5;
-	var GEAR2OFFSET = 12.5;
-    
-    var BASEROFFSET = 2.5; // radial distance from center of base gear to center of gear1
-    var BASEZOFFSET = 3.44; // vertical distance from top of base gear to center of gear1
-    var GEAR1GEOMOFFSET = 5.593; // degrees, angle of rt triangle with l1 as hyp and 1.34 as opp leg, 1.34 is the offset of gear2 from the plane of l1
-
-	var baseheight     = 6.43;
-
-	l1 = 13.75; // Link B from ConfigParams.js
-	l2 = 18.4;  // Link D from ConfigParams.js
-    
-	// base angle
-	theta0 = Math.atan2(y, x);
-    //console.log('theta0: ' + theta0);
-    var xadj = x - BASEROFFSET*Math.cos(theta0);
-    var yadj = y - BASEROFFSET*Math.sin(theta0);
-    var zadj = z - BASEZOFFSET;
-    
-    xsq = xadj*xadj;
-	ysq = yadj*yadj;
-	d = Math.sqrt(xsq + ysq);
-	dsq = d*d;
-	zprime = zadj - baseheight;
-	zprimesq = zprime*zprime;
-	l1sq = l1*l1;
-	l2sq = l2*l2;
-
-	theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
-	//console.log('theta2calc: ' + theta2calc);
-	sinTheta2 = Math.sqrt( 1 - Math.pow( theta2calc, 2 ) );
-	cosTheta2 = theta2calc;
-	//console.log('sinTheta2: ' + sinTheta2 + ', cosTheta2: ' + cosTheta2);
-	theta2 = Math.atan2(-sinTheta2, cosTheta2);
-	//console.log('theta2: ' + theta2);
-
-	k1 = l1 + l2*Math.cos(theta2);
-	k2 = l2*Math.sin(theta2);
-	theta1 = Math.atan2(zprime,d) - Math.atan2(k2,k1);
-	//console.log('theta1: ' + theta1);
-
-	theta0deg = theta0 * 180 / Math.PI;
-	theta1deg = theta1 * 180 / Math.PI;
-	theta2deg = theta2 * 180 / Math.PI;
-    
-  //theta2deg = -(180 - Math.abs(theta2deg));
-  //theta1deg = 90 - theta1deg;
-    
-  angsrad = [theta0, theta1, theta2];
-	angsdeg = [theta0deg, theta1deg, theta2deg];
-  console.log('thetas in radians: ' + angsrad);
-	console.log('thetas in degrees: ' + angsdeg);
-
-	if (theta0deg < GEAR0ZEROANGLE){
-		console.log("Coordinate is outside of arm bounds. Gear 0 is the culprit.")
-	}
-	if (theta1deg > GEAR1ZEROANGLE){
-		console.log("Coordinate is outside of arm bounds. Gear 1 is the culprit.")
-	}
-	if (theta2deg < GEAR2ZEROANGLE){
-		console.log("Coordinate is outside of arm bounds. Gear 2 is the culprit.")
-	}
-    
-    theta1deg -= GEAR1GEOMOFFSET; // account for offset of gear2
-	// convert angles into mindstorm space
-	nxttheta0 = theta0deg - GEAR0ZEROANGLE;
-	nxttheta1 = GEAR1ZEROANGLE - theta1deg;
-	nxttheta2 = GEAR2ZEROANGLE - theta2deg;
-	
-	nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
-	console.log('angles for nxt in degrees: ' + nxtangs);
-	
-	nxtangs[0] += GEAR0OFFSET;
-	nxtangs[1] += GEAR1OFFSET;
-	nxtangs[2] -= GEAR2OFFSET;
-	console.log('angles for nxt offset for slop: ' + nxtangs);
-	console.log('------------------------------------------');
-
-	return(nxtangs);
-}
 
 console.log('Connecting...');
 robot.connect(); //start here

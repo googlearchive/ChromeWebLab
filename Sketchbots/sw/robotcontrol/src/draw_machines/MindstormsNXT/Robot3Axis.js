@@ -15,6 +15,7 @@
 */
 require('mootools');
 var nodeNxt = require ('node-nxt');
+var crypto  = require('crypto');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// Robot
@@ -91,35 +92,36 @@ exports.Robot3Axis = new Class({
 			//retain a reference to the nxt object
 			this._nxt = nxt;
 			this._nxtSync = new _NxtMotorSynchronizer(this._nxt);
-			//display a message on the NXT brick display
-			this._nxt.DisableNXT(0);
-			this._nxt.DisplayText('Sketchbot OK');
-			//construct our Axis objects
-			this._axis = new Array(this._axisConfig.length);
-			this._gearBoxes = new Array(this._axisConfig.length);
-			for (var a = 0, al = this._axisConfig.length; a < al; a++) {
-				//
-				// create the axis object
-				//
-				this._axis[a] = new _Axis(
-					this._nxt,
-					this._nxtSync,
-					this._axisConfig[a].motorPort,
-					this._axisConfig[a].zeroingSpeed,
-					this._axisConfig[a].zeroingDirection,
-					this._axisConfig[a].limitSwitchPort,
-					this._axisConfig[a].runningSpeed
-				);
-				//
-				// create the axis' gearbox config
-				//
-				if (this._axisConfig[a].gearBoxConfig != null)
-					this._gearBoxes[a] = new _SimpleGearBox(this._axisConfig[a].gearBoxConfig);
-				else
-					this._gearBoxes[a] = new _SimpleGearBox([1]);
-			}
-			//tell listeners we are done
-			this.emit('connected');
+			this._nxtSync.on('connected', function() {
+				//display a message on the NXT brick display
+				this._nxt.DisableNXT(0);
+				//construct our Axis objects
+				this._axis = new Array(this._axisConfig.length);
+				this._gearBoxes = new Array(this._axisConfig.length);
+				for (var a = 0, al = this._axisConfig.length; a < al; a++) {
+					//
+					// create the axis object
+					//
+					this._axis[a] = new _Axis(
+						this._nxt,
+						this._nxtSync,
+						this._axisConfig[a].motorPort,
+						this._axisConfig[a].zeroingSpeed,
+						this._axisConfig[a].zeroingDirection,
+						this._axisConfig[a].limitSwitchPort,
+						this._axisConfig[a].runningSpeed
+					);
+					//
+					// create the axis' gearbox config
+					//
+					if (this._axisConfig[a].gearBoxConfig != null)
+						this._gearBoxes[a] = new _SimpleGearBox(this._axisConfig[a].gearBoxConfig);
+					else
+						this._gearBoxes[a] = new _SimpleGearBox([1]);
+				}
+				//tell listeners we are done
+				this.emit('connected');
+			}.bind(this));
 		}.bind(this));
 	},
 
@@ -197,7 +199,7 @@ exports.Robot3Axis = new Class({
 			gearedPositions[a] = targetDegrees[a] != null ? this._gearBoxes[a].getInputFromOutput(targetDegrees[a]) : null;
 			turns = Math.abs(this._gearBoxes[a].getInputFromOutput(1));
 			speeds[a] = this._axis[a].getNominalRunSpeed();
-			console.log('gearedPositions['+a+'] = '+gearedPositions[a]); 
+			console.log('gearedPositions['+a+'] = '+gearedPositions[a] + ' (motor turns per arm degree='+turns+')');
 		}
 
 		this._nxtSync.syncMoveAbs(this._axis, speeds, gearedPositions, function() {
@@ -208,6 +210,18 @@ exports.Robot3Axis = new Class({
 			this.emit('synchronizedMoveDone');
 		}.bind(this));
 
+	},
+
+	calibrate: function() {
+		console.log('------------------------------------');
+		console.log('Calibrating motors, see NXT display for details.');
+		this._nxtSync.calibrate(this._axis, function() {
+			console.log('Done. Final state:');
+			for (var a = 0; a < this._axis.length; a++)
+				console.log(this._axis[a].toString());
+			console.log('------------------------------------');
+			this.emit('synchronizedMoveDone');
+		}.bind(this));
 	},
 
 	/*
@@ -775,162 +789,234 @@ var _NxtMotorSynchronizer = new Class({
 	initialize: function(nxt) {
 		this._nxt = nxt;
 
+		var md5sum = crypto.createHash('md5');
+
 		var lua = [
-			"nxt.DisplayText(\"Loading [      ] \")",
+			'nxt.DisplayText("Loading [      ] ")',
 
-			"function sign(i)",
-			"  if i < 0 then return -1 else return 1 end",
-			"end",
+			'function sign(i)',
+			'  if i < 0 then return -1 else return 1 end',
+			'end',
 
-			"nxt.DisplayText(\"Loading [ #    ] \")",
+			'nxt.DisplayText("Loading [ #    ] ")',
 
-			"function zeroUntilLimit(motorport,speed,direction,switchport)",
-			"  nxt.InputSetType(switchport, 1)",
-			"  nxt.OutputSetRegulation(motorport,1)",
-			"  nxt.OutputSetSpeed(motorport,0x20,speed * direction)",
+			'function zeroUntilLimit(motorport,speed,direction,switchport)',
+			'  nxt.InputSetType(switchport, 1)',
+			'  nxt.OutputSetRegulation(motorport,1)',
+			'  nxt.OutputSetSpeed(motorport,0x20,speed * direction)',
 
-			"  val = 1000000",
-			"  repeat",
-			"    _,_,_,val = nxt.InputGetStatus(switchport)",
-			"    print(val)",
-			"  until val <= 183",
+			//wait for a bit
+			'  t = nxt.TimerRead()',
+			'  while t + 2000 > nxt.TimerRead() do', //2 sec. delay
+			'     -- nothing',
+			'  end',
 
-			"  nxt.OutputSetSpeed(motorport,0x60,0)",
-			"  nxt.OutputResetTacho(motorport,1,1,1)",
-			"  return true",
-			"end",
+			'  val = 1000000',
+			'  repeat',
+			'    _,_,_,val = nxt.InputGetStatus(switchport)',
+			'    print(val)',
+			'  until val <= 183',
 
-			"nxt.DisplayText(\"Loading [ ##   ] \")",
+			'  nxt.OutputSetSpeed(motorport,0x60,0)',
+			'  nxt.OutputResetTacho(motorport,1,1,1)',
+			'  return true',
+			'end',
 
-			"function zeroUntilBlocked(motorport,speed,direction)",
-			"  lasttacho = 0",
-			"  tachohistory = 0",
+			'nxt.DisplayText("Loading [ ##   ] ")',
 
-			"  lasttacho = nxt.OutputGetStatus(motorport)",
+			'function zeroUntilBlocked(motorport,speed,direction)',
+			'  lasttacho = 0',
+			'  tachohistory = 0',
 
-			"  nxt.OutputSetRegulation(motorport,1)",
-			"  nxt.OutputSetSpeed(motorport,0x20,speed * direction)",
+			'  lasttacho = nxt.OutputGetStatus(motorport)',
 
-			"  repeat",
-			"    tacho = nxt.OutputGetStatus(motorport)",
-			"    print(tacho)",
-			"    if lasttacho == tacho then",
-			"      tachohistory = tachohistory + 1",
-			"    else",
-			"      tachohistory = 0",
-			"    end",
-			"    lasttacho = tacho",
-			"  until tachohistory > 100",
+			'  nxt.OutputSetRegulation(motorport,1)',
+			'  nxt.OutputSetSpeed(motorport,0x20,speed * direction)',
 
-			"  nxt.OutputSetSpeed(motorport,0x60,0)",
-			"  nxt.OutputResetTacho(motorport,1,1,1)",
-			"  return true",
-			"end",
+			'  repeat',
+			'    tacho = nxt.OutputGetStatus(motorport)',
+			//'    print(tacho)',
+			'    if lasttacho == tacho then',
+			'      tachohistory = tachohistory + 1',
+			'    else',
+			'      tachohistory = 0',
+			'    end',
+			'    lasttacho = tacho',
+			'  until tachohistory > 100',
+
+			'  nxt.OutputSetSpeed(motorport,0x60,0)',
+			'  nxt.OutputResetTacho(motorport,1,1,1)',
+			'  return true',
+			'end',
 			
-			"nxt.DisplayText(\"Loading [ ###  ] \")",
+			'nxt.DisplayText("Loading [ ###  ] ")',
 
-			"function syncMoveAbs(speeds,degrees)",
+			'function calibrate()',
+			'  tachos = {0,0,0}',
 
-			"  tacho = {0, 0, 0}", //IMPORTANT: In Lua, it is conventional for the first element in an array to be index 1, not 0
-			"  motorsdone = {false, false, false}",
-			"  tachohistory = {0, 0, 0}", //used for dynamic position tolerance below
-			"  lasttacho = {0, 0, 0}", //used for dynamic position tolerance below
-			"  tolerance = {0, 0, 0}", //used for dynamic position tolerance below
-			"  delta = 0",
-			"  mindelta = 100000",
+			'  nxt.DisplayText("Orange btn to",0,6*8)',
+			'  nxt.DisplayText("exit calibration",0,7*8)',
 
-			"  for i=1,3 do",
-			"    nxt.OutputSetRegulation(i, 1, 1)",
-			"    _,tacho[i] = nxt.OutputGetStatus(i)",
-			"    print(\"start tacho \"..i..\": \"..tacho[i])",
-			"    motorsdone[i] = (degrees[i] == nil) or (degrees[i] == tacho[i])", // don't more motors that are already done, or which aren't being commanded (degrees[i] == nil)
-			"    if not motorsdone[i] then",
-			"      delta = math.abs(degrees[i] - tacho[i])",
-			"      if delta < mindelta then mindelta = delta end",
-			"    end",
-			"  end",
+			// set all motors to allow free rotation
+			'  for i=1,3 do',
+			'    nxt.OutputSetSpeed(i,0x00)',
+			'  end',
+
+			'  repeat',
+			'    for i=1,3 do',
+			'      speed, tachos[i], blocktacho, runstate, overload, rotcount, torun = nxt.OutputGetStatus(i)',
+			'      nxt.DisplayText(""..i..": "..tachos[i].."        ",0,i*8)',
+			'    end',
+			'  until( 8 == nxt.ButtonRead() )',
+			'  return tachos[1], tachos[2], tachos[3]',
+			'end',
+
+			'nxt.DisplayText("Loading [ #### ] ")',
+
+			'function syncMoveAbs(speeds,degrees)',
+
+			'  nxt.DisplayText("Sketchbot moving... ")',
+
+			'  tacho = {0, 0, 0}', //IMPORTANT: In Lua, it is conventional for the first element in an array to be index 1, not 0
+			'  motorsdone = {false, false, false}',
+			'  tachohistory = {0, 0, 0}', //used for dynamic position tolerance below
+			'  lasttacho = {0, 0, 0}', //used for dynamic position tolerance below
+			'  tolerance = {0, 0, 0}', //used for dynamic position tolerance below
+			'  delta = 0',
+			'  mindelta = 100000',
+
+			'  for i=1,3 do',
+			'    nxt.OutputSetRegulation(i, 1, 1)',
+			'    _,tacho[i] = nxt.OutputGetStatus(i)',
+			'    print("start tacho "..i..": "..tacho[i])',
+			'    motorsdone[i] = (degrees[i] == nil) or (degrees[i] == tacho[i])', // don't more motors that are already done, or which aren't being commanded (degrees[i] == nil)
+			'    if not motorsdone[i] then',
+			'      delta = math.abs(degrees[i] - tacho[i])',
+			'      if delta < mindelta then mindelta = delta end',
+			'    end',
+			'  end',
 
 			// compensate for differences in distance traveled by each motor
-			"  for i=1,3 do",
-			"    if not motorsdone[i] then",
-			"      delta = degrees[i] - tacho[i]",
-			"      speeds[i] = sign(delta) * (speeds[i] * (math.abs(delta) / mindelta))", // round to nearest whole number
-			//"      speeds[i] = nxt.int(speeds[i])",
-			"      print(\"new speed \"..i..\": \"..speeds[i])",
-			"      nxt.OutputSetRegulation(i,1)",
-			"    end",
-			"  end",
+			'  for i=1,3 do',
+			'    if not motorsdone[i] then',
+			'      print("calculating new speed for motor "..i)',
+			'      delta = degrees[i] - tacho[i]',
+			//'      print("delta for "..i..": "..delta)',
+			'      speeds[i] = sign(delta) * (speeds[i] * (math.abs(delta) / mindelta))', // round to nearest whole number
+			'      if speeds[i] > 300 then speeds[i] = 300 end', // max speed
+			'      if speeds[i] < -300 then speeds[i] = -300 end', // max speed
+			//'      speeds[i] = nxt.int(speeds[i])',
+			'      print("new speed "..i..": "..speeds[i])',
+			'      nxt.OutputSetRegulation(i,1)',
+			'    end',
+			'  end',
 
 
 			// do as little computation in this loop as possible so that motors have
 			// as near as possible to a simultaneous start
-			"  nxt.DisableNXT(1);",
-			"  for i=1,3 do",
-			"    if not motorsdone[i] then nxt.OutputSetSpeed(i,0x20,speeds[i],math.abs(degrees[i] - tacho[i])) end",
-			//"    if not motorsdone[i] then nxt.OutputSetSpeed(i,0x20,speeds[i]) end",
-			"  end",
-			"  nxt.DisableNXT(0);",
+			'  nxt.DisableNXT(1);',
+			'  for n, i in ipairs({3,2,1}) do',
+			'    if not motorsdone[i] then nxt.OutputSetSpeed(i,0x20,speeds[i],math.abs(degrees[i] - tacho[i])) end',
+			//'    if not motorsdone[i] then nxt.OutputSetSpeed(i,0x20,speeds[i]) end',
+			'  end',
+			'  nxt.DisableNXT(0);',
 
-			// "  print(\"starting...\")",
+			// '  print("starting...")',
 
-			"  repeat",
-			"    for i=1,3 do",
-			"      if not motorsdone[i] then",
-			//"        print(\"inner before \"..motorsdone)",
-			"        _,curtacho = nxt.OutputGetStatus(i)",
+			'  repeat',
+			'    for n, i in ipairs({3,2,1}) do',
+			'      if not motorsdone[i] then',
+			//'        print("inner before "..motorsdone)',
+			'        _,curtacho = nxt.OutputGetStatus(i)',
 
 			//
 			// dynamically adjust our motor precision tolerance based on how long we've been sitting at
 			// the same position. Don't try to move a mountain with a lego motor.
 			//
-			"        if curtacho - lasttacho[i] == 0 then",
-			"          tachohistory[i] = tachohistory[i] + 1",
-			"        else",
-			"          tachohistory[i] = 0",
-			"        end",
-			"        lasttacho[i] = curtacho",
+			'        if curtacho - lasttacho[i] == 0 then',
+			'          tachohistory[i] = tachohistory[i] + 1',
+			'        else',
+			'          tachohistory[i] = 0',
+			'        end',
+			'        lasttacho[i] = curtacho',
 
-			"        if tachohistory[i] > 500 then tolerance[i] = tolerance[i] + 1 end",
+			'        if tachohistory[i] > 10 then',
+			'          tolerance[i] = tolerance[i] + 1',
+			'          nxt.DisplayText("tol"..i.."="..tolerance[i],0,i*8)',
+			'        end',
 
-			// "        print(\"---------\")",
-			// "        print(\"tolerance \"..i..\" = \"..tolerance[i])",
-			// "        print(\"tachohistory \"..i..\" = \"..tachohistory[i])",
-			// "        print(\"curtacho \"..i..\" = \"..curtacho)",
+			// '        print("---------")',
+			// '        print("tolerance "..i.." = "..tolerance[i])',
+			// '        print("tachohistory "..i.." = "..tachohistory[i])',
+			// '        print("curtacho "..i.." = "..curtacho)',
 
-			"        if tolerance[i] >= math.abs(curtacho - degrees[i]) then",
-			"          nxt.OutputSetSpeed(i,0x60,0)",
-			//"          print(\"-- stopped motor \"..i..\" curtacho=\"..curtacho)",
-			"          motorsdone[i] = true",
-			"        end",
-			"        if speeds[i] < 0 and curtacho < degrees[i] then",
-			"          nxt.OutputSetSpeed(i,0x60,0)",
-			//"          print(\"-- stopped motor \"..i..\" curtacho=\"..curtacho)",
-			"          motorsdone[i] = true",
-			"        end",
-			"        if speeds[i] > 0 and curtacho > degrees[i] then",
-			"          nxt.OutputSetSpeed(i,0x60,0)",
-			//"          print(\"-- stopped motor \"..i..\" curtacho=\"..curtacho)",
-			"          motorsdone[i] = true",
-			"        end",
+			'        if tolerance[i] >= math.abs(curtacho - degrees[i]) then',
+			'          nxt.OutputSetSpeed(i,0x60,0)',
+			//'          print("-- stopped motor "..i.." curtacho="..curtacho)',
+			'          motorsdone[i] = true',
+			'        end',
+			'        if speeds[i] < 0 and curtacho < degrees[i] then',
+			'          nxt.OutputSetSpeed(i,0x60,0)',
+			//'          print("-- stopped motor "..i.." curtacho="..curtacho)',
+			'          motorsdone[i] = true',
+			'        end',
+			'        if speeds[i] > 0 and curtacho > degrees[i] then',
+			'          nxt.OutputSetSpeed(i,0x60,0)',
+			//'          print("-- stopped motor "..i.." curtacho="..curtacho)',
+			'          motorsdone[i] = true',
+			'        end',
 
-			"      end",
-			"    end",
-			"  until motorsdone[1] and motorsdone[2] and motorsdone[3]",
+			'      end',
+			'    end',
+			'  until motorsdone[1] and motorsdone[2] and motorsdone[3]',
 
-			"  for i=1,3 do",
-			"    _,tacho[i] = nxt.OutputGetStatus(i)",
-			"    print(\"end tacho \"..i..\": \"..tacho[i])",
-			"  end",
-			"  return tacho[1], tacho[2], tacho[3]",
-			"end",
+			'  for i=1,3 do',
+			'    _,tacho[i] = nxt.OutputGetStatus(i)',
+			'    print("end tacho "..i..": "..tacho[i])',
+			'  end',
+			'  nxt.DisplayText("Sketchbot ready. ")',
+			'  return tacho[1], tacho[2], tacho[3]',
+			'end',
 
-			"nxt.DisplayText(\"Loading [ #### ] \")",
-			"nxt.DisplayText(\"Sketchbot OK     \")",
+			'nxt.DisplayText("Loading [ #### ]  ")',
+			'nxt.DisplayText("Sketchbot ready. ")',
 			];
 
-		for (var n = 0; n < lua.length; n++)
-			this._nxt._send(lua[n]);
-		// this._nxt._send(lua.join("\n"));
+		// check if we need to update the NXT program by comparing a fingerprint of the Lua source code
+		var luaHash = md5sum.update(lua.join("\n")).digest('hex');
+		lua.push('function getProgramHash() return "'+luaHash+'" end');
+
+		this._nxt._send('getProgramHash and (getProgramHash() == "'+luaHash+'")', function(programOK) {
+			if (programOK != 'true') {
+				console.log('---------------------------------');
+				console.log('Sketchbot program on NXT does not match version in Robot3Axis.js, updating NXT...');
+				// the program on the controller needs to be updated
+				for (var n = 0; n < lua.length; n++)
+					this._nxt._send(lua[n]);
+
+				// verify that the program is programmed by checking the hash again
+				// don't emit 'connected' until we are sure the program is on the device
+				console.log('Sending program update to NXT... (version '+luaHash+')');
+				this._nxt._send('getProgramHash()', function(deviceHash) {
+					console.log('NXT reports current program vesion as '+deviceHash);
+					if (deviceHash == luaHash) {
+						console.log('---------------------------------');
+						this.emit('connected');
+					} else {
+						console.log('Fatal error: program versio on NXT after update does not match the version of the program which was sent to the NXT.');
+						console.log('Please shut down the NXT brick by removing power or turning it off, then restart it. Please restart robotcontrol to re-initialize the robot.');
+						throw new Error('Program version on NXT after update does not match the version of the program which was sent to the NXT. Expected '+luaHash+' but device reports version '+deviceHash);
+						// do not emit connected in this case. We're stuck.
+					}
+				}.bind(this));
+
+			} else {
+				console.log('---------------------------------');
+				console.log('Not updating program on NXT because it is already up-to-date with version '+luaHash);
+				console.log('---------------------------------');
+				this.emit('connected');
+			}
+		}.bind(this));
 
 	},
 
@@ -941,7 +1027,7 @@ var _NxtMotorSynchronizer = new Class({
 	 *
 	 */
 	zeroUntilBlocked: function(motorport, speed, direction, callback) {
-		var cmd = "zeroUntilBlocked("+motorport+","+speed+","+direction+")";
+		var cmd = 'zeroUntilBlocked('+motorport+','+speed+','+direction+')';
 		this._nxt._send(cmd, callback);
 	},
 
@@ -952,8 +1038,26 @@ var _NxtMotorSynchronizer = new Class({
 	 *
 	 */
 	zeroUntilLimit: function(motorport, speed, direction, switchport, callback) {
-		var cmd = "zeroUntilLimit("+motorport+","+speed+","+direction+","+switchport+")";
+		var cmd = 'zeroUntilLimit('+motorport+','+speed+','+direction+','+switchport+')';
 		this._nxt._send(cmd, callback);
+	},
+
+	/**
+	 * Turns all motors into sensors and sets their tachos to the reported position
+	 *
+	 */
+	calibrate: function(axes, callback) {
+	
+		for (var a = 0; a < axes.length; a++)
+			axes[a].flagMultiAxisMoveStarting();
+
+		this._nxt._send('calibrate()', function(tacho0, tacho1, tacho2) {
+			newTachos = [tacho0, tacho1, tacho2];
+			// update new position on each axis
+			for (var a = 0; a < newTachos.length; a++)
+				axes[a].flagMultiAxisMoveFinished(new Number(newTachos[a]));
+			callback();
+		}.bind(this));
 	},
 
 	/**
@@ -983,14 +1087,14 @@ var _NxtMotorSynchronizer = new Class({
 		}
 
 		// perform the move using the controller-side syncMoveAbs method
-		var cmd = "syncMoveAbs({"+
-			speeds[0]+","+
-			speeds[1]+","+
+		var cmd = 'syncMoveAbs({'+
+			speeds[0]+','+
+			speeds[1]+','+
 			speeds[2]+
-			"},{"+
-			(targetDegrees[0] == null ? "nil" : targetDegrees[0] )+","+
-			(targetDegrees[1] == null ? "nil" : targetDegrees[1] )+","+
-			(targetDegrees[2] == null ? "nil" : targetDegrees[2] )+"})";
+			'},{'+
+			(targetDegrees[0] == null ? 'nil' : targetDegrees[0] )+','+
+			(targetDegrees[1] == null ? 'nil' : targetDegrees[1] )+','+
+			(targetDegrees[2] == null ? 'nil' : targetDegrees[2] )+'})';
 		
 		this._nxt._send(cmd, function(tacho0, tacho1, tacho2) {
 			newTachos = [tacho0, tacho1, tacho2];

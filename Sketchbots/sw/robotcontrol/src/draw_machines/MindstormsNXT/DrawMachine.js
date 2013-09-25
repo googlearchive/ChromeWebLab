@@ -17,6 +17,128 @@ require('mootools');
 var ConfigParams = require('../../ConfigParams').ConfigParams;
 var Robot3Axis = require('./Robot3Axis').Robot3Axis;
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// IK
+///// Provides inverse kinematics for the Mindstorms NXT DrawMachine
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.IK = {
+    /**
+     * given an (x,y,z) point and information about the robot's geometery, determine the correct
+     * angles (in degrees) for the three joint motors.
+     *
+     * Returns a 3-dimensional array, [baseMotorDegrees, lowerMotorDegrees, upperMotorDegrees]
+     *
+     * Calculations based on this paper by Dr. Rainer Hessmer, October 2009
+     * http://www.hessmer.org/uploads/RobotArm/Inverse%20Kinematics%20for%20Robot%20Arm.pdf
+     *
+     */
+    _doIk: function(x, y, z) {
+
+    	console.log('------------------------------------------------');
+    	console.log("X: " + x + " Y: " + y + " : " + z);
+
+    	if(x < ConfigParams.DRAW_PARAMETERS.robotXMin || x > ConfigParams.DRAW_PARAMETERS.robotXMax) {
+    		console.log("DrawMachine: x == "+x+", which is outside the range set by ConfigParams.DRAW_PARAMETERS.robotXMin ("+ConfigParams.DRAW_PARAMETERS.robotXMin+") and robotXMax ("+ConfigParams.DRAW_PARAMETERS.robotXMax+")" );
+    	}
+
+    	if(y < ConfigParams.DRAW_PARAMETERS.robotYMin || y > ConfigParams.DRAW_PARAMETERS.robotYMax) {
+    		console.log("DrawMachine: y == "+y+", which is outside the range set by ConfigParams.DRAW_PARAMETERS.robotYMin ("+ConfigParams.DRAW_PARAMETERS.robotYMin+") and robotYMax ("+ConfigParams.DRAW_PARAMETERS.robotYMax+")" );
+    	}
+
+    	var xadj, yadj, zadj, // adjust x, y, z from center of base gear to center of gear 1 because of turntable
+    		theta0, theta1,	theta2, // base angle, gear angle 1, gear 2 angle
+	    	l1,l2,	// leg lengths
+				l1sq, l2sq, // leg lengths squared
+				k1, k2,
+				d, r,
+				dsq,
+				xsq, ysq,
+				zprime, zprimesq, // z prime 
+				theta2calc,
+				sinTheta2,
+				cosTheta2,
+				theta0deg, theta1deg, theta2deg,
+				angsrad, angsdeg,
+				nxttheta0, nxttheta1, nxttheta2,
+				nxtangs,
+				radianToDegree;
+
+		// first get the base angle so we can offset the x,y,z for the turntable
+		theta0 = Math.atan2(y, x);
+
+			// now go ahead and set the variables and square them for easier reference
+	    xadj = x - ConfigParams.BASEROFFSET*Math.cos(theta0);
+	    yadj = y - ConfigParams.BASEROFFSET*Math.sin(theta0);
+	    zadj = z - ConfigParams.BASEZOFFSET;
+	    l1 = ConfigParams.LINK_B;
+		l2 = ConfigParams.LINK_D;
+	    xsq = xadj*xadj;
+		ysq = yadj*yadj;
+		d = Math.sqrt(xsq + ysq);
+		dsq = d*d;
+		zprime = zadj - ConfigParams.DRAW_PARAMETERS.drawPlaneHeight;
+		zprimesq = zprime*zprime;
+		l1sq = l1*l1;
+		l2sq = l2*l2;
+		radianToDegree = 180 / Math.PI;
+
+		// calculate theta2, the gear 2 angle
+		theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
+		sinTheta2 = Math.sqrt( 1 - Math.pow( theta2calc, 2 ) );
+		cosTheta2 = theta2calc;
+		theta2 = Math.atan2(-sinTheta2, cosTheta2);
+
+		// use theta2 to calculate theta1, the gear 1 angle
+		k1 = l1 + l2*Math.cos(theta2);
+		k2 = l2*Math.sin(theta2);
+		theta1 = Math.atan2(zprime,d) - Math.atan2(k2,k1);
+
+		// convert from radians to degrees
+		theta0deg = theta0 * radianToDegree;
+		theta1deg = theta1 * radianToDegree;
+		theta2deg = theta2 * radianToDegree;
+	    
+	    // don't really need this step, but good for debugging
+	    // log out the raw angles to check arm positions
+	  	angsrad = [theta0, theta1, theta2];
+			angsdeg = [theta0deg, theta1deg, theta2deg];
+	  	//console.log('thetas in radians: ' + angsrad);
+			console.log('thetas in degrees: ' + angsdeg);
+
+			// if angles are outside of arm bounds, warn the user, but don't stop the drawing
+			if (theta0deg < ConfigParams.GEAR0ZEROANGLE){
+				console.log("******** Coordinate is outside of arm bounds because it would require Axis 0 to go beyond its rotation range ********")
+			}
+			if (theta1deg > ConfigParams.GEAR1ZEROANGLE){
+				console.log("******** Coordinate is outside of arm bounds because it would require Axis 1 to go beyond its rotation range ********")
+			}
+			if (theta2deg < ConfigParams.GEAR2ZEROANGLE){
+				console.log("******** Coordinate is outside of arm bounds because it would require Axis 2 to go beyond its rotation range ********")
+			}
+
+			// convert angles into mindstorm space
+			theta1deg -= ConfigParams.GEAR1GEOMOFFSET; // account for offset of gear between link b and link d
+			nxttheta0 = theta0deg - ConfigParams.GEAR0ZEROANGLE;
+			nxttheta1 = ConfigParams.GEAR1ZEROANGLE - theta1deg;
+			nxttheta2 = ConfigParams.GEAR2ZEROANGLE - theta2deg;
+
+			// log out nxt angles to check arm positions
+			nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
+			//console.log('angles for nxt in degrees: ' + nxtangs);
+
+			// add in the 'slop' of the mindstorm gears
+			nxtangs[0] += ConfigParams.GEAR0OFFSET;
+			//nxtangs[0] = 0;
+			nxtangs[1] += ConfigParams.GEAR1OFFSET; 
+			//nxtangs[1] = 0;
+			nxtangs[2] -= ConfigParams.GEAR2OFFSET;
+			//nxtangs[2] = 0;
+			//console.log('angles for nxt offset for slop: ' + nxtangs);
+
+			return nxtangs;
+    },
+};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// DrawMachine
@@ -90,30 +212,10 @@ exports.DrawMachine = new Class({
 	 	console.log("------------------------------------------------------");
 
 		this.setOptions(options);
-
-		this.BUFFER_SIZE = 3000;
-		this.maxBufferIndex = 0;
-		this.currentBufferIndex = 0;
-		this.buff_vel = new Array(this.BUFFER_SIZE);
-		this.buff_acc = new Array(this.BUFFER_SIZE);
-		this.buff_dist = new Array(this.BUFFER_SIZE);
-		this.buff_cart = new Array(3);
-		this.buff_cart[0] = new Array(this.BUFFER_SIZE);
-		this.buff_cart[1] = new Array(this.BUFFER_SIZE);
-		this.buff_cart[2] = new Array(this.BUFFER_SIZE);
-		this.buff_control = new Array(3);
-		this.buff_control[0] = new Array(this.BUFFER_SIZE);
-		this.buff_control[1] = new Array(this.BUFFER_SIZE);
-		this.buff_control[2] = new Array(this.BUFFER_SIZE);
-		this.buff_control[3] = new Array(this.BUFFER_SIZE);
-		this.buff_type = new Array(this.BUFFER_SIZE);
-
-	    this.DRAW_TIMEOUT_DELAY = 500;
-
 		//Do NOT initialize communication with the machine here
 		//instead do that in createRobot()
 
-		//TODO - other initialization
+		//TODO - other initialization?
 
 		this.zero(); //always call this at the end of initialize()
 	},
@@ -143,6 +245,25 @@ exports.DrawMachine = new Class({
 		this.currentBufferIndex = 0; //an integer indicating the read position in the command buffer (this should always be <= maxBufferIndex)
 		this._drawingServoAngles = new Array();
 		this._drawingServoAnglesCursor = 0;
+
+		this.BUFFER_SIZE = 3000;
+		this.maxBufferIndex = 0;
+		this.currentBufferIndex = 0;
+		this.buff_vel = new Array(this.BUFFER_SIZE);
+		this.buff_acc = new Array(this.BUFFER_SIZE);
+		this.buff_dist = new Array(this.BUFFER_SIZE);
+		this.buff_cart = new Array(3);
+		this.buff_cart[0] = new Array(this.BUFFER_SIZE);
+		this.buff_cart[1] = new Array(this.BUFFER_SIZE);
+		this.buff_cart[2] = new Array(this.BUFFER_SIZE);
+		this.buff_control = new Array(3);
+		this.buff_control[0] = new Array(this.BUFFER_SIZE);
+		this.buff_control[1] = new Array(this.BUFFER_SIZE);
+		this.buff_control[2] = new Array(this.BUFFER_SIZE);
+		this.buff_control[3] = new Array(this.BUFFER_SIZE);
+		this.buff_type = new Array(this.BUFFER_SIZE);
+
+	    this.DRAW_TIMEOUT_DELAY = 500;
 	},
 
 	/**
@@ -191,7 +312,10 @@ exports.DrawMachine = new Class({
 	 */
 	goHome: function() {
 		this._robot.once('moveToZeroDone', function() {
-			this.emit('robotAtHome');
+			this._robot.once('synchronizedMoveDone', function() {
+				this.emit('robotAtHome');
+			}.bind(this));
+			this._robot.synchronizedMove(exports.IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin + ((ConfigParams.DRAW_PARAMETERS.robotXMax - ConfigParams.DRAW_PARAMETERS.robotXMin)/2), ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z));
 		}.bind(this));
 		this._robot.moveToZero();
 	},
@@ -202,9 +326,11 @@ exports.DrawMachine = new Class({
 	 *
 	 */
 	calibrate: function() {
-		console.log(this._robot);
 		this._robot.once('moveToZeroDone', function() {
-			this.emit('robotCalibrated');
+			this._robot.once('synchronizedMoveDone', function() {
+				this.emit('robotCalibrated');
+			}.bind(this));
+			this._robot.synchronizedMove(exports.IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin + ((ConfigParams.DRAW_PARAMETERS.robotXMax - ConfigParams.DRAW_PARAMETERS.robotXMin)/2), ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z));
 		}.bind(this));
 		this._robot.moveToZero();
 	},
@@ -261,7 +387,7 @@ exports.DrawMachine = new Class({
     	//console.log("removing all listeners");
     	this._robot.removeAllListeners();
 
-    	console.log("DRAWING NEXT PART: Index #" + this.currentBufferIndex);
+    	console.log("DRAWING NEXT PART: Index #" + this.currentBufferIndex + " (max="+this.maxBufferIndex+")");
 
     	
     	if (this.currentBufferIndex >= this.maxBufferIndex) {
@@ -297,125 +423,18 @@ exports.DrawMachine = new Class({
     	this._drawingServoAngles = new Array(this.maxBufferIndex);
 
     	for (var i = 0, il = this._drawingServoAngles.length; i < il; i++) {
-    		this._drawingServoAngles[i] = this._doIk(this.buff_cart[0][i], this.buff_cart[1][i], this.buff_cart[2][i]);
+	    	
+	    	//safety on the Z parameter
+	    	if (this.buff_cart[2][i] > ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z) {
+	    		this.buff_cart[2][i] = ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z;
+	    	} else {
+	    		this.buff_cart[2][i] = ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z;
+	    	}
+
+    		this._drawingServoAngles[i] = exports.IK._doIk(this.buff_cart[0][i], this.buff_cart[1][i], this.buff_cart[2][i]);
     		console.log("ANGLES: " + this._drawingServoAngles[i]);
     	}
     	    	
-    },
-
-    /**
-     * given an (x,y,z) point and information about the robot's geometery, determine the correct
-     * angles (in degrees) for the three joint motors.
-     *
-     * Returns a 3-dimensional array, [baseMotorDegrees, lowerMotorDegrees, upperMotorDegrees]
-     *
-     * Calculations based on this paper by Dr. Rainer Hessmer, October 2009
-     * http://www.hessmer.org/uploads/RobotArm/Inverse%20Kinematics%20for%20Robot%20Arm.pdf
-     *
-     */
-    _doIk: function(x, y, z) {
-
-    	console.log("X: " + x + " Y: " + y + " : " + z);
-
-    	if(x < ConfigParams.DRAW_PARAMETERS.robotXMin || x > ConfigParams.DRAW_PARAMETERS.robotXMax) {
-    		console.log("DrawMachine: x == "+x+", which is outside the range set by ConfigParams.DRAW_PARAMETERS.robotXMin ("+ConfigParams.DRAW_PARAMETERS.robotXMin+") and robotXMax ("+ConfigParams.DRAW_PARAMETERS.robotXMax+")" );
-    	}
-
-    	if(y < ConfigParams.DRAW_PARAMETERS.robotYMin || y > ConfigParams.DRAW_PARAMETERS.robotYMax) {
-    		console.log("DrawMachine: y == "+y+", which is outside the range set by ConfigParams.DRAW_PARAMETERS.robotYMin ("+ConfigParams.DRAW_PARAMETERS.robotYMin+") and robotYMax ("+ConfigParams.DRAW_PARAMETERS.robotYMax+")" );
-    	}
-
-    	var xadj, yadj, zadj, // adjust x, y, z from center of base gear to center of gear 1 because of turntable
-    		theta0, theta1,	theta2, // base angle, gear angle 1, gear 2 angle
-	    	l1,l2,	// leg lengths
-				l1sq, l2sq, // leg lengths squared
-				k1, k2,
-				d, r,
-				dsq,
-				xsq, ysq,
-				zprime, zprimesq, // z prime 
-				theta2calc,
-				sinTheta2,
-				cosTheta2,
-				theta0deg, theta1deg, theta2deg,
-				angsrad, angsdeg,
-				nxttheta0, nxttheta1, nxttheta2,
-				nxtangs,
-				radianToDegree;
-
-		// first get the base angle so we can offset the x,y,z for the turntable
-		theta0 = Math.atan2(y, x);
-
-			// now go ahead and set the variables and square them for easier reference
-	    xadj = x - ConfigParams.BASEROFFSET*Math.cos(theta0);
-	    yadj = y - ConfigParams.BASEROFFSET*Math.sin(theta0);
-	    zadj = z - ConfigParams.BASEZOFFSET;
-	    l1 = ConfigParams.LINK_B;
-		l2 = ConfigParams.LINK_D;
-	    xsq = xadj*xadj;
-		ysq = yadj*yadj;
-		d = Math.sqrt(xsq + ysq);
-		dsq = d*d;
-		zprime = zadj - ConfigParams.BASEHEIGHT;
-		zprimesq = zprime*zprime;
-		l1sq = l1*l1;
-		l2sq = l2*l2;
-		radianToDegree = 180 / Math.PI;
-
-		// calculate theta2, the gear 2 angle
-		theta2calc = (dsq + zprimesq - l1sq - l2sq)/(2*l1*l2);
-		sinTheta2 = Math.sqrt( 1 - Math.pow( theta2calc, 2 ) );
-		cosTheta2 = theta2calc;
-		theta2 = Math.atan2(-sinTheta2, cosTheta2);
-
-		// use theta2 to calculate theta1, the gear 1 angle
-		k1 = l1 + l2*Math.cos(theta2);
-		k2 = l2*Math.sin(theta2);
-		theta1 = Math.atan2(zprime,d) - Math.atan2(k2,k1);
-
-		// convert from radians to degrees
-		theta0deg = theta0 * radianToDegree;
-		theta1deg = theta1 * radianToDegree;
-		theta2deg = theta2 * radianToDegree;
-	    
-	    // don't really need this step, but good for debugging
-	    // log out the raw angles to check arm positions
-	  	angsrad = [theta0, theta1, theta2];
-			angsdeg = [theta0deg, theta1deg, theta2deg];
-	  	//console.log('thetas in radians: ' + angsrad);
-			console.log('thetas in degrees: ' + angsdeg);
-
-			// if angles are outside of arm bounds, warn the user, but don't stop the drawing
-			if (theta0deg < ConfigParams.GEAR0ZEROANGLE){
-				console.log("******** Coordinate is outside of arm bounds because it would require Axis 0 to go beyond its rotation range ********")
-			}
-			if (theta1deg > ConfigParams.GEAR1ZEROANGLE){
-				console.log("******** Coordinate is outside of arm bounds because it would require Axis 1 to go beyond its rotation range ********")
-			}
-			if (theta2deg < ConfigParams.GEAR2ZEROANGLE){
-				console.log("******** Coordinate is outside of arm bounds because it would require Axis 2 to go beyond its rotation range ********")
-			}
-
-			// convert angles into mindstorm space
-			theta1deg -= ConfigParams.GEAR1GEOMOFFSET; // account for offset of gear2
-			nxttheta0 = theta0deg - ConfigParams.GEAR0ZEROANGLE;
-			nxttheta1 = ConfigParams.GEAR1ZEROANGLE - theta1deg;
-			nxttheta2 = ConfigParams.GEAR2ZEROANGLE - theta2deg;
-
-			// log out nxt angles to check arm positions
-			nxtangs = [ nxttheta0, nxttheta1, nxttheta2 ];
-			//console.log('angles for nxt in degrees: ' + nxtangs);
-
-			// add in the 'slop' of the mindstorm gears
-			nxtangs[0] += ConfigParams.GEAR0OFFSET;
-			//nxtangs[0] = 0;
-			nxtangs[1] += ConfigParams.GEAR1OFFSET; 
-			//nxtangs[1] = 0;
-			nxtangs[2] -= ConfigParams.GEAR2OFFSET;
-			//nxtangs[2] = 0;
-			//console.log('angles for nxt offset for slop: ' + nxtangs);
-
-			return(nxtangs);
     },
 
     _simulateMachineEvent: function(eventName, delay, obj) {
