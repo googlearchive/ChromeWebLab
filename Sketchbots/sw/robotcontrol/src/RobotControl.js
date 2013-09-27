@@ -164,7 +164,7 @@ exports.RobotControl = new Class({
             this.robotIsReady = false;
 
             // if we are configured to capture a photo then prepare for that action to happen later on
-            if (ConfigParams.CAPTURE_AND_UPLOAD_MEDIA) this.prepareForArtifactRecordingAndUpload(imageProcessingManager);
+            this.prepareForArtifactRecordingAndUpload(imageProcessingManager);
 
             this.setCurrentDrawingArtifactData(this.getNextDrawingArtifactData());
             //once the commands are ready, the robot will have an accurate estimate
@@ -251,9 +251,9 @@ exports.RobotControl = new Class({
             //otherwise, the render queue will get the still and video from a
             //streamer process that runs outside node.
 
-            // special case: the NoMachine DRAW_MACHINE_TYPE does not generate real drawings, and so we can't take a picture of them
-            // so we will immediately set waiting_for_artifact_upload to false
-            if (ConfigParams.DRAW_MACHINE_TYPE == 'NoMachine') {
+            // if either the CAPTURE_AND_UPLOAD_MEDIA config setting is true or we are using the special "NoMachine" draw machine
+            // then 
+            if (!ConfigParams.CAPTURE_AND_UPLOAD_MEDIA || (ConfigParams.DRAW_MACHINE_TYPE == 'NoMachine')) {
                 this.waiting_for_artifact_upload = false;
             } else {
                 this.takeArtifactPhoto();

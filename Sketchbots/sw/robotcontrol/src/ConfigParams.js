@@ -51,8 +51,8 @@ exports.ConfigParams = {
     /* when enabled, this tracks the number of failed serial connections since last boot */
     VIDEO_STOP_DELAY: 5000,
     ARTIFACT_POST_RETRY_LIMIT: 10,
-    /* when enabled, the sketchbot will take a photo at the end of every drawing, upload the photo to the labqueu server and add a link to the photo to the drawing task record on the server */
-    CAPTURE_AND_UPLOAD_MEDIA: true,
+    /* when enabled, the sketchbot will take a photo at the end of every drawing, upload the photo to the labqueue server and add a link to the photo to the drawing task record on the server */
+    CAPTURE_AND_UPLOAD_MEDIA: false,
 
     /* set to true to send console output to Loggly <www.loggly.com>. Warning: we generate a LOT of console output! If false, then we will only log to the local console.
     To use Loggly you will also have to set LOGGLY_SUBDOMAIN and LOGGLY_KEY to the values provided by Loggly for your account.
@@ -121,11 +121,10 @@ exports.ConfigParams = {
     LINK_A: 2.25, //LINK_A: 2.46, //distance, in cm, plate from the center of the base axis, along the surface of the base, to the axis of the lower large gear
     LINK_B: 13.75, //distance, in cm, from center of lower large gear to center of upper large gear
     LINK_C: 0.0, //distance, in cm, from axis of upper large gear, along its radius, to its intersection with midline of the forearm
-    LINK_D: 22.5, //distance, in cm, from aforementioned intersection to tool tip
+    LINK_D: 14.9, //(ball-point cartridge) //16.5 //(marker), //13.5, //(crayon) //distance, in cm, from aforementioned intersection to tool tip (was 18.4 for Mindstorms)
     BASEROFFSET : 2.5, // radial distance from center of base gear to center of gear1
     BASEZOFFSET : 3.44, // vertical distance from top of base gear to center of gear1
     GEAR1GEOMOFFSET : 5.593, // degrees, angle of rt triangle with l1 as hyp and 1.34 as opp leg, 1.34 is the offset of gear2 from the plane of l1
-    BASEHEIGHT : 10.2, // from top of drawing surface to the top of the base gear
 
     //Gear ratios
     /* NOTE FOR MINDSTORMS USERS:
@@ -144,14 +143,14 @@ exports.ConfigParams = {
     //See the README to see how to adjust these
     GEAR0ZEROANGLE: 16.187,
     GEAR1ZEROANGLE: 45.584,
-    GEAR2ZEROANGLE: -134.5,
+    GEAR2ZEROANGLE: -123.0, //-134.5,
 
     //The 'slop' in the Mindstorm gears. Essentially, the motor control 'thinks' the zero angle is different than it actually is, so we compensate in the IK function
     GEAR0OFFSET: 6,
     GEAR1OFFSET: 8.5,
     GEAR2OFFSET: 12.5,
 
-    DRAWING_SPEED: 5,
+    DRAWING_SPEED: 5, // NOTE: Not used by MindstormsNXT draw machine; see MINDSTORMS_NXT__MOTOR_SPEED
 
     /* controls rate and geometry of drawing */
 
@@ -159,16 +158,16 @@ exports.ConfigParams = {
         'chunkSize':3000,
         'velocity':100,
         'acceleration':200,
-        'robotXMin':6, // in cms, might should be in mms
-        'robotXMax':22, //
-        'robotYMin':6, // 
-        'robotYMax':22, //
-        'drawPlaneHeight':-9.5,
+        'robotXMin':-4, // in cms, perhaps should be in mms
+        'robotXMax':4, //
+        'robotYMin':18, // 
+        'robotYMax':25, //
+        'drawPlaneHeight':6.4, //6.5, //7.5, //6.5, //10.2, // from top of drawing surface to the top of the base gear
         'liftDistance':2,
         'turntableTravel':120
     },
 
-    /* // ORIGINAL SETTINGS, KEEPING IN CASE I SCREW SOMETHING UP
+    /* // SETTINGS FOR LONDON HOMEBREW GALIL
     DRAW_PARAMETERS: {
         'chunkSize':3000,
         'velocity':100,
@@ -192,8 +191,8 @@ exports.ConfigParams = {
      *
      */
      //DRAW_MACHINE_TYPE: 'HomebrewGalil', // For any 4-axis draw machine using a Galil motion controller
-     DRAW_MACHINE_TYPE: 'NoMachine', // Use this setting if you do not have a machine connected to the computer. Drawings will be "drawn" in software only.
-     //DRAW_MACHINE_TYPE: 'MindstormsNXT', // A 3-axis robot arm built with the LEGO(TM) Mindstorms system. Instructions for building this arm are included in the "hw" folder.
+     //DRAW_MACHINE_TYPE: 'NoMachine', // Use this setting if you do not have a machine connected to the computer. Drawings will be "drawn" in software only.
+     DRAW_MACHINE_TYPE: 'MindstormsNXT', // A 3-axis robot arm built with the LEGO(TM) Mindstorms system. Instructions for building this arm are included in the "hw" folder.
      //DRAW_MACHINE_TYPE: 'LittlePrinter', // Use this for drawing to a pre-configure little printer. 
     /**********************************************************
      *
@@ -203,30 +202,37 @@ exports.ConfigParams = {
      * These are only used if for the "MindstormsNXT" draw machine type
      *
      */
-    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodem1421',  // '/dev/cu.usbmodem1421',  //'/dev/cu.usbmodemfd121',
+    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodemfd121',
+    //MINDSTORMS_NXT__SERIAL_PORT: '/dev/vcpa',
     MINDSTORMS_NXT__AXIS_CONFIG: [
-        {   //base gearbox
+        {   //base
             'motorPort': 1,
             'zeroingDirection': 1,
             'zeroingSpeed': 15,
+            'runningSpeed': 210,
             'limitSwitchPort': 1,
-            'gearBoxConfig': [8, 56] //base gearbox config
+            'gearBoxConfig': [8, 56], // base gearbox config: 8-tooth input gear, 56-tooth output gear -- 7x motor turns per output degree
         },
         {   //lower arm
             'motorPort': 2,
             'zeroingDirection': 1,
-            'zeroingSpeed': 20,
+            'zeroingSpeed': 15,
+            'runningSpeed': 150,
             'limitSwitchPort': null,
-            'gearBoxConfig': [8, 40]
+            'gearBoxConfig': [8, 40], // middle gearbox config: 8-tooth input gear, 56-tooth output gear -- 5x motor turns per output degree
         },
         {   //upper arm
             'motorPort': 3,
             'zeroingDirection': 1,
             'zeroingSpeed': 50,
+            'runningSpeed': 15,
             'limitSwitchPort': null,
-            'gearBoxConfig': null
+            'gearBoxConfig': null, // no gearing
         },
     ],
+    MINDSTORMS_NXT__TRAVEL_MOVE_Z: 5,
+    MINDSTORMS_NXT__DRAW_MOVE_Z: 0,
+    MINDSTORMS_NXT__STIPPLE: true, //Set to true to pick out lines as series of dots instead of continuous strokes. This helps deal with poor speed control on the NXT.
     
     /*
       Little Printer Configuration

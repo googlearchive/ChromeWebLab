@@ -21,7 +21,7 @@ var IK = require('./DrawMachine').IK;
 //CONFIG
 var DIRECT_DRIVE_SPEED = 30;
 //var robot = new Robot3Axis('/dev/vcpa', [
-var robot = new Robot3Axis('/dev/cu.usbmodemfa131', ConfigParams.MINDSTORMS_NXT__AXIS_CONFIG);
+var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', ConfigParams.MINDSTORMS_NXT__AXIS_CONFIG);
 
 robot.once('connected', function() {
 
