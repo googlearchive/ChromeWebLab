@@ -32,8 +32,8 @@ var WEBCAM_SWF_FALLBACK_URL = 'files'
  */
 var UIWidgets = new Class({});
 UIWidgets.getNewButtonElement = function(options) {
-        return new Element('button', options);
-        /*
+    return new Element('button', options);
+    /*
         var txt;
         if (options.hasOwnProperty('text')) {
             txt = options['text'];
@@ -47,5 +47,4 @@ UIWidgets.getNewButtonElement = function(options) {
         new Element('h4', captionOptions).inject(b);
         return b;
         */
-    };
-
+};

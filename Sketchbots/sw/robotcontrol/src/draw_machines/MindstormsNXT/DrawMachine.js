@@ -361,13 +361,12 @@ exports.DrawMachine = new Class({
     	this._simulateMachineEvent('turntableMotionComplete');
     },
 
-	/**
-	 * Causes the machine to start drawing.
-	 * Should eventually cause 'timeEstimate', and 'drawingComplete' events, in that order
-	 *
-	 */
-	start: function() {
-		this._calculateDrawingAngles(); //calculates all drawing angles
+    /**
+     * causes the machine to completely reset its state, the meaning of which is machine-specific.
+     */
+    reset: function() {
+        //reset the local machine state using zero()
+        this.zero();
 
 	    console.log("------------------------------------------------------");
 	    console.log("BEGINNING TO DRAW");
@@ -402,7 +401,7 @@ exports.DrawMachine = new Class({
   			console.log('Going to next coord at:  ' + this._drawingServoAngles[this.currentBufferIndex] + ' in 1 second');
 	        console.log('X = ' + this.buff_cart[0][this.currentBufferIndex] + ' Y = ' + this.buff_cart[1][this.currentBufferIndex] + ' Z = ' + this.buff_cart[2][this.currentBufferIndex]);
 
-  			setTimeout(function() {
+        if (this.currentBufferIndex <= this.maxBufferIndex) {
 
   				this._robot.once('synchronizedMoveDone', function() {
 		            this.currentBufferIndex++;
@@ -413,7 +412,7 @@ exports.DrawMachine = new Class({
   				console.log("a: " + this._drawingServoAngles[this.currentBufferIndex]);
   				this._robot.synchronizedMove(this._drawingServoAngles[this.currentBufferIndex]);
 
-  			}.bind(this), this.DRAW_TIMEOUT_DELAY);
+                    this._drawNextPart(); //recursion
 
   		}
     	
@@ -605,9 +604,11 @@ exports.DrawMachine = new Class({
 	},
 
     _simulateMachineEvent: function(eventName, delay, obj) {
-    	if (!delay) delay = 1000;
-    	if (!obj) obj = null;
-    	setTimeout( function() { this.emit(eventName, obj); }.bind(this), delay);
+        if (!delay) delay = 1000;
+        if (!obj) obj = null;
+        setTimeout(function() {
+            this.emit(eventName, obj);
+        }.bind(this), delay);
     }
 
 });

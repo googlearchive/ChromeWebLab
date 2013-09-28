@@ -1,58 +1,58 @@
-(function(){
-	
-	var namespace = WEBLAB.namespace("WEBLAB.utils.data");
-	
-	if(namespace.DateFunctions === undefined) {
-		
-		var DateFunctions = function DateFunctions() {
-			//MENOTE: do nothing
-		};
-		
-		namespace.DateFunctions = DateFunctions;
-		
-		DateFunctions.getLocalisedDate = function(aTimeMS, aLanguage) {
-			
-			aTimeMS = parseInt(aTimeMS);
-			if (!aLanguage) aLanguage = "en-US";
+(function() {
 
-			// adjust for timezone
-			var offset = new Date().getTimezoneOffset();
-			aTimeMS -= offset * 60 * 1000;
+    var namespace = WEBLAB.namespace("WEBLAB.utils.data");
 
-			var returnString = "";
-			var dateTaken = new Date(aTimeMS);			
-			var hours = dateTaken.getUTCHours();
-			hours = (hours < 10) ? '0' + hours : hours;
-			var minutes = dateTaken.getUTCMinutes();
-			minutes = (minutes < 10) ? '0' + minutes : minutes;
+    if (namespace.DateFunctions === undefined) {
 
-			var timeString = hours + ":" + minutes;
+        var DateFunctions = function DateFunctions() {
+            //MENOTE: do nothing
+        };
 
-			var yearString = dateTaken.getFullYear();
-			var month = dateTaken.getMonth() + 1;
-			month = (month < 10) ? '0' + month : month;
-			var day = dateTaken.getDate();
-			day = (day < 10) ? '0' + day : day;
+        namespace.DateFunctions = DateFunctions;
 
-			var dateString = "";
+        DateFunctions.getLocalisedDate = function(aTimeMS, aLanguage) {
 
-			switch(aLanguage) {
-				case "en-US" :
-					dateString = month + "/" + day + "/" + yearString;
-				break;
+            aTimeMS = parseInt(aTimeMS);
+            if (!aLanguage) aLanguage = "en-US";
 
-				case "sv-SE" :
-					dateString = day + "/" + month + " " + yearString;
-				break;
+            // adjust for timezone
+            var offset = new Date().getTimezoneOffset();
+            aTimeMS -= offset * 60 * 1000;
 
-				default :
-					dateString = day + "/" + month + "/" + yearString;
-				break;
-			}
+            var returnString = "";
+            var dateTaken = new Date(aTimeMS);
+            var hours = dateTaken.getUTCHours();
+            hours = (hours < 10) ? '0' + hours : hours;
+            var minutes = dateTaken.getUTCMinutes();
+            minutes = (minutes < 10) ? '0' + minutes : minutes;
 
-			returnString = timeString + " " + dateString;
+            var timeString = hours + ":" + minutes;
 
-			return returnString;
-		};
-	}
+            var yearString = dateTaken.getFullYear();
+            var month = dateTaken.getMonth() + 1;
+            month = (month < 10) ? '0' + month : month;
+            var day = dateTaken.getDate();
+            day = (day < 10) ? '0' + day : day;
+
+            var dateString = "";
+
+            switch (aLanguage) {
+                case "en-US":
+                    dateString = month + "/" + day + "/" + yearString;
+                    break;
+
+                case "sv-SE":
+                    dateString = day + "/" + month + " " + yearString;
+                    break;
+
+                default:
+                    dateString = day + "/" + month + "/" + yearString;
+                    break;
+            }
+
+            returnString = timeString + " " + dateString;
+
+            return returnString;
+        };
+    }
 })();
