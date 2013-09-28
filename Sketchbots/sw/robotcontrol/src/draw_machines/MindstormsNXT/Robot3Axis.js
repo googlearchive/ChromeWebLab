@@ -269,6 +269,7 @@ exports.Robot3Axis = new Class({
 		return trueCt == al;
 	},
 
+
 });
 
 exports.Robot3Axis.CLOCKWISE = 1;
@@ -280,73 +281,73 @@ exports.Robot3Axis.COUNTER_CLOCKWISE = -1;
  *
  */
 var _SimpleGearBox = new Class({
-    Implements: [Events, process.EventEmitter],
+	Implements: [Events, process.EventEmitter],
 
-    /**
-     * This class emits no events.
-     *
-     */
+	/**
+	 * This class emits no events.
+	 *
+	 */
 
-    /*
-     * public variables
-     *
-     */
+	/*
+	 * public variables
+	 *
+	 */
 
-    /*
-     * private variables
-     *
-     */
-    _gears: [],
-    _sign: 1,
-    _inputTurnsPerOutputTurn: 1,
+	/*
+	 * private variables
+	 *
+	 */
+	_gears: [],
+	_sign: 1,
+	_inputTurnsPerOutputTurn: 1,
 
-    /**
-     * constructs a GearBox
-     *
-     * Arguments:
-     *			gears - an Array of integers, each indicating the number of teeth on a gear in the gearbox.
-     *					The Array should start with the input gear and progress in order toward the last gear
-     *					on the output shaft.
-     *
-     * Throws an error if:
-     *		Any of the elements in the gears array are not integers.
-     *
-     */
-    initialize: function(gears) {
-        //check the gears array
-        var ratio = 1;
-        for (var g = 0, gl = gears.length; g < gl; g++) {
-            try {
-                var i = Math.floor(gears[g]);
-                if (i !== gears[g]) throw new Error('Element #' + g + ' (' + gears[g] + ') in gears array is not an integer');
-            } catch (err) {
-                throw new Error('Element #' + g + ' (' + gears[g] + ') in gears array is not an integer (' + err + ')');
-            }
-            ratio = gears[g] / ratio;
-        }
-        this._gears = gears;
-        this._inputTurnsPerOutputTurn = ratio;
-        this._sign = (this._gears.length & 1) ? 1 : -1; //an even number of gears will result in the input and output gears turning in opposite directions
-    },
+	/**
+	 * constructs a GearBox
+	 *
+	 * Arguments:
+	 *			gears - an Array of integers, each indicating the number of teeth on a gear in the gearbox.
+	 *					The Array should start with the input gear and progress in order toward the last gear
+	 *					on the output shaft.
+	 *
+	 * Throws an error if:
+	 *		Any of the elements in the gears array are not integers.
+	 *
+	 */
+	 initialize: function(gears) {
+	 	//check the gears array
+	 	var ratio = 1;
+	 	for (var g = 0, gl = gears.length; g < gl; g++) {
+	 		try {
+	 			var i = Math.floor(gears[g]);
+	 			if (i !== gears[g]) throw new Error('Element #'+g+' ('+gears[g]+') in gears array is not an integer');
+	 		} catch (err) {
+	 			throw new Error('Element #'+g+' ('+gears[g]+') in gears array is not an integer ('+err+')');
+	 		}
+	 		ratio = gears[g] / ratio;
+	 	}
+	 	this._gears = gears;
+	 	this._inputTurnsPerOutputTurn = ratio;
+	 	this._sign = (this._gears.length & 1) ? 1 : -1; //an even number of gears will result in the input and output gears turning in opposite directions
+	 },
 
-    /**
-     * Given a desired number of degrees of rotation on the output axel, returns the number of required
-     * degrees of turn on the input axel.
-     *	Positions clockwise from the gear's starting position are represented as positive nubmers;
-     *	Positions counterclockwise from the starting position are represented as negative numbers.
-     *
-     * Arguments:
-     *			outputDegrees - the desired position, in degrees of the output axel of the gearbox.
-     *							 Positions clockwise from the gear's starting position are represented as positive nubmers;
-     *							 Positions counterclockwise from the starting position are represented as negative numbers.
-     *
-     */
-    getInputFromOutput: function(outputDegrees) {
-        if (this._gears.length == 1) return outputDegrees; //special case: the most pointless gearbox imaginable
-        var p = (outputDegrees * this._inputTurnsPerOutputTurn) * this._sign;
-        ////console.log(p);
-        return p;
-    },
+	 /**
+	  * Given a desired number of degrees of rotation on the output axel, returns the number of required
+	  * degrees of turn on the input axel.
+	  *	Positions clockwise from the gear's starting position are represented as positive nubmers;
+	  *	Positions counterclockwise from the starting position are represented as negative numbers.
+	  *
+	  * Arguments:
+	  *			outputDegrees - the desired position, in degrees of the output axel of the gearbox.
+	  *							 Positions clockwise from the gear's starting position are represented as positive nubmers;
+	  *							 Positions counterclockwise from the starting position are represented as negative numbers.
+	  *
+	  */
+	 getInputFromOutput: function(outputDegrees) {
+	 	if (this._gears.length == 1) return outputDegrees; //special case: the most pointless gearbox imaginable
+	 	var p = (outputDegrees * this._inputTurnsPerOutputTurn) * this._sign;
+	 	////console.log(p);
+	 	return p;
+	 },
 
 	 /**
 	  * Returns the unsigned gear ratio, expressed as the number of input turns per full 360º output turn.

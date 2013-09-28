@@ -21,22 +21,22 @@ var IK = require('./DrawMachine').IK;
 //CONFIG
 var DIRECT_DRIVE_SPEED = 30;
 //var robot = new Robot3Axis('/dev/vcpa', [
-var robot = new Robot3Axis('/dev/cu.usbmodemfd1221', ConfigParams.MINDSTORMS_NXT__AXIS_CONFIG);
+var robot = new Robot3Axis('/dev/cu.usbmodemfa131', ConfigParams.MINDSTORMS_NXT__AXIS_CONFIG);
 
 robot.once('connected', function() {
 
-    console.log('Connected. Moving to zero...')
-
-    //after connecting, get the robot to zero
-    robot.moveToZero();
+	console.log('Connected. Moving to zero...')
+	
+	//after connecting, get the robot to zero
+	robot.moveToZero();
 
 }.bind(this));
 
 
-process.on('exit', function() { //ensure node's process doesn't hang
-    console.log("Killing Process ID #" + process.pid);
-    process.kill(process.pid, 'SIGTERM');
-});
+// process.on('exit', function() { //ensure node's process doesn't hang
+// 	console.log("Killing Process ID #" + process.pid);
+//   process.kill(process.pid, 'SIGTERM');
+// });
 
 /* DIRECT DEGREE TEST
    --------------------------------------------------- */
@@ -64,7 +64,7 @@ var useIk = true; //when false uses direct coords
 var coords = [];
 
 
-if (useIk) {
+if(useIk) {
 
 	coords = [
 		// end position
@@ -118,7 +118,7 @@ var delay = 1000;
 
 robot.once('moveToZeroDone', function() {
 
-    console.log('Zeroed...');
+	console.log('Zeroed...');	
 
 	if (calibrate) {
 		robot.calibrate();
@@ -130,27 +130,27 @@ robot.once('moveToZeroDone', function() {
 
 function drawCoords() {
 
-    if (coords.length) { //if remaining coords, go to next
+	if(coords.length) { //if remaining coords, go to next
 
-        console.log('Going to next coord at:  ' + coords[0] + ' in ' + (delay / 1000) + ' seconds');
+		console.log('Going to next coord at:  ' + coords[0] + ' in ' + (delay/1000) + ' seconds');
 
-        setTimeout(function() {
+		setTimeout(function() {
 
-            robot.once('synchronizedMoveDone', function() {
+			robot.once('synchronizedMoveDone', function() {
 
-                drawCoords(); //recursion
+				drawCoords(); //recursion
 
-            }.bind(this));
+			}.bind(this));
 
 			robot.synchronizedMove(coords[0]);
 
-            coords.shift();
+			coords.shift();
 
-            console.log("remaining coords => " + coords.length);
+			console.log("remaining coords => " + coords.length);
 
-        }.bind(this), delay);
+		}.bind(this), delay);
 
-    } else {
+	} else {
 
 		console.log("finished drawing coords, entering calibrate mode -- PRESS ORANGE BUTTON ON NXT BRICK TO END");
 		robot.calibrate();
@@ -167,6 +167,7 @@ function drawCoords() {
 		// }.bind(this));
 	}
 }
+
 
 console.log('Connecting...');
 robot.connect(); //start here
