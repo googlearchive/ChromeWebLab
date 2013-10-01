@@ -1120,4 +1120,3 @@ var _NxtMotorSynchronizer = new Class({
 	}
 
 });
-

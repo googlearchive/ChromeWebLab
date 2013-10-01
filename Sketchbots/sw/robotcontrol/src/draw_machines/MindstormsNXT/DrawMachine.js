@@ -36,7 +36,7 @@ exports.IK = {
     _doIk: function(x, y, z) {
 
     	console.log('------------------------------------------------');
-    	console.log("X: " + x + " Y: " + y + " : " + z);
+    	console.log("X: " + x + " Y: " + y + " Z: " + z);
 
     	if(x < ConfigParams.DRAW_PARAMETERS.robotXMin || x > ConfigParams.DRAW_PARAMETERS.robotXMax) {
     		console.log("DrawMachine: x == "+x+", which is outside the range set by ConfigParams.DRAW_PARAMETERS.robotXMin ("+ConfigParams.DRAW_PARAMETERS.robotXMin+") and robotXMax ("+ConfigParams.DRAW_PARAMETERS.robotXMax+")" );
@@ -195,6 +195,11 @@ exports.DrawMachine = new Class({
 	_robot: null,
 	_drawingServoAngles: new Array(),
 	_drawingServoAnglesCursor: 0,
+	_HOME_POSITION: {
+		x: ConfigParams.DRAW_PARAMETERS.robotXMin + ((ConfigParams.DRAW_PARAMETERS.robotXMax - ConfigParams.DRAW_PARAMETERS.robotXMin)/2),
+		y: ConfigParams.DRAW_PARAMETERS.robotYMin,
+		z: ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z
+	},
 
 	/*
 	 * public functions
@@ -263,7 +268,7 @@ exports.DrawMachine = new Class({
 		this.buff_control[3] = new Array(this.BUFFER_SIZE);
 		this.buff_type = new Array(this.BUFFER_SIZE);
 
-	    this.DRAW_TIMEOUT_DELAY = 500;
+	    this.DRAW_TIMEOUT_DELAY = 1;
 	},
 
 	/**
@@ -315,7 +320,7 @@ exports.DrawMachine = new Class({
 			this._robot.once('synchronizedMoveDone', function() {
 				this.emit('robotAtHome');
 			}.bind(this));
-			this._robot.synchronizedMove(exports.IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin + ((ConfigParams.DRAW_PARAMETERS.robotXMax - ConfigParams.DRAW_PARAMETERS.robotXMin)/2), ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z));
+			this._robot.synchronizedMove(exports.IK._doIk(this._HOME_POSITION.x, this._HOME_POSITION.y, this._HOME_POSITION.z));
 		}.bind(this));
 		this._robot.moveToZero();
 	},
@@ -330,7 +335,7 @@ exports.DrawMachine = new Class({
 			this._robot.once('synchronizedMoveDone', function() {
 				this.emit('robotCalibrated');
 			}.bind(this));
-			this._robot.synchronizedMove(exports.IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin + ((ConfigParams.DRAW_PARAMETERS.robotXMax - ConfigParams.DRAW_PARAMETERS.robotXMin)/2), ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z));
+			this._robot.synchronizedMove(exports.IK._doIk(this._HOME_POSITION.x, this._HOME_POSITION.y, this._HOME_POSITION.z));
 		}.bind(this));
 		this._robot.moveToZero();
 	},
@@ -368,13 +373,10 @@ exports.DrawMachine = new Class({
 	    console.log("BEGINNING TO DRAW");
 	    console.log("------------------------------------------------------");
 
-		this._simulateMachineEvent('timeEstimate', 1000, (new Date().getTime()/1000) + 60); //simulate 60 second drawings
+		this.emit('timeEstimate', (new Date().getTime()/1000) + (this.maxBufferIndex * 15)); //guesstimate based on 15s per drawing part
 
-		//this._drawingServoAnglesCursor = 0; //using currentBufferIndex instead
+		this._drawingServoAnglesCursor = 0;
 		this._drawNextPart();
-
-		//this._simulateMachineEvent('drawingComplete', 2000);
-		//this._simulateMachineEvent('readyForPicture', 3000);
 	},
 
     /*
@@ -387,10 +389,10 @@ exports.DrawMachine = new Class({
     	//console.log("removing all listeners");
     	this._robot.removeAllListeners();
 
-    	console.log("DRAWING NEXT PART: Index #" + this.currentBufferIndex + " (max="+this.maxBufferIndex+")");
+    	console.log("DRAWING NEXT PART: Index #" + this._drawingServoAnglesCursor + " (max="+this._drawingServoAngles.length+")");
 
     	
-    	if (this.currentBufferIndex >= this.maxBufferIndex) {
+    	if (this._drawingServoAnglesCursor >= this._drawingServoAngles.length) {
     		console.log("DRAWING COMPLETE / READY FOR NEXT PICTURE");
     		this.emit('drawingComplete');
     		this.emit('readyForPicture');
@@ -398,19 +400,17 @@ exports.DrawMachine = new Class({
 
     	} else {
 
-  			console.log('Going to next coord at:  ' + this._drawingServoAngles[this.currentBufferIndex] + ' in 1 second');
-	        console.log('X = ' + this.buff_cart[0][this.currentBufferIndex] + ' Y = ' + this.buff_cart[1][this.currentBufferIndex] + ' Z = ' + this.buff_cart[2][this.currentBufferIndex]);
+  			console.log('Going to next axis configuration. Angles will be ' + this._drawingServoAngles[this._drawingServoAnglesCursor] + ' in '+this.DRAW_TIMEOUT_DELAY+' ms');
 
   			setTimeout(function() {
 
   				this._robot.once('synchronizedMoveDone', function() {
-		            this.currentBufferIndex++;
-		            console.log("remaining coords => " + (this.maxBufferIndex - this.currentBufferIndex));
+		            this._drawingServoAnglesCursor++;
+		            console.log("remaining coords => " + (this._drawingServoAngles.length - this._drawingServoAnglesCursor));
 		          	this._drawNextPart(); //recursion
   				}.bind(this));
 
-  				console.log("a: " + this._drawingServoAngles[this.currentBufferIndex]);
-  				this._robot.synchronizedMove(this._drawingServoAngles[this.currentBufferIndex]);
+  				this._robot.synchronizedMove(this._drawingServoAngles[this._drawingServoAnglesCursor]);
 
   			}.bind(this), this.DRAW_TIMEOUT_DELAY);
 
@@ -419,23 +419,206 @@ exports.DrawMachine = new Class({
     },
 
     _calculateDrawingAngles: function() {
-    	//this._drawingServoAngles = new Array(this.buff_cart.length);
-    	this._drawingServoAngles = new Array(this.maxBufferIndex);
+    	//
+    	// figure out the translation/scale to make the drawing fill
+    	// the entire robot coordinate space
+    	//
+    	var minX = 100000000,
+    		maxX = 0,
+    		minY = 100000000,
+    		maxY = 0,
+    		xlateX = 0,
+    		xlateY = 0,
+    		scaleX = 1.0,
+    		scaleY = 1.0,
+    		originalW = 0,
+    		originalH = 0,
+    		targetW = ConfigParams.DRAW_PARAMETERS.robotXMax - ConfigParams.DRAW_PARAMETERS.robotXMin,
+    		targetH = ConfigParams.DRAW_PARAMETERS.robotYMax - ConfigParams.DRAW_PARAMETERS.robotYMin,
+    		il = this.maxBufferIndex;
 
-    	for (var i = 0, il = this._drawingServoAngles.length; i < il; i++) {
-	    	
-	    	//safety on the Z parameter
-	    	if (this.buff_cart[2][i] > ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z) {
-	    		this.buff_cart[2][i] = ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z;
-	    	} else {
-	    		this.buff_cart[2][i] = ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z;
+    	// find bounds of original drawing and ensure that all coordinates are numbers, not strings
+    	for (var i = 0; i < this.maxBufferIndex; i++) {
+    		//ensure type correctness for all
+    		this.buff_cart[0][i] = parseFloat(this.buff_cart[0][i]);
+    		this.buff_cart[1][i] = parseFloat(this.buff_cart[1][i]);
+    		this.buff_cart[2][i] = parseFloat(this.buff_cart[2][i]);
+    		//find bounds
+	    	if (this.buff_cart[0][i] < minX) minX = this.buff_cart[0][i];
+	    	if (this.buff_cart[0][i] > maxX) maxX = this.buff_cart[0][i];
+	    	if (this.buff_cart[1][i] < minY) minY = this.buff_cart[1][i];
+	    	if (this.buff_cart[1][i] > maxY) maxY = this.buff_cart[1][i];
+	    }
+	    originalW = maxX - minX;
+	    originalH = maxY - minY;
+
+	    if (originalW >= originalH) {
+	    	scaleX = targetW / originalW;
+	    	scaleY = scaleX;
+	    } else {
+	    	scaleY = targetH / originalH;
+	    	scaleX = scaleY;
+	    }
+	    xlateX = ConfigParams.DRAW_PARAMETERS.robotXMin - minX;
+	    xlateY = ConfigParams.DRAW_PARAMETERS.robotYMin - minY;
+
+	    console.log('-----------------------------------------------');
+	    console.log('Original drawing specs:');
+	    console.log('  maxX = '+maxX);
+	    console.log('  minX = '+minX);
+	    console.log('  maxY = '+maxY);
+	    console.log('  minY = '+minY);
+	    console.log('  width = '+originalW);
+	    console.log('  height = '+originalH);
+	    console.log('Translation/scale:');
+	    console.log('  xlateX = '+xlateX+' ('+typeOf(xlateX)+')');
+	    console.log('  xlateY = '+xlateY+' ('+typeOf(xlateY)+')');
+	    console.log('  scaleX = '+scaleX+' ('+typeOf(scaleX)+')');
+	    console.log('  scaleY = '+scaleY+' ('+typeOf(scaleY)+')');
+	    console.log('Translated/scaled drawing specs:');
+	    console.log('  maxX = '+(((maxX - minX) * scaleX) + ConfigParams.DRAW_PARAMETERS.robotXMin));
+	    console.log('  minX = '+(((minX - minX) * scaleX) + ConfigParams.DRAW_PARAMETERS.robotXMin));
+	    console.log('  maxY = '+(((maxY - minY) * scaleX) + ConfigParams.DRAW_PARAMETERS.robotXMin));
+	    console.log('  minY = '+(((minY - minY) * scaleX) + ConfigParams.DRAW_PARAMETERS.robotXMin));
+	    console.log('  width = '+((originalW * scaleX)));
+	    console.log('  height = '+((originalH * scaleY)));
+	    console.log('-----------------------------------------------');
+
+    	//
+    	// initialize our angle stack
+    	//
+    	//this._drawingServoAngles = new Array(this.buff_cart.length);
+    	this._drawingServoAngles = new Array();
+    	this._drawingServoAnglesCursor = 0;
+
+    	var lastCart = {
+    		x: this._HOME_POSITION.x,
+    		y: this._HOME_POSITION.y,
+    		z: this._HOME_POSITION.z
+    	};
+
+    	//
+    	// translate, scale and convert points into angles
+    	//
+    	for (var i = 0; i < il; i++) {
+
+    		// figure out where we are heading in this next step of the buffer
+	    	var thisTargetCart = {
+	    		x: ((this.buff_cart[0][i] - minX) * scaleX) + ConfigParams.DRAW_PARAMETERS.robotXMin,
+	    		y: ((this.buff_cart[1][i] - minY) * scaleY) + ConfigParams.DRAW_PARAMETERS.robotYMin,
+	    		z: this.buff_cart[2][i]
 	    	}
 
-    		this._drawingServoAngles[i] = exports.IK._doIk(this.buff_cart[0][i], this.buff_cart[1][i], this.buff_cart[2][i]);
-    		console.log("ANGLES: " + this._drawingServoAngles[i]);
-    	}
-    	    	
+	    	//safety on the Z parameter
+	    	if (thisTargetCart.z > ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z) {
+	    		//
+	    		// travel move, just get there as quickly as possible
+	    		//
+	    		thisTargetCart.z = ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z;
+	    		this._pushServoAnglesForPt(thisTargetCart.x, thisTargetCart.y, thisTargetCart.z);
+
+	    	} else {
+	    		//
+	    		// drawing move, get there safely and as acurately as possible
+	    		//
+	    		thisTargetCart.z = ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z;
+
+		    	if (lastCart.z == thisTargetCart.z) {
+			    	// calculate linear distance from lastCart to thisTargetCart
+			    	// and lerp from the last (x,y) position to the target, in case the buffer has insufficient reslotion?
+			    	var d, pointsAdded = 0;
+
+			    	console.log('Distance from last point: '+this._dist2d(lastCart, thisTargetCart));
+
+			    	console.log('-----------------------------');
+			    	while ((d = this._dist2d(lastCart, thisTargetCart)) > 0.25) {
+				    	var p = this._lerp([lastCart.x, lastCart.y], [thisTargetCart.x, thisTargetCart.y], 1);
+				    	console.log('d = '+d+', adding lerp point ('+p[0]+','+p[1]+')...');
+				    	this._pushServoAnglesForPt(p[0], p[1], ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z);
+				    	lastCart.x = p[0];
+				    	lastCart.y = p[1];
+				    	lastCart.z = ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z;
+				    	pointsAdded++;
+			    	}
+			    	console.log('Lerp points added: '+pointsAdded);
+		    	}
+
+		    	this._pushServoAnglesForPt(thisTargetCart.x, thisTargetCart.y, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z);
+
+	    	}
+
+	    	// retain the position we reached so that we can interpolate to the next position if needed
+			lastCart = {
+				x: thisTargetCart.x,
+				y: thisTargetCart.y,
+				z: thisTargetCart.z
+			};
+
+    	} // for each part in the buffer
     },
+
+
+    _pushServoAnglesForPt: function(x, y, z) {
+    	if (z > ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z) {
+	    	this._drawingServoAngles.push(exports.IK._doIk(
+	    		x, y, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z
+	    	));
+    	} else {
+	    	if (ConfigParams.MINDSTORMS_NXT__STIPPLE == true) {
+		    	//
+		    	// stippling mode
+		    	//
+		    	var liftedAngles = exports.IK._doIk(
+		    		x, y, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z
+		    	);
+		    	var angles = exports.IK._doIk(
+		    		x, y, z
+		    	);
+		    	// 1. make sure we start at lifted depth
+		    	// redundant: this._drawingServoAngles.push([liftedAngles[0], liftedAngles[1], angles[2]]); //NOTE: the third angle is UNCHANGED from the drawn point
+		    	// 2. each point is made by moving the stylus to the target point at travel depth...
+		    	this._drawingServoAngles.push([angles[0], null, angles[2]]);
+		    	// 3. ..then dropping it to drawing depth
+		    	this._drawingServoAngles.push(angles);
+		    	// 4. ...and then lift only the middle axis
+		    	this._drawingServoAngles.push([null, liftedAngles[1], null]);
+		    	// 5. ...then get the other two axes into position
+		    	//this._drawingServoAngles.push([liftedAngles[0], liftedAngles[1], liftedAngles[2]]); //NOTE: the third angle is UNCHANGED from the drawn point
+
+	    	} else {
+	    		//
+	    		// regular line mode
+	    		//
+		    	var angles = exports.IK._doIk(
+		    		x, y, z
+		    	);
+		    	this._drawingServoAngles.push(angles);
+	    	}
+    	}
+    },
+
+
+	_dist2d: function( point1, point2 ) {
+	  var xs = 0;
+	  var ys = 0;
+
+	  xs = point2.x - point1.x;
+	  xs = xs * xs;
+
+	  ys = point2.y - point1.y;
+	  ys = ys * ys;
+
+	  return Math.abs(Math.sqrt(xs + ys));
+	},
+
+	_lerp: function(v1, v2, t) {
+		var l = v1.length;
+		if (v2.length != l) throw new Error("_lerp: cannot lerp because v1.length = "+v1.length+" while v2.length="+v2.length);
+		var r = [];
+		for (var i = 0; i < l; i++)
+			r.push(v1[i] + t * (v2[i] - v1[i]));
+		return r;
+	},
 
     _simulateMachineEvent: function(eventName, delay, obj) {
     	if (!delay) delay = 1000;

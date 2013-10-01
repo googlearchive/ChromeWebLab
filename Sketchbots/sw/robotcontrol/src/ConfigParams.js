@@ -158,11 +158,11 @@ exports.ConfigParams = {
         'chunkSize':3000,
         'velocity':100,
         'acceleration':200,
-        'robotXMin':-4, // in cms, perhaps should be in mms
-        'robotXMax':4, //
+        'robotXMin':-6, // in cms, perhaps should be in mms
+        'robotXMax':6, //
         'robotYMin':18, // 
         'robotYMax':25, //
-        'drawPlaneHeight':6.4, //6.5, //7.5, //6.5, //10.2, // from top of drawing surface to the top of the base gear
+        'drawPlaneHeight':6.7, //6.5, //7.5, //6.5, //10.2, // from top of drawing surface to the top of the base gear
         'liftDistance':2,
         'turntableTravel':120
     },
@@ -182,6 +182,8 @@ exports.ConfigParams = {
     },
     */
 
+    DEBUG_HIGHLIGHT_POINTS: false,
+
     /**************************************************************************************
      **************************************************************************************
      * DRAW_MACHINE_TYPE
@@ -191,9 +193,9 @@ exports.ConfigParams = {
      *
      */
     //DRAW_MACHINE_TYPE: 'HomebrewGalil', // For any 4-axis draw machine using a Galil motion controller
-    //DRAW_MACHINE_TYPE: 'NoMachine', // Use this setting if you do not have a machine connected to the computer. Drawings will be "drawn" in software only.
+    DRAW_MACHINE_TYPE: 'NoMachine', // Use this setting if you do not have a machine connected to the computer. Drawings will be "drawn" in software only.
     //DRAW_MACHINE_TYPE: 'MindstormsNXT', // A 3-axis robot arm built with the LEGO(TM) Mindstorms system. Instructions for building this arm are included in the "hw" folder.
-    DRAW_MACHINE_TYPE: 'LittlePrinter', // Use this for drawing to a pre-configure little printer. 
+    //DRAW_MACHINE_TYPE: 'LittlePrinter', // Use this for drawing to a pre-configure little printer. 
     /**********************************************************
      *
      * MindstormsNXT-based draw machine configuration parameters
@@ -202,7 +204,7 @@ exports.ConfigParams = {
      * These are only used if for the "MindstormsNXT" draw machine type
      *
      */
-    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodemfd121',
+    MINDSTORMS_NXT__SERIAL_PORT: '/dev/cu.usbmodemfa131',
     //MINDSTORMS_NXT__SERIAL_PORT: '/dev/vcpa',
     MINDSTORMS_NXT__AXIS_CONFIG: [
         {   //base
