@@ -83,22 +83,21 @@ if(useIk) {
 
 		//rectangle test
 		//at drawing depth
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
 		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
-		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
-		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
-		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
-		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
 
-		//an X from the corners of the rectangle, with travel move in middle
-		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
-		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
 
 		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
+
 		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
-
 		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
-		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMax, ConfigParams.DRAW_PARAMETERS.robotYMin, ConfigParams.MINDSTORMS_NXT__DRAW_MOVE_Z),
-
+		IK._doIk(ConfigParams.DRAW_PARAMETERS.robotXMin, ConfigParams.DRAW_PARAMETERS.robotYMax, ConfigParams.MINDSTORMS_NXT__TRAVEL_MOVE_Z),
 
 		// end position
 		IK._doIk(
