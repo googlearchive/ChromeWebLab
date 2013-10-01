@@ -32,3 +32,9 @@ We use [Git Hooks](http://git-scm.com/book/en/Customizing-Git-Git-Hooks) in this
 
 To install the Git Hooks used, just open your terminal, locate the folder of the project and run
 `ln -s ./pre-commit.sh .git/hooks/pre-commit`
+
+## Webcam bug on MacOS X
+
+A recent update to MacOS X (10.8.5, MacBook Air, Mid 2013) introduced a new and currently outstanding issue with some applications not being able to correctly access the webcam. This is not a bug with Sketchbot. For more information:
+- [Apple KB: MacBook Air (Mid 2013): FaceTime HD Camera may not work with some applications](http://support.apple.com/kb/TS4552)
+- [Google Products Forums > Hangouts discussion with workaround](http://productforums.google.com/forum/#!topic/hangouts/4CkaG309_tw)

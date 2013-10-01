@@ -298,7 +298,8 @@ var RobotsTopicQueuesController = new Class({
 
                     //one for upcoming (queued) tasks
                     var listContainer = new Element('div', {
-                        'class': 'TaskListWrapper Waiting',
+						'id': 'waiting-list',
+                        'class': 'TaskListWrapper Waiting Active',
                     }).inject(container);
                     new Element('h4', {
                         'html': _('WAITING_DRAWINGS_TITLE')
@@ -344,6 +345,7 @@ var RobotsTopicQueuesController = new Class({
 
                     // container for thumbnails of tasks being worked on by a robot
                     var listContainer = new Element('div', {
+						'id': 'working-list',
                         'class': 'TaskListWrapper Working',
                     }).inject(container);
                     new Element('h4', {
@@ -360,6 +362,7 @@ var RobotsTopicQueuesController = new Class({
 
                     // container for thumbnails of completed tasks
                     var listContainer = new Element('div', {
+						'id': 'completed-list',
                         'class': 'TaskListWrapper Completed',
                     }).inject(container);
                     new Element('h4', {
