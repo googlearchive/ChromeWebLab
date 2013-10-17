@@ -57,10 +57,20 @@ var GCodeScene = new Class({
 
     _initializeScene: function(element, height, width) {
         // Renderer
-        var renderer = new THREE.WebGLRenderer({
-            clearColor: 0x000000,
-            clearAlpha: 1
-        });
+		if (this._detectWebGL()) {
+			console.log("WebGL");
+			var renderer = new THREE.WebGLRenderer({
+				clearColor: 0x000000,
+				clearAlpha: 1
+			});
+		} else {
+			console.log("Canvas");
+			var renderer = new THREE.CanvasRenderer({
+				clearColor: 0x000000,
+				clearAlpha: 1
+			});
+		}
+
         renderer.setSize(width, height);
         $(renderer.domElement).inject(element);
         renderer.clear();
@@ -342,5 +352,15 @@ var GCodeScene = new Class({
         object.scale.multiplyScalar(scale);
 
         return object;
-    }
+    },
+
+	_detectWebGL: function() {
+		try {
+			var canvas = document.createElement('canvas');
+			return (!! window.WebGLRenderingContext && ( canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) ));
+		}
+		catch(e) {
+			return false;
+		}
+	}
 });
